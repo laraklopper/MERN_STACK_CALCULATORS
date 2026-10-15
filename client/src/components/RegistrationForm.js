@@ -10,18 +10,25 @@ export default function RegistrationForm() {
     const [showPassword, setShowPassword] = useState(false)
     const [emailMsg, setEmailMsg] = useState(false)
     // State to controls whether the password helper message is displayed
-    // const [pswdmsg, setPswdMsg] = useState(false)
+    const [pswdmsg, setPswdMsg] = useState(false)
     // const [touched, setTouched] = useState({})
 
     //========== EMPTY FIELD VALIDATION ====================
 
     //===========JSX RENDERING=============
   return (
-    <form id='registrationForm'>
+    <form id='registrationForm' aria-labelledby='formTitle'>
+     {/* --------Screen Reader Heading----------- */}
+    <p className='visually-hidden' id='formTitle'>REGISTRATION FORM</p>
         <div id='formHeadingBlock'>
             <h3 id='formHeading'>SIGN UP</h3>
         </div>
-        <div id='registerInput'>
+        {/* ============MAIN REGISTRATION INPUT BLOCK============ */}
+        <div id='registerInput' aria-describedby='mainInputDescrip'>
+        {/* --------Screen Reader Heading description----------- */}
+                <p className='visually-hidden' id='mainInputDescrip'>
+                    MAIN USER REGISTRATION DETAILS INPUT
+                </p>
         {/*  GROUP 1: username, email, date of birth*/}
             <div id='regisGroup1'>
             {/* STACK 1: USERNAME */}
@@ -51,6 +58,7 @@ export default function RegistrationForm() {
       <div className="p-2 ms-auto"></div>
       <div className="p-2"></div>
     </Stack>
+    {/* STACK 2: EMAIL */}
 <Stack direction="horizontal" gap={3} id='regisStack2'>
       <div className="p-2" id="regisEmailBlock">
         <div className='inputDiv'>
@@ -60,6 +68,7 @@ export default function RegistrationForm() {
                 id='regisEmailInput'
                 type='text'
                 required
+                placeholder='EMAIL'
                 // name=''
                 // value={}
                 // onChange={}
@@ -76,11 +85,12 @@ export default function RegistrationForm() {
       <div className="p-2 ms-auto"></div>
       {emailMsg && (
         <div className="p-2">
-            <p>We will never share your email</p>
+            <p className='msgText'>We will never share your email</p>
         </div>
 
       )}
     </Stack>
+    {/* STACK 3: DATE OF BIRTH */}
                  <Stack direction="horizontal" gap={3} id='regisStack3'>
                  {/* Date of Birth */}
       <div className="p-2" id='regisBirthDateBlock'>
@@ -108,15 +118,22 @@ export default function RegistrationForm() {
             </div>
             {/* PASSWORD AND ADMIN */}
             <div id='regisGroup2'>
-            <Stack direction="horizontal" gap={3}>
-      <div className="p-2">
-      <label>PASSWORD</label>
-        <div>
+            {/* STACK 4: PASSWORD */}
+            <Stack direction="horizontal" gap={3} id='regisStack4'>
+      <div className="p-2" id='regisPswdBlock'>
+        <div className='inputDiv'>
+        <label className='regisLabel' htmlFor='regisPassword'>PASSWORD: </label>
             <input
                 type={showPassword ? 'text': 'password'}
                 id='regisPassword'
                 className='input'
                 required
+                placeholder='PASSWORD'
+                // name=''
+                // value={}
+                // onChange={}
+                onFocus={() => setPswdMsg(true)}
+                onBlur={() => setPswdMsg(false)}
             />
             <Button 
                 id='showPswdButton' 
@@ -125,35 +142,48 @@ export default function RegistrationForm() {
                 type='button'
                 // ARIA ATTRIBUTES
                 aria-label={showPassword ? 'Hide Password': 'Show password'}
+                aria-pressed={showPassword}
+                aria-expanded={showPassword}
                 >
                 {showPassword ? <Eye size={16}  aria-hidden='true' focusable='false' /> : <EyeOff size={16}   aria-hidden='true' focusable='false' />}
             </Button>
             <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
         </div>
-      </div>
-      <div className="p-2 ms-auto">
         <span className='formErrorSpan'>
-        <Bug color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false'/><p className='errorText'>Email is required</p>
+        <Bug color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false'/><p className='errorText'>Password is required</p>
         </span>
+         <p className='reqText'>Password must be at least 8 characters long and <br/>must contain at least 1 special character</p>
       </div>
-      <div className="p-2"></div>
+      
+      <div className="p-2 ms-auto">
+       
+      </div>
+      {pswdmsg && (
+<div className="p-2">
+  <p className='msgText'>We will never share your password</p>
+</div>
+      )}
+      
     </Stack>
-    <Stack direction="horizontal" gap={3}>
-      <div className="p-2">
+    {/* STACK 5: ADMIN REGISTRATION */}
+    <Stack direction="horizontal" gap={3} id='regisStack5'>
+      <div className="p-2" id='adminRegisBlock'>
         <label className='regisLabel' htmlFor='regisAdmin'>REGISTER AS ADMIN</label>
         <input
             type='checkbox'
             id='regisAdmin'
             // name=''
-            // value={}
+            // checked={}
             // onChange={}
+            // ARIA ATTRIBUTES:
+            aria-label='Register as admin'
             aria-required='false'
         />
       </div>
-      <div className="p-2 ms-auto">Second item</div>
+      <div className="p-2 ms-auto"/>
       <div className="p-2">
         {/* ADMIN REQUIREMENS */}
-        <p>Admin Users must be at least 18 years old</p>
+        <p className='reqText'>Admin Users must be at least 18 years old</p>
       </div>
     </Stack>
 
@@ -161,13 +191,34 @@ export default function RegistrationForm() {
         </div>
         {/* ====END OF INPUT============= */}
         <div id='regisGroup3'>
-<Stack direction="horizontal" gap={3} id='regisActionsBlock'>
-      <div className="p-2">First item</div>
-      <div className="p-2 ms-auto">Second item</div>
-      <div className="p-2">Third item</div>
+<Stack direction="horizontal" gap={3} id='regisActionsStack'>
+      <div className="p-2" id='requiredInfo'>
+            <p className='infoText' aria-live='polite' aria-hidden='true'>
+                <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /> Indicates required information</small>
+            </p>
+        </div>
+      <div className="p-2 ms-auto">
+        <Button 
+          variant='danger' 
+          type='button' 
+          id='clearFormBtn' 
+          // onClick={}
+          // disabled=
+          // ARIA ATTRIBUTES
+          aria-label='clearForm button'>CLEAR FORM</Button>
+      </div>
+      <div className="vr" style={{ color: '#404040', opacity: .50, width: '2px' }} />
+      <div className="p-2">
+        <Button 
+        variant='light' 
+        type='submit' 
+        id='regisBtn'
+        aria-label='register button'
+        role='button'
+        >REGISTER</Button>
+      </div>
     </Stack>
         </div>
-
     </form>
   )
 }

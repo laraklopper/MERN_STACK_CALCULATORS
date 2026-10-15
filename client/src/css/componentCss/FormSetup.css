@@ -33,8 +33,58 @@
     margin: 0px;
     padding: 0px;
 }
+.msgText,
+.reqText{
+   margin: 0px;
+    padding: 0px;
+    color: #000;
+    text-transform: uppercase;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+}
 .errorText{
     display: flex;
     margin: 0px;
     padding: 0px;
+}
+#requiredInfo{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+.infoText{
+font-family: "Open Sans", sans-serif;
+margin: 0px;
+padding: 0px;
+text-transform: uppercase;
+font-size: 14px;
+letter-spacing: 2px;
+}
+/* ===============
+BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
+====================== */
+#clearFormBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 40px;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0px;
+    gap: 5px;
+    letter-spacing: 2px;
+    padding: 0px;
+    border: solid 2px #323A42;
+}
+#clearFormBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;    
 }
