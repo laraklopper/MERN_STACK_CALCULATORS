@@ -1,12 +1,38 @@
-# STYLES
+# HTML STYLES
+General styling formats, not all formats apply for all tags.
 
 ## TABLE OF CONTENTS
-1. []
+1. [HTML STYLING](#1-html-styling)
 
-*View [`GLOSSARY.md`](../) for terminology*
+*View [`GLOSSARY.md`](../GLOSSARY.md) for terminology*
+
 ## 1. HTML STYLING
-General styling formats, not all formats apply for all tags.
-## 2.BOOTSTRAP
+
+
+### 1. BODY/HTML/ROOT
+
+### 1.2. HEADER/FOOTER
+
+### 1.3. NAVIGATION BAR
+
+### 1.4. SECTION
+
+### 1.5. GENERAL TEXT
+### 1.6. FORMS
+
+### 1.7. BUTTONS
+
+Background color for buttons is based on bootstrap variant
+
+#### 1.7.1. CLICKBLE BUTTON
+
+#### 1.7.2. FORM BUTTONS
+
+#### 1.7.3. CALCULATOR BUTTONS
+
+### 1.8. ERROR
+
+## 2. BOOTSTRAP
 
 ### 2.1. INSTALLATION
 
@@ -111,3 +137,4 @@ root {
     --bs-breakpoint-xxl: 1400px;
 }
 ```
+
