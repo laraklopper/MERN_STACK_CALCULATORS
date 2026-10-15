@@ -80,7 +80,7 @@ export default function LoginForm({userData, setUserData, submitLogin}) {
                         {/* Username error message */}
                     {showUsernameError && (
                         <div className="p-2" id={usernameErrorId} aria-live='assertive'>
-                            <p className='loginErrorMessage'><Bug size={20} fontWeight={900} aria-hidden='true' focusable='false'/>Username is required</p>
+                            <p className='loginErrorMessage'><Bug size={16} fontWeight={900} aria-hidden='true' focusable='false'/>Username is required</p>
                         </div>
                     )}
                     {/* Username help message */}
