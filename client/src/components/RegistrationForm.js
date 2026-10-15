@@ -4,7 +4,8 @@ import '../css/componentCss/RegisterForm.css'
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 import { Eye, EyeOff, Asterisk, Bug  } from 'lucide-react';
-export default function RegistrationForm() {
+
+export default function RegistrationForm({newUserData, setNewUserData}) {
     // ==========STATE VARIABLES==============
     //state to display password
     const [showPassword, setShowPassword] = useState(false)
@@ -13,6 +14,19 @@ export default function RegistrationForm() {
     const [pswdmsg, setPswdMsg] = useState(false)
     // const [touched, setTouched] = useState({})
 
+    const handleChange = (event) =>{
+        // Extract the properties from the event.target
+        const { name, value, type, checked } = event.target
+
+     // Determine the new value based on the input type
+        // If the input type is 'checkbox', use `checked`, otherwise use `value`
+        const fieldValue = type === 'checkbox' ? checked : value
+        // Handle non nested fields 
+            setNewUserData((prev) => ({
+                ...prev,
+                [name]: fieldValue,
+            }))
+    }
     //========== EMPTY FIELD VALIDATION ====================
 
     //===========JSX RENDERING=============
@@ -43,9 +57,9 @@ export default function RegistrationForm() {
                 className='input'
                 required
                 autoComplete='username'
-                // name=''
-                // value={}
-                // onChange={}
+                name='username'
+                value={newUserData.username}
+                onChange={handleChange}
             />
             <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
         </div>
@@ -66,25 +80,28 @@ export default function RegistrationForm() {
             <input
                 className='input'
                 id='regisEmailInput'
-                type='text'
+                type='email'
                 required
                 placeholder='EMAIL'
-                // name=''
-                // value={}
-                // onChange={}
+                name='email'
+                value={newUserData.email}
+                inputMode='email'
+                onChange={handleChange}
                 onFocus={()=>  setEmailMsg (true) }
                 onBlur={() => setEmailMsg(false)}
+                // ARIA ATTRIBUTES
+                aria-required='true'
             />
             <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
         </div>
           {/* REQUIRED MESSAGE */}
-        <span className='formErrorSpan'>
+        <span className='formErrorSpan' aria-live='assertive'>
         <Bug color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false'/><p className='errorText'>Email is required</p>
         </span>
       </div>
       <div className="p-2 ms-auto"></div>
       {emailMsg && (
-        <div className="p-2">
+        <div className="p-2" aria-live='polite'>
             <p className='msgText'>We will never share your email</p>
         </div>
 
@@ -129,11 +146,13 @@ export default function RegistrationForm() {
                 className='input'
                 required
                 placeholder='PASSWORD'
-                // name=''
-                // value={}
-                // onChange={}
+                name='password'
+                value={newUserData.password}
+                onChange={handleChange}
                 onFocus={() => setPswdMsg(true)}
                 onBlur={() => setPswdMsg(false)}
+                aria-label='password input'
+                aria-required='true'
             />
             <Button 
                 id='showPswdButton' 
