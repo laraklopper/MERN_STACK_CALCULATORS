@@ -1,5 +1,5 @@
 // App.js
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './App.css';
 import Container from 'react-bootstrap/Container';
 import { Route, Routes } from 'react-router-dom';
@@ -19,10 +19,77 @@ export default function App() {
     rememberMe: false,
   }); // State to hold user data
   const [currentUser, setCurrentUser] = useState(null); // State to hold the currently logged-in user
-  // const [users, setUsers] = useState([]); // State to hold user data
+  const [users, setUsers] = useState([]); // State to hold user data
   const [loggedIn, setLoggedIn] = useState(false); // State to track if the user is logged in
   const [error, setError] = useState(null); // State to hold error messages
   
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        if (!loggedIn) return;
+        const token = localStorage.getItem('token')
+
+        const response = await fetch('http://localhost:3001/users/fetchUsers',{
+          method: 'GET',
+          mode: 'cors',
+          headers: { 
+            'Content-Type': 'application/json',// Specify the content type as JSON
+            'Authorization': `Bearer ${token}`//Attatch the token in the Authorization header
+          },
+        })
+        const fetchedUsers = await response.json().catch(() => ({}));//Parse the JSON data from the Response body
+        if (!response.ok) throw new Error(fetchedUsers?.message || fetchedUsers?.error || 'Failed to fetch users');
+        //Conditional rendering to ensure the data is an array
+        if (Array.isArray(fetchedUsers)) {
+          setUsers(fetchedUsers);//Update the setUsers state with the usersList
+          setError(null);// Clear any previous errors
+          console.log(`[SUCCESS: App.js] Fetched ${fetchedUsers.length} users`);
+        } else {
+          throw new Error('Invalid data format received from server');//Throw an error message if the data format is invalid
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error.message);//Log an error message in the console for debugging purposes
+        setError(`Error fetching user data: ${error.message}`);// Set the error state to display the error in the UI
+      }
+    }
+    const fetchCurrentUser = async () => {
+      try {
+         const token = localStorage.getItem('token');// Retrieve the JWT token from localStorage
+        if (!token || !loggedIn) return;// If no token is found, exit the function
+        const response = await fetch('http://localhost:3001/users/me',{
+           method: 'GET',//HTTP request method
+          mode: 'cors',//Enable Cross-Origin Resource Sharing 
+          headers: { 
+            'Content-Type': 'application/json',// Specify the Content-Type being sent in the request payload.
+            'Authorization': `Bearer ${token}` // Attach the token in the Authorization header  
+          },
+        })
+
+        const fetchedUser = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(fetchedUser?.message || fetchedUser?.error || 'Failed to fetch current user');
+        if (fetchedUser && typeof fetchedUser === 'object' && !fetchedUser.error) {
+          setCurrentUser(fetchedUser);
+          setError(null);// Clear any previous errors
+          console.log('[SUCCESS: App.js] Fetched current user data');
+        } else {
+          throw new Error('Invalid data format received from server');//Throw an error message if the data format is invalid
+        }
+
+      } catch (error) {
+        console.error('Error fetching current user data:', error.message);//Log an error message in the console for debugging purposes
+        setError(`Error fetching current user data: ${error.message}`);// Set the error state to display the error in the UI
+      }
+    }
+     //Conditional rendering to check if the user is logged in before fetching data
+    if (loggedIn) {
+      /* Call the FetchUsers function to 
+      fetch the list of users*/
+      fetchCurrentUser();
+      /*Call the FetchCurrentUser function to fetch the 
+      current user's details*/
+      fetchUsers();
+    }
+  },[loggedIn, setError])
   return (
     <>
       <Container id='appContainer'>
@@ -41,7 +108,7 @@ export default function App() {
       <Routes>
         {loggedIn ? (
           <>
-            <Route path="/" element={<Home currentUser={currentUser} />} />
+            <Route path="/" element={<Home currentUser={currentUser} users={users} />} />
           </>
         ) : (
         <>
