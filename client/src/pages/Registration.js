@@ -54,18 +54,23 @@ export default function Registration(
        is not successful (status code is not in the range 200-299)*/
       if (response.ok) {
         setError?.(null);//Clear previous errors
+        // Reset the form so the details are not kept in state after registering
+        setNewUserData({ username: '', email: '', dateOfBirth: '', password: '', admin: false })
         alert('New User successfully added')//Notify the user of successful registration
         navigate('/');//Navigate back to Login Page after successful registration
+        return true;// Tell the form the registration succeeded
       } else {
         const message = data.message || 'Registration failed.';
         setError?.(message);
         console.error(`[ERROR: Registration.js]: Registration failed: ${message}`);//Log an error message in the console for debugging purposes
+        return false;// Tell the form the registration failed
       }
 
     } catch (error) {
       alert('Registration failed. Please try again.'); // Show an alert to the user indicating that registration failed
       setError?.(`Registration failed: ${error.message}`);// Set the error state to display the error in the UI
       console.error(`[ERROR: Registration.js]: Error adding new user: ${error.message}`);//Log an error message in the console for debugging purposes
+      return false;
     }
   },[newUserData, setError, navigate])
  

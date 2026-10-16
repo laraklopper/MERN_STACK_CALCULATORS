@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
       default: false, // New users are regular users unless explicitly made an admin.
     },
 },{
-    timeStamps: true,
+    timestamps: true,// Adds createdAt / updatedAt fields (option name is case-sensitive)
     toJSON: {virtuals: true},  
     toObject: {virtuals:true},
 });

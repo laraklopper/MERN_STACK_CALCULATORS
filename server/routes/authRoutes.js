@@ -11,6 +11,7 @@ file using the dotenv package*/
 require('dotenv').config()
 // Import Required modules and packages
 const express = require('express');
+const jwt = require('jsonwebtoken');// Import the JSON Web Token (JWT) library used to sign tokens
 const User = require('../models/userSchema');
 const { checkPassword, checkAge } = require('../middleware/middleware');
 const router = express.Router()
@@ -92,17 +93,29 @@ router.post('/register', checkPassword, checkAge, async (req, res) => {
     try {
         const { username, email, password, dateOfBirth, admin } = req.body || {};
 
-        console.log(`[REQUEST BODY: authRoutes.js, /register]: ${req.body}`);
-        
+        console.log('[REQUEST BODY: authRoutes.js, /register]:', { username, email, dateOfBirth, admin });// Never log the password
+
          if (!username ||  !email || !password || !dateOfBirth) {
             console.error('[ERROR: authRoutes.js, /register] Missing required registration fields');
-            return res.status(400).json({ message: 'fullName, email, password and dateOfBirth are required' });
+            return res.status(400).json({ message: 'username, email, password and dateOfBirth are required' });
+        }
+        // Conditional rendering to check that the text fields are strings (blocks query injection objects)
+        if (typeof username !== 'string' || typeof email !== 'string') {
+            console.error('[ERROR: authRoutes.js, /register] username and email must be strings');
+            return res.status(400).json({ message: 'username and email must be strings' });
         }
 
-        const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
-        if (existingUser) {
+        // Check if the email is already registered
+        const existingEmail = await User.findOne({ email: email.toLowerCase().trim() });
+        if (existingEmail) {
             console.error('[ERROR: authRoutes.js, /register] Email already registered:', email);
             return res.status(409).json({ message: 'Email is already registered' });
+        }
+        // Check if the username is already taken
+        const existingUsername = await User.findOne({ username: username.trim() });
+        if (existingUsername) {
+            console.error('[ERROR: authRoutes.js, /register] Username already taken:', username);
+            return res.status(409).json({ message: 'Username is already taken' });
         }
 
         // Use Plaintext passwords for development - stored as-is, no hashing
@@ -129,10 +142,13 @@ router.post('/register', checkPassword, checkAge, async (req, res) => {
             console.error('[ERROR: authRoutes.js, /register] Validation error:', error.message);
             return res.status(400).json({ message: error.message });
         }
-        // Duplicate key error (unique email constraint)
+        // Duplicate key error (unique email/username constraint)
         if (error.code === 11000) {
-            console.error('[ERROR: authRoutes.js, /register] Duplicate email:', req.body?.email);
-            return res.status(409).json({ message: 'Email is already registered' });
+            const field = Object.keys(error.keyPattern || {})[0] || 'email';// Which unique field clashed
+            console.error(`[ERROR: authRoutes.js, /register] Duplicate ${field}:`, req.body?.[field]);
+            return res.status(409).json({
+                message: field === 'username' ? 'Username is already taken' : 'Email is already registered'
+            });
         }
         console.error('[ERROR: authRoutes.js, /register]', error.message);
         return res.status(500).json({ message: 'Internal Server Error' });
