@@ -15,6 +15,7 @@ export default function Login(
     }
     ) {
 
+        //Function to submit login
         const submitLogin = useCallback(async () => {
            try {
             // const token = localStorage.getItem('token')
@@ -50,6 +51,7 @@ export default function Login(
            } 
         },[userData, setLoggedIn, setError, setCurrentUser])
 
+        //============JSX RENDERING============
   return (
     <div id="pageContainer">
     <MainHeader pageHeading="LOGIN"/>
