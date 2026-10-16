@@ -22,23 +22,53 @@ export default function Header({ pageHeader, currentUser }) {
         <Col id='headingCol2'/>
       </Row>
     <Row>
-    <Col md={12}>
+    <Col/>
+    <Col xs={6}>
         <nav className="headerNav">
             <ul className="headerNavList">
-            <Stack gap={3}>
-      <div className="p-2">First item</div>
-      <div className="p-2">Second item</div>
-      <div className="p-2">Third item</div>
-    </Stack>
-            {currentUser && (
+            <Stack gap={3} id='navbarStack'>
+      <div className="p-2">
+        {currentUser && (
                 <li className='linkItem'>
                     <NavLink className="navLink" to="/">HOME</NavLink>
                 </li>   
             )}
+            {currentUser && (
+                <li className='linkItem'>
+                    <NavLink className='navLink' to="/calculator">CALCULATOR</NavLink>
+                </li>
+            )}
+             {currentUser && (
+            <li className='linkItem'>
+                <NavLink className={'navLink'} to="/tax">TAX CALCULATORS</NavLink>
+            </li>
+        )}
+
+      </div>
+      <div className="p-2">
+       {currentUser && (
+        <li className='linkItem'>
+            <NavLink className='navLink' to="/converter">CONVERTER</NavLink>
+        </li>
+       )}
+        {currentUser && (
+                            <li className='linkItem'>
+                                <NavLink to='/profile' className='navLink'>PROFILE</NavLink>
+                            </li>
+                        )}
+                        {currentUser.admin && (
+                            <li>
+                                <NavLink to='/users' className='navLink'>USERS</NavLink>
+                            </li>
+                        )}
+      </div>
+    </Stack>
+            
                 
             </ul>
         </nav>
     </Col>
+    <Col/>
     </Row>
      
 
