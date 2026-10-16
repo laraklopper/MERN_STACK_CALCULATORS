@@ -56,7 +56,7 @@ export default function Header({ pageHeader, currentUser }) {
                                 <NavLink to='/profile' className='navLink'>PROFILE</NavLink>
                             </li>
                         )}
-                        {currentUser.admin && (
+                        {currentUser?.admin && (
                             <li>
                                 <NavLink to='/users' className='navLink'>USERS</NavLink>
                             </li>

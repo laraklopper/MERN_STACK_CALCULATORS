@@ -40,7 +40,7 @@ export default function Login(
         localStorage.setItem('token', data.token);/* Store the authentication token received
         from the server in the localStorage under the key 'token'*/
         setLoggedIn(true);//Set the setLoggedIn State to true
-        setCurrentUser({ userId: data.userId, fullName: data.fullName, isAdmin: data.isAdmin });
+        setCurrentUser(data.user);// Store the logged-in user returned by the server (includes the 'admin' flag)
         setError(null);//Clear any previous error messages
       } else {
         setError(data.message || 'Login failed. Please try again.');

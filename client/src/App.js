@@ -2,7 +2,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import './App.css';
 import Container from 'react-bootstrap/Container';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Login from './pages/Login';
@@ -13,6 +13,9 @@ import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
 import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute'
 import Profile from './pages/Profile';
 import Calculators from './pages/Calculators';
+import Tax from './pages/Tax';
+import Converter from './pages/Converter';
+import Users from './pages/Users';
 export default function App() {
   const [userData, setUserData] = useState({
     username: '',
@@ -24,12 +27,15 @@ export default function App() {
   }); // State to hold user data
   const [currentUser, setCurrentUser] = useState(null); // State to hold the currently logged-in user
   const [users, setUsers] = useState([]); // State to hold user data
-  const [loggedIn, setLoggedIn] = useState(false); // State to track if the user is logged in
+  // State to track if the user is logged in (restored from localStorage so a page refresh keeps the session)
+  const [loggedIn, setLoggedIn] = useState(
+    () => localStorage.getItem('loggedIn') === 'true' && !!localStorage.getItem('token')
+  );
   const [error, setError] = useState(null); // State to hold error messages
-  
+
   //=======NAVIGATE=======
   // Hook to navigate between different routes
-  const navigate = useNavigate('')
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -85,6 +91,12 @@ export default function App() {
       } catch (error) {
         console.error('Error fetching current user data:', error.message);//Log an error message in the console for debugging purposes
         setError(`Error fetching current user data: ${error.message}`);// Set the error state to display the error in the UI
+        // The session is invalid (e.g. expired token), so clear it and fall back to the login routes
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('loggedIn')
+        setCurrentUser(null)
+        setLoggedIn(false)
       }
     }
      //Conditional rendering to check if the user is logged in before fetching data
@@ -103,10 +115,15 @@ export default function App() {
     localStorage.removeItem('username')
     localStorage.removeItem('loggedIn')
     setLoggedIn(false)
-    setUserData()
+    setCurrentUser(null)
+    setUsers([])
     setUserData({
       username: '',
-      password: ''
+      email: '',
+      dateOfBirth: '',
+      password: '',
+      isAdmin: false,
+      rememberMe: false,
     })
     navigate('/')
   },[navigate])
@@ -125,43 +142,67 @@ export default function App() {
           </Col>
           <Col xs={0} md id='errorCol2'/>
         </Row>
+      {/* While a logged-in user's details are still loading, show a loading message
+      instead of letting the protected routes redirect away */}
+      {loggedIn && !currentUser ? (
+        <p id='loadingMessage' aria-live='polite'>Loading...</p>
+      ) : (
       <Routes>
         {loggedIn ? (
           <>
+            {/* ---------PROTECTED USER ROUTES (Header.js nav links)--------- */}
             <Route path="/" element={
               <ProtectedUserRoute currentUser={currentUser}>
-              <Home currentUser={currentUser} users={users} logout={logout}/>  
+                <Home currentUser={currentUser} users={users} logout={logout}/>
               </ProtectedUserRoute>
-              } />
-              <Route path='/calculators' element={<ProtectedUserRoute currentUser={currentUser}>
-                <Calculators/>
-              </ProtectedUserRoute>}/>
-              <Route path='/profile'
-              element={
-                <ProtectedUserRoute>
-                  <Profile currentUser={currentUser} logout={logout}/>
-                </ProtectedUserRoute>
-              }
-              />
-              <Route path='/users' element={
-                <ProtectedAdminRoute>
-
-                </ProtectedAdminRoute>
-              }/>
+            }/>
+            <Route path='/calculators' element={
+              <ProtectedUserRoute currentUser={currentUser}>
+                <Calculators currentUser={currentUser} logout={logout}/>
+              </ProtectedUserRoute>
+            }/>
+            <Route path='/tax' element={
+              <ProtectedUserRoute currentUser={currentUser}>
+                <Tax currentUser={currentUser} logout={logout}/>
+              </ProtectedUserRoute>
+            }/>
+            <Route path='/converter' element={
+              <ProtectedUserRoute currentUser={currentUser}>
+                <Converter currentUser={currentUser} logout={logout}/>
+              </ProtectedUserRoute>
+            }/>
+            <Route path='/profile' element={
+              <ProtectedUserRoute currentUser={currentUser}>
+                <Profile currentUser={currentUser} logout={logout}/>
+              </ProtectedUserRoute>
+            }/>
+            {/* ---------PROTECTED ADMIN ROUTE--------- */}
+            <Route path='/users' element={
+              <ProtectedAdminRoute currentUser={currentUser}>
+                <Users currentUser={currentUser} users={users} logout={logout}/>
+              </ProtectedAdminRoute>
+            }/>
+            {/* A logged-in user has no need for the registration page */}
+            <Route path='/reg' element={<Navigate to='/' replace/>}/>
           </>
         ) : (
-        <>
-  <Route path="/" element={<Login 
-  setCurrentUser={setCurrentUser}
-  userData={userData} 
-  setUserData={setUserData} setLoggedIn={setLoggedIn} setError={setError}
-  />} />
-            <Route path="/reg" element={<Registration
-            setError={setError}
-             />} />
-        </>
-          
-      
+          <>
+            {/* ---------PUBLIC ROUTES (MainHeader.js nav links)--------- */}
+            <Route path="/" element={
+              <Login
+                setCurrentUser={setCurrentUser}
+                userData={userData}
+                setUserData={setUserData}
+                setLoggedIn={setLoggedIn}
+                setError={setError}
+              />
+            }/>
+            <Route path="/reg" element={<Registration setError={setError}/>}/>
+            {/* Protected pages send logged-out users back to the login page */}
+            {['/calculators', '/tax', '/converter', '/profile', '/users'].map((path) => (
+              <Route key={path} path={path} element={<Navigate to='/' replace/>}/>
+            ))}
+          </>
         )}
         {/* FALL BACK ROUTE: Response 404 PAGE NOT FOUND */}
         <Route path='*' element={<span id='pageNotFound'>
@@ -169,6 +210,7 @@ export default function App() {
         </span>
         }/>
       </Routes>
+      )}
       </Container>
     </>
   )
