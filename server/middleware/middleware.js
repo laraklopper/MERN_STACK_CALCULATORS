@@ -72,7 +72,7 @@ const checkJwtToken = (req, res, next) => {
 PASSWORD VALIDATION MIDDLEWARE
 ====================*/
 /*Middleware to ensure that the password has a minimum of 
-eight characters and at least one special character*/
+eight characters, at least one number and at least one special character*/
 const checkPassword = (req, res, next) => {
     console.log('[DEBUG: middleware.js checkPassword] Middleware triggered');// Log message in the console for debugging purposes
 
@@ -87,13 +87,14 @@ const checkPassword = (req, res, next) => {
             });
     }
     // Regular expression used to validate password strength
-    const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+    // (?=.*\d) = at least one number, (?=.*[...]) = at least one special character, {8,} = minimum 8 characters
+    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
     //Conditional rendering to test the password against the regular expression
     if (!passwordRegex.test(pwd)) {
         console.error('[ERROR: middleware.js, checkPassword] Weak password');//Log an error message in the console for debugging purposes
         return res.status(400).json(// Respond with a 400 (Bad Request) status and an error message
-            { message: 'Password must be at least 8 characters long and contain one special character.' }//Error message
+            { message: 'Password must be at least 8 characters long and contain at least one number and one special character.' }//Error message
         );
     }
     return next();// Call the next middleware or route handler

@@ -7,7 +7,7 @@ import { Eye, EyeOff, Asterisk, Bug  } from 'lucide-react';
 
 // Same rules as the server (middleware.js checkPassword / userSchema.js email)
 // so the user sees the error before the request is sent
-const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function RegistrationForm({newUserData, setNewUserData, addUser}) {
@@ -149,7 +149,7 @@ export default function RegistrationForm({newUserData, setNewUserData, addUser})
     const passwordEmpty = useMemo(
         () => !String(newUserData.password || '').trim(),[newUserData.password]
     );
-    // Checks if a non-empty password is too weak (8+ characters and 1 special character)
+    // Checks if a non-empty password is too weak (8+ characters, 1 number and 1 special character)
     const passwordWeak = useMemo(
         () => !passwordEmpty && !passwordRegex.test(newUserData.password),[newUserData.password, passwordEmpty]
     );
@@ -409,7 +409,7 @@ export default function RegistrationForm({newUserData, setNewUserData, addUser})
 </div>
         )}
 
-         <p className='reqText' id={passwordReqId}>Password must be at least 8 characters long and <br/>must contain at least 1 special character</p>
+         <p className='reqText' id={passwordReqId}>Password must be at least 8 characters long and <br/>must contain at least 1 number and 1 special character</p>
       </div>
       
       <div className="p-2 ms-auto">
