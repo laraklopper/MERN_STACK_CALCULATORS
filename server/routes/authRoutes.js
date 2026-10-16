@@ -14,11 +14,19 @@ const router = express.Router()
 //Route for userLogin
 // Send a POST request to the /auth/login route
 router.post('/login', async (req, res) => {
+  try {
     
+  } catch (error) {
+    
+  }  
 })
 //Route to register a new user
 //Send a POST request to the auth/register endpoint
 router.post('/register', async (req, res) => {
-    
+    try {
+        
+    } catch (error) {
+        
+    }
 })
 module.exports = router
