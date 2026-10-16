@@ -1,37 +1,41 @@
 import React from 'react'
-import '../css/componentsCss/Header.css'
+import '../css/componentCss/Header.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { NavLink } from 'react-router-dom';
+
 export default function Header({ pageHeader, currentUser }) {
   return (
-    <div className="header">
-    <Row>
+    <header className="header">
+    <Row id='headerRow1'>
         <Col></Col>
     </Row>
-    <Row>
-        <Col>1 of 3</Col>
-        <Col xs={5}>
-            <span>
- <h1>My App</h1>
-      <h2>{pageHeader}</h2>
+    <Row id='headerRow2'>
+        <Col id='headingCol1'/>
+        <Col xs={5} id='headingCol'>
+            <span id='headingPanal'>
+ <h1 id="appTitle">CALCULATOR APP</h1>
+      <h2 id='pageHeading'>{pageHeader}</h2>
             </span>
         </Col>
-        <Col>3 of 3</Col>
+        <Col id='headingCol2'/>
       </Row>
     <Row>
     <Col md={12}>
         <nav className="headerNav">
             <ul className="headerNavList">
-                <li>
+            {currentUser && (
+                <li className='linkItem'>
                     <NavLink className="navLink" to="/">HOME</NavLink>
-                </li>
+                </li>   
+            )}
+                
             </ul>
         </nav>
     </Col>
     </Row>
      
 
-    </div>
+    </header>
   )
 }

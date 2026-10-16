@@ -1,8 +1,8 @@
 // App.js
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import './App.css';
 import Container from 'react-bootstrap/Container';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Login from './pages/Login';
@@ -23,6 +23,9 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false); // State to track if the user is logged in
   const [error, setError] = useState(null); // State to hold error messages
   
+  //=======NAVIGATE=======
+  // Hook to navigate between different routes
+  const navigate = useNavigate('')
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -90,6 +93,19 @@ export default function App() {
       fetchUsers();
     }
   },[loggedIn, setError])
+
+  const logout = useCallback(()=> {
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    localStorage.removeItem('loggedIn')
+    setLoggedIn(false)
+    setUserData()
+    setUserData({
+      username: '',
+      password: ''
+    })
+    navigate('/')
+  },[navigate])
   return (
     <>
       <Container id='appContainer'>
@@ -108,7 +124,7 @@ export default function App() {
       <Routes>
         {loggedIn ? (
           <>
-            <Route path="/" element={<Home currentUser={currentUser} users={users} />} />
+            <Route path="/" element={<Home currentUser={currentUser} users={users} logout={logout}/>} />
           </>
         ) : (
         <>

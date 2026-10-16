@@ -1,0 +1,38 @@
+/* Footer.css
+Footer.js
+*/
+#footer{
+    width: 100%;
+    margin: 0px;
+    padding: 10px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: olivedrab;
+}
+#footerRow1,
+#footerRow2,
+#footerRow3{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+ /* ===============
+BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
+====================== */
+ #logoutBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #000;
+    border: solid 2px #323A42;
+    gap: 5px;
+ }
+  #logoutBtn:hover{
+    background-color: #323A42;
+    color: #E8F0F6;
+  }

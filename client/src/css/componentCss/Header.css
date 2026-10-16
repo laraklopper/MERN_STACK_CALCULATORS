@@ -1,4 +1,5 @@
-#mainHeader{
+#mainHeader,
+.header{
   width: 100%;
     margin: 10px 0px;
     padding: 10px 5px;
@@ -26,11 +27,15 @@
 /* LAYOUT */
 #mainHeaderRow1,
 #mainHeaderRow2,
+#headerRow1,
+#headerRow2,
 #mainHeaderNavRow{
     width: 100%;
     margin: 0px;
     padding: 0px;
 }
+#headingCol1,
+#headingCol2,
 #mainHeaderCol1,
 #mainHeaderCol3{
     margin: 0px;
@@ -42,14 +47,16 @@
     margin: 0px;
     padding: 0px;
 }
-#mainHeadingCol{
+#mainHeadingCol,
+#headingCol{
     margin: 0px;
     padding: 0px;
     display: flex;
     justify-content: center;
 }
 /* TEXT */
-#mainHeaderPanal{
+#mainHeaderPanal,
+#headingPanal{
     display: flex;
     flex-direction: column;
     align-items: center;

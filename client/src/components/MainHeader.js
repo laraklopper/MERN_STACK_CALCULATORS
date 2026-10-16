@@ -16,7 +16,7 @@ export default function MainHeader(
             <Col id="mainHeaderCol1"/>
         </Row>
         <Row id="mainHeaderRow2">
-            <Col id='mainHeadingCol1'/>
+            <Col id='headingCol1'/>
             <Col xs={6} id="mainHeaderCol">
                 <div id="mainHeaderPanal">
                     {/* Header Content */}
@@ -24,7 +24,7 @@ export default function MainHeader(
                     <h2 id="pageHeading">{pageHeading}</h2>
                 </div>
             </Col>
-            <Col id='mainHeadingCol2'/>
+            <Col id='headingCol2'/>
         </Row>
         <Row id="mainHeaderNavRow">
             <Col id="mainHeaderCol3">
