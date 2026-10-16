@@ -314,7 +314,8 @@ export default function RegistrationForm({newUserData, setNewUserData, addUser})
                 aria-pressed={showPassword}
                 aria-expanded={showPassword}
                 >
-                {showPassword ? <Eye size={16} fontWeight={700} aria-hidden='true' focusable='false' /> : <EyeOff size={16} fontWeight={700}  aria-hidden='true' focusable='false' />}
+                {showPassword ? <Eye size={16} fontWeight={700} aria-hidden='true' focusable='false' /> 
+                  : <EyeOff size={16} fontWeight={700}  aria-hidden='true' focusable='false' />}
             </Button>
             <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
         </div>
