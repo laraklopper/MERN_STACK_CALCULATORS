@@ -1,5 +1,7 @@
 import React from 'react'
-/*Page to calculate ProvisionalTax
+import '../css/pagesCss/pageSetup.css'
+/*Page to calculate ProvisionalTax,
+IncomeTax & vat
 */
 export default function Tax() {
   return (
