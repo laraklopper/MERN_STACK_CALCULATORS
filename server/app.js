@@ -11,6 +11,7 @@ const mongoose = require('mongoose'); // Import Mongoose for MongoDB interaction
 const app = express(); // Create an Express application instance
 const port = process.env.PORT || 3000; // Define the port to listen on, defaulting to 3000
 const userRoutes = require('./routes/userRoutes')
+const authRoutes = require('./routes/authRoutes')
 const connectDB = require('./config/connect'); // Import the database connection function
 
 
@@ -25,6 +26,7 @@ app.use(helmet()); // Use Helmet for security headers
 // Prefix all route modules with their base path.
 
 app.use('/users', userRoutes);//User Routes: /me , fetchUsers,
+app.use('/auth', authRoutes)//auth Routes: /login, /register
 // ================== MONGOOSE CONFIG ==================
 // Disable strict populate to prevent errors
 // when populating paths that are conditionally defined
