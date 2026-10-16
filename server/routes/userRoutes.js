@@ -9,12 +9,13 @@ deleteUser
 require('dotenv').config()
 const express = require('express');
 const router = express.Router()
-const User = require('../models/userSchema')
+const User = require('../models/userSchema');
+const { checkJwtToken } = require('../middleware/middleware');
 
 /*──────────────────────────── GET ROUTES ─────────────────────────────────────
    GET: READ — Used to fetch information from the database
 ────────────────────────────────────────────────────────────────────────────────*/
-router.get('/fetchUsers', async (req, res) => {
+router.get('/fetchUsers', checkJwtToken, async (req, res) => {
     try {
         const users = await User.find()
         .select('-password')
@@ -29,7 +30,7 @@ router.get('/fetchUsers', async (req, res) => {
 })
 //Route to fetch currentUser data
 // Send a GET request to /users/me endpoint 
-router.get('/me', async(req, res) => {
+router.get('/me', checkJwtToken,  async(req, res) => {
     try {
         const userId = req.user.userId;// The token payload signed in authRoutes.js uses `userId`
         const user = await User.findById(userId)

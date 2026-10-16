@@ -10,6 +10,7 @@ const helmet = require('helmet'); // Import the Helmet middleware for security
 const mongoose = require('mongoose'); // Import Mongoose for MongoDB interactions
 const app = express(); // Create an Express application instance
 const port = process.env.PORT || 3000; // Define the port to listen on, defaulting to 3000
+const userRoutes = require('./routes/userRoutes')
 const connectDB = require('./config/connect'); // Import the database connection function
 
 
@@ -22,6 +23,8 @@ app.use(helmet()); // Use Helmet for security headers
 
 //===============ROUTES========================
 // Prefix all route modules with their base path.
+
+app.use('/users', userRoutes);//User Routes: /me , fetchUsers,
 // ================== MONGOOSE CONFIG ==================
 // Disable strict populate to prevent errors
 // when populating paths that are conditionally defined

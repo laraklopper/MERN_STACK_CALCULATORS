@@ -68,3 +68,5 @@ const checkJwtToken = (req, res, next) => {
         });
    } 
 }
+
+module.exports = {checkJwtToken}
