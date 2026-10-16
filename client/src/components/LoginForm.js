@@ -52,9 +52,7 @@ export default function LoginForm({userData, setUserData, submitLogin}) {
     <div id="formHeadingBlock">
 <h3 id="formHeading">SIGN IN</h3>
     </div>
-    {/* -----------
-    FORM INPUT
-    -------- */}
+    {/*======FORM INPUT==============*/}
         <div id="loginFormInput">
         {/* STACK 1 */}
                 <Stack gap={3} id='loginStack1'>

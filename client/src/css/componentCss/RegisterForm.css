@@ -1,3 +1,7 @@
+/* RegistrationForm.css
+RegistrationForm.js: POST request to /auth/register
+*/
+/* REGISTRATION FORM */
 #registrationForm{
     width: 100%;
     margin: 0px;
@@ -6,7 +10,14 @@
     flex-direction: column;
     align-items: center;
     background-color: #A8AEB3;
+    border-radius: 8px;
+    border: solid #1A1A1A 2px;
+    gap: 10px;
 }
+/* =======================
+FORM LAYOUT
+=============*/
+/* HTML LAYOUT */
 #registerInput{
     width:95%;
     display:flex;
@@ -15,33 +26,31 @@
     flex-direction:column;
     background-color: #BFBFBF;
     gap: 10px;
-    
+    margin: 0px;
+    padding: 10px;
+    overflow-y: scroll;
 }
-/* GROUP 1 */
+/* GROUP 1 : USERNAME  + EMAIL + DATE OF BIRTH*/
 #regisGroup1{
     display: flex;
     flex-direction: column;
     width: 100%;
     margin: 0px;
     padding: 0px;
+    border: solid #323A42 2px;
     background: #D6D6D6;
-}
-/* GROUP 2 */
-#regisGroup2{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    background: #D6D6D6;
-}
-#regisPswdBlock{
-   display: flex;
-    margin: 0px;
-    padding: 0px;
-    align-items: flex-start;
     gap: 10px;
-    flex-direction: column;
+    border-radius: 5px;
+}
+/*BOOTSTRAP: LAYOUT*/
+/* STACK 1.2,3: https://react-bootstrap.netlify.app/docs/layout/stack */
+#regisStack1,
+#regisStack2,
+#regisStack3{
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
 }
 #regisUsernameBlock,
 #regisBirthDateBlock,
@@ -53,6 +62,42 @@
     gap: 10px;
     flex-direction: column;
 }
+/* GROUP 2: PASSWORD + ADMIN*/
+/*BOOTSTRAP: LAYOUT*/
+/* STACK 1.2,3: https://react-bootstrap.netlify.app/docs/layout/stack */
+#regisGroup2{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    background: #D6D6D6;
+    gap: 10px;
+    border-radius: 5px;
+    border: solid #323A42 2px;
+}
+/* BOOTSTRAP: LAYOUT*/
+/* STACK 4,5 :https://react-bootstrap.netlify.app/docs/layout/stack */
+#regisStack4,
+#regisStack5{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    align-items: baseline;
+}
+#regisPswdBlock{
+   display: flex;
+    margin: 0px;
+    padding: 0px;
+    align-items: flex-start;
+    gap: 10px;
+    flex-direction: column;
+}
+/* END OF INPUT */
+/* ====================
+INPUT + LABELS
+=================*/
 .regisLabel{
     font-weight:700;
     margin:0px;
@@ -62,6 +107,7 @@
     letter-spacing: 2px;
     font-size: 16px;
 }
+/* GROUP3 :  Required information message + submit button + clear form button*/
 #regisGroup3{
     width: 100%;
     margin: 0px;
@@ -69,6 +115,10 @@
     display: flex;
     justify-content: center;
 }
+/* =======================
+BOOTSTRAP: LAYOUT
+STACK : https://react-bootstrap.netlify.app/docs/layout/stack
+=============*/
 #regisActionsStack{
     width: 95%;
     margin: 5px 0px 0px 0px;
@@ -96,3 +146,4 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     color: #E8F0F6;
     background-color: #323A42;   
 }
+/* background-color: bootstrap 'light' */

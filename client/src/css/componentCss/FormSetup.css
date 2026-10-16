@@ -45,6 +45,13 @@
     font-weight: 700;
     font-size: 14px;
 }
+.inputDiv{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    align-items: center;
+    gap: 10px;
+}
 .errorText{
     display: flex;
     margin: 0px;
