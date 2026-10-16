@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Home from './pages/Home';
 import { Bug } from 'lucide-react';
+import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
+import Profile from './pages/Profile';
 export default function App() {
   const [userData, setUserData] = useState({
     username: '',
@@ -124,7 +126,20 @@ export default function App() {
       <Routes>
         {loggedIn ? (
           <>
-            <Route path="/" element={<Home currentUser={currentUser} users={users} logout={logout}/>} />
+            <Route path="/" element={
+              <ProtectedUserRoute currentUser={currentUser}>
+              <Home currentUser={currentUser} users={users} logout={logout}/>  
+              </ProtectedUserRoute>
+              } />
+              <Route path='/profile'
+              element={
+                <ProtectedUserRoute>
+                  <Profile/>
+                </ProtectedUserRoute>
+              }
+
+
+              />
           </>
         ) : (
         <>
