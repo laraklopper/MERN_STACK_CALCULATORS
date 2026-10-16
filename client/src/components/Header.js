@@ -35,7 +35,7 @@ export default function Header({ pageHeader, currentUser }) {
             )}
             {currentUser && (
                 <li className='linkItem'>
-                    <NavLink className='navLink' to="/calculator">CALCULATOR</NavLink>
+                    <NavLink className='navLink' to="/calculators">CALCULATORS</NavLink>
                 </li>
             )}
              {currentUser && (

@@ -8,9 +8,11 @@ import Col from 'react-bootstrap/Col';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Home from './pages/Home';
-import { Bug } from 'lucide-react';
+import { Bug, GlobeOff } from 'lucide-react';
 import ProtectedUserRoute from './protectedRoutes/ProtectedUserRoute';
+import ProtectedAdminRoute from './protectedRoutes/ProtectedAdminRoute'
 import Profile from './pages/Profile';
+import Calculators from './pages/Calculators';
 export default function App() {
   const [userData, setUserData] = useState({
     username: '',
@@ -131,15 +133,21 @@ export default function App() {
               <Home currentUser={currentUser} users={users} logout={logout}/>  
               </ProtectedUserRoute>
               } />
+              <Route path='/calculators' element={<ProtectedUserRoute currentUser={currentUser}>
+                <Calculators/>
+              </ProtectedUserRoute>}/>
               <Route path='/profile'
               element={
                 <ProtectedUserRoute>
-                  <Profile/>
+                  <Profile currentUser={currentUser} logout={logout}/>
                 </ProtectedUserRoute>
               }
-
-
               />
+              <Route path='/users' element={
+                <ProtectedAdminRoute>
+
+                </ProtectedAdminRoute>
+              }/>
           </>
         ) : (
         <>
@@ -155,6 +163,11 @@ export default function App() {
           
       
         )}
+        {/* FALL BACK ROUTE: Response 404 PAGE NOT FOUND */}
+        <Route path='*' element={<span id='pageNotFound'>
+<h2 id='pageNotFound-text'>404: Page Not Found </h2><GlobeOff fontSize={42} fontWeight={800} color='#470D09'/>
+        </span>
+        }/>
       </Routes>
       </Container>
     </>
