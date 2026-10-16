@@ -6,8 +6,8 @@ import Footer from '../components/Footer'
 
 export default function Profile({currentUser, logout}) {
   return (
-    <div>
-      <Header currentUser={currentUser}/>
+    <div id='pageContainer'>
+      <Header currentUser={currentUser} pageHeader={'PROFILE'}/>
       <section>
 
       </section>

@@ -23,11 +23,11 @@ export default function Header({ pageHeader, currentUser }) {
       </Row>
     <Row>
     <Col/>
-    <Col xs={6}>
+    <Col md={8}>
         <nav className="headerNav">
             <ul className="headerNavList">
             <Stack gap={3} id='navbarStack'>
-      <div className="p-2">
+      <div className="p-2" id='navbarBlock1'>
         {currentUser && (
                 <li className='linkItem'>
                     <NavLink className="navLink" to="/">HOME</NavLink>
@@ -45,7 +45,7 @@ export default function Header({ pageHeader, currentUser }) {
         )}
 
       </div>
-      <div className="p-2">
+      <div className="p-2" id='navbarBlock2'>
        {currentUser && (
         <li className='linkItem'>
             <NavLink className='navLink' to="/converter">CONVERTER</NavLink>

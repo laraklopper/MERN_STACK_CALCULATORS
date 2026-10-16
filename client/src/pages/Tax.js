@@ -7,8 +7,8 @@ IncomeTax & vat
 */
 export default function Tax({currentUser, logout}) {
   return (
-    <div>
-      <Header currentUser={currentUser}/>
+    <div id='pageContainer'>
+      <Header currentUser={currentUser} pageHeader={'TAX CALCULATORS'}/>
       <section>
         
       </section>

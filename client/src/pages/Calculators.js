@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 
 export default function Calculators({logout, currentUser}) {
   return (
-    <div>
+    <div id='pageContainer'>
         <Header pageHeader={' CALCULATOR'} currentUser={currentUser}/>
         <Footer logout={logout}/>
     </div>

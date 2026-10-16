@@ -80,7 +80,7 @@
     gap: 10px;
     list-style-type: none;
 }
-.refLink{
+.navLink{
     display: flex;
     letter-spacing: 2px;
     align-items: center;
@@ -98,18 +98,33 @@
     background-color: #E8F0F6;
     border: solid 2px #323A42;
 }
-.refLink:hover{
+.navLink:hover{
     background-color: #323A42;
     color: #E8F0F6;
     text-decoration: underline;
 }
-.refLink:active{
+.navLink.active{
      background-color: #323A42;
     color: #E8F0F6;
     text-decoration: underline;
 }
-.refLink.active{
-    background-color: #323A42;
-    color: #E8F0F6;
-    text-decoration: underline;
+.headerNavList{
+       display: flex;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+#navbarStack{
+    width: 100%;
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
+#navbarBlock1,
+#navbarBlock2{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    gap: 5px;
 }
