@@ -95,3 +95,19 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     color: #E8F0F6;
     background-color: #323A42;    
 }
+/* SHOW PASSWORD BUTTON:  */
+#showPasswordBtn{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:0px;
+    padding:0px;
+    height: 40px;
+    width: 40px;
+    color: #000000;
+    border: #323A42 solid 1.5px;
+}
+#showPasswordBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
