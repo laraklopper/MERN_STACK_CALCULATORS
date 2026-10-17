@@ -1,0 +1,66 @@
+#taxCalculatorsSec1{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: olivedrab;
+    margin: 10px 0px;
+    padding: 10px 0px;
+}
+/* LAYOUT */
+#toggleTaxClacPanal{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+}
+/* BOOTSTRAP LAYOUT */
+#toggleTaxCalcRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+#toggleTaxCalculatorStack{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+#toggleTaxCalc1Block,
+#toggleTaxCalc2Block,
+#toggleTaxCalc3Block{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#toggleTaxCalcBtn,
+#toggleProvCalcBtn,
+#toggleVatCalcBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+    color: black;
+    width: 350px;
+    letter-spacing: 0.7px;
+    height: 40px;
+}
+#toggleTaxCalcBtn:hover,
+#toggleProvCalcBtn:hover,
+#toggleVatCalcBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+#toggleTaxCalcBtn:active,
+#toggleProvCalcBtn:active,
+#toggleVatCalcBtn:active{
+    color: #E8F0F6;
+    background-color: #323A42;
+    text-decoration: underline;
+}
