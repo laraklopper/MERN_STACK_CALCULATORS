@@ -130,11 +130,11 @@ export default function App() {
   },[navigate])
   return (
     <>
-      <Container id='appContainer'>
+      <Container id='appContainer' role='main'>
        <Row id='globalErrorRow'>
           <Col xs={0} md id='errorCol1'/>
           <Col xs={12} md={6} id='globalErrorCol' aria-live='polite'>
-          {/* ---------GLOBAL EROR MA */}
+          {/* ---------GLOBAL ERROR DISPLAY------------- */}
             <div id='globalErrorBlock' role='alert' aria-atomic='true'>
               {error && 
               <p id='errorMessage'><Bug size={20} fontWeight={900} aria-hidden='true'/>{error}</p>
@@ -152,31 +152,37 @@ export default function App() {
         {loggedIn ? (
           <>
             {/* ---------PROTECTED USER ROUTES (Header.js nav links)--------- */}
+            {/* Route to / (home) page */}
             <Route path="/" element={
               <ProtectedUserRoute currentUser={currentUser}>
                 <Home currentUser={currentUser} users={users} logout={logout}/>
               </ProtectedUserRoute>
             }/>
+            {/* Route to /calculators page */}
             <Route path='/calculators' element={
               <ProtectedUserRoute currentUser={currentUser}>
                 <Calculators currentUser={currentUser} logout={logout}/>
               </ProtectedUserRoute>
             }/>
+            {/* route to /tax page */}
             <Route path='/tax' element={
               <ProtectedUserRoute currentUser={currentUser}>
                 <Tax currentUser={currentUser} logout={logout}/>
               </ProtectedUserRoute>
             }/>
+            {/* Route to /converter page */}
             <Route path='/converter' element={
               <ProtectedUserRoute currentUser={currentUser}>
                 <Converter currentUser={currentUser} logout={logout}/>
               </ProtectedUserRoute>
             }/>
+            {/* Route to /history page */}
             <Route path='/history' element={
               <ProtectedUserRoute currentUser={currentUser}>
                 <History currentUser={currentUser} logout={logout}/>
               </ProtectedUserRoute>
             }/>
+            {/* Route to /profile page */}
             <Route path='/profile' element={
               <ProtectedUserRoute currentUser={currentUser}>
                 <Profile currentUser={currentUser} logout={logout}/>
@@ -188,8 +194,6 @@ export default function App() {
                 <Users currentUser={currentUser} users={users} logout={logout}/>
               </ProtectedAdminRoute>
             }/>
-            {/* A logged-in user has no need for the registration page */}
-            <Route path='/reg' element={<Navigate to='/' replace/>}/>
           </>
         ) : (
           <>
