@@ -34,6 +34,9 @@ export default function Tax({currentUser, logout}) {
         <Col id='toggleTaxCalcCol2'/>
       </Row>
       </div>
+      <div>
+        {/* CALCULATOR DISPLAY */}
+      </div>
      
       </section>
       <Footer logout={logout}/>
