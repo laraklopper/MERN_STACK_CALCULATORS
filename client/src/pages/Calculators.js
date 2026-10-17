@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import BasicCalculator from '../components/BasicCalculator'
+import InterestCalculator from '../components/InterestCalculator';
 export default function Calculators({logout, currentUser}) {
   const [showCalculator, setShowCalculator] = useState(false)
   const [showIntCalculator, setShowIntCalculator] = useState(false)
@@ -70,8 +71,8 @@ export default function Calculators({logout, currentUser}) {
           <div id='InterstCalcPanal'>
           <Col/>
             <Col xs={12} md={8}>
-          <div>
-            InterestCalculator
+          <div id='interestCalculatorBlock'>
+            <InterestCalculator/>
           </div>
         </Col>
         <Col/>

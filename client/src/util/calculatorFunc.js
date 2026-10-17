@@ -17,3 +17,36 @@ export const evaluateExpression = (expression) => {
         return { ok: false, value: null }
     }
 }
+
+//===========================================================================
+// INTEREST CALCULATOR FORM (InterestCalculatorForm.js)
+//===========================================================================
+export const COMPOUND_FREQUENCIES = [
+    { value: "annually", label: "Annually", timesPerYear: 1 },
+    { value: "semiannually", label: "Semi-annually", timesPerYear: 2 },
+    { value: "quarterly", label: "Quarterly", timesPerYear: 4 },
+    { value: "monthly", label: "Monthly", timesPerYear: 12 },
+    { value: "daily", label: "Daily", timesPerYear: 365 },
+];
+
+/* The time period options. `value` matches the `time.unit` enum the backend
+stores, while `label` is what the user sees on the toggle buttons. */
+export const PERIOD_UNITS = [
+    { value: "years", label: "Annual", noun: "years", max: 100, placeholder: "10" },
+    { value: "months", label: "Monthly", noun: "months", max: 1200, placeholder: "18" },
+];
+
+// Helper returning the config for the currently selected time period unit
+export const periodConfig = (unit) =>
+    PERIOD_UNITS.find((p) => p.value === unit) ?? PERIOD_UNITS[0];
+
+// The interest calculator's inputs before the user has filled anything in
+export const BLANK_INTEREST_FORM = {
+    type: "compound", // "simple" | "compound"
+    principal: "",
+    rate: "",
+    time: "",
+    periodUnit: "years", // "years" (annual) | "months" (monthly)
+    compoundingFrequency: "annually",
+    monthlyContribution: "",
+};
