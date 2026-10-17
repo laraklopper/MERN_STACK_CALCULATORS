@@ -77,7 +77,6 @@ export default function BasicCalculator() {
 
     },[handleEquals])
   return (
-    
     <div id='calculatorLayout' aria-labelledby='calculator1Descrip'>
     {/* Screen-reader live region for announcing actions (hidden visually) */}
         {/* ------Screen Reader Heading----------- */}
@@ -103,7 +102,7 @@ export default function BasicCalculator() {
         <div id='result' tabIndex={-1} aria-live='polite' aria-atomic='true'>
             {/* Result display with '=' prefix */}
             <span id='calculator-output'>
-                <Equal fontWeight={800} size={24} aria-hidden='true' focusable='false'/>
+                <Equal fontWeight={800} size={24} style={{margin: '0px', padding: '0px'}} aria-hidden='true' focusable='false'/>
                 <h4 id='outputText'>{result}</h4>
             </span>
         </div>
