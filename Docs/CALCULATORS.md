@@ -9,6 +9,8 @@ The application provides users with these calculators:
 - General/basic calculator
 - CurrencyConverter
 
+<!-- Temporary API endpoint placeHolder -->
+
 | Calculator | Component | Page | API endpoint |Saves to history |
 |----------|------------|---------| ----------|----|
 | Basic/general calculator | [BasicCalculator](../client/src/components/BasicCalculator.js) | [Calculators.js](../client/src/pages/Calculators.js)|None (worked out in the browser) | No |
