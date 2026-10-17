@@ -6,19 +6,35 @@
     margin: 10px 0px;
     padding: 10px 0px;
 }
-#toggleCalculatorRow{
+/* LAYOUT */
+/* GRID */
+#toggleCalculatorsRow{
     width: 100%;
     margin: 0px;
     padding: 0px;
 
 }
+#toggleCalcCol1,
+#toggleCalcCol2{
+    margin: 0px;
+    padding: 0px;
+}
+#toggleCalcCol{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+}
+/* STACK */
 #toggleCalculatorsStack{
     width: 100%;
     margin: 0px;
     padding: 10px 0px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
+/* BUTTONS */
 #toggleBasicCalcBtn,
 #toggleIntCalcBtn{
     display: flex;

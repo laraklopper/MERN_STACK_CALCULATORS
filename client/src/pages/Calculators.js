@@ -8,7 +8,7 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-
+import BasicCalculator from '../components/BasicCalculator'
 export default function Calculators({logout, currentUser}) {
   const [showCalculator, setShowCalculator] = useState(false)
   const [showIntCalculator, setShowIntCalculator] = useState(false)
@@ -28,15 +28,24 @@ export default function Calculators({logout, currentUser}) {
     <div id='pageContainer'>
         <Header pageHeader={' CALCULATOR'} currentUser={currentUser}/>
         <section id='calculatorsSec1'>
-          <Row>
+          <Row id='toggleCalculatorsRow'>
         <Col id='toggleCalcCol1'/>
         <Col xs={6} id='toggleCalcCol'>
           <Stack gap={2} className="col-md-5 mx-auto" id='toggleCalculatorsStack'>
-            <Button variant="light" id='toggleBasicCalcBtn' onClick={toggleCalculator}>
-              SHOW CALCULATOR
+            <Button 
+              variant="light" 
+              id='toggleBasicCalcBtn' 
+              type='button'
+              onClick={toggleCalculator}>
+              {showCalculator ? 'Hide Calculator' : 'Show Calculator'}
             </Button>
-            <Button variant="light" id='toggleIntCalcBtn' onClick={toggleInterestCalculator}>
-              SHOW INTEREST CALCULATOR
+            <Button 
+              variant="light" 
+              id='toggleIntCalcBtn' 
+              type='button'
+              onClick={toggleInterestCalculator}
+              >
+              {showIntCalculator ? 'Hide Interest Calculator': 'Show Interest Calculator'}
             </Button>
           </Stack>
         </Col>
@@ -46,12 +55,26 @@ export default function Calculators({logout, currentUser}) {
       {/* TOGGLE BASIC/GENERAL CALCULATOR: BasicCalculator.js */}
         {showCalculator && (
           <div id='generalCalcPanal'>
-            
+            <Row id='basicCalcRow'>
+        <Col id='basicCalcCol1'/>
+        <Col xs={6} id='basicCalcCol'>
+          <div id='generalCalcBlock'>
+            <BasicCalculator/>
+          </div>
+        </Col>
+        <Col id='basicCalcCol2'/>
+      </Row>
           </div>
         )}
         {showIntCalculator && (
           <div id='InterstCalcPanal'>
-            
+          <Col/>
+            <Col xs={12} md={8}>
+          <div>
+            InterestCalculator
+          </div>
+        </Col>
+        <Col/>
           </div>
         )}
 
