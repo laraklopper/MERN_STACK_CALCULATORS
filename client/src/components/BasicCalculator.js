@@ -17,7 +17,7 @@ export default function BasicCalculator() {
 
     const inputRef = useRef(null)
 
-     //Function to handles button clicks from ButtonGrid
+    //Function to handles button clicks from ButtonGrid
     const handleClick = (value, label) => {
         setInput((prev) => prev + value)// Append the selected value to the current mathematical expression
         setLiveMessage(`${label} pressed`)// Announce the pressed button for screen readers
@@ -51,7 +51,7 @@ export default function BasicCalculator() {
     },[input])
 
     useEffect(() => {
-      const handleKeyDown = (event) => {
+        const handleKeyDown = (event) => {
             const activeEl = document.activeElement;
             const isOtherInput =
                 activeEl &&
@@ -70,52 +70,52 @@ export default function BasicCalculator() {
                 handleBackspace();// Remove the last character when Backspace is pressed
             }
         }
-         window.addEventListener('keydown', handleKeyDown);// Register the keyboard listener when the component mounts
+        window.addEventListener('keydown', handleKeyDown);// Register the keyboard listener when the component mounts
         /*Remove the event listener when the component unmounts
         to prevent memory leaks and duplicate listeners*/
         return () => window.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
 
     },[handleEquals])
-  return (
-    <div id='calculatorLayout' aria-labelledby='calculator1Descrip'>
-    {/* Screen-reader live region for announcing actions (hidden visually) */}
-        {/* ------Screen Reader Heading----------- */}
-        <p className='visually-hidden' id='calculator1Descrip'>BASIC CALCULATOR</p>
-         <div aria-live='assertive' aria-atomic='true' className='visually-hidden'>
-            {liveMessage}
+    return (
+        <div id='calculatorLayout' aria-labelledby='calculator1Descrip'>
+            {/* Screen-reader live region for announcing actions (hidden visually) */}
+            {/* ------Screen Reader Heading----------- */}
+            <p className='visually-hidden' id='calculator1Descrip'>BASIC CALCULATOR</p>
+            <div aria-live='assertive' aria-atomic='true' className='visually-hidden'>
+                {liveMessage}
+            </div>
+            <div id='basicCalculatorInput'>
+                <Stack gap={3} id='calculatorInputStack'>
+                    <div className="p-2" id='calculatorInputBlock'>
+                        <input
+                            type='text'
+                            className='input'
+                            id='calculatorInput'
+                            value={input}
+                            tabIndex={0}
+                            ref={inputRef}
+                            readOnly
+                            aria-label='currenct expression'
+                            aria-readonly='true'
+                        />
+                        {/* ==========CALCUTLATOR 1: RESULT DISPLAY======== */}
+                        <div id='result' tabIndex={-1} aria-live='polite' aria-atomic='true'>
+                            {/* Result display with '=' prefix */}
+                            <span id='calculator-output'>
+                                <Equal fontWeight={800} size={24} style={{margin: '0px', padding: '0px'}} aria-hidden='true' focusable='false'/>
+                                <h4 id='outputText'>{result}</h4>
+                            </span>
+                        </div>
+                    </div>
+                    <div className="p-2" id='calculatorBtnBlock'>
+                        <ButtonGrid
+                            handleBackspace={handleBackspace}
+                            handleClick={handleClick}
+                            handleEquals={handleEquals}
+                            handleClear={handleClear}/>
+                    </div>
+                </Stack>
+            </div>
         </div>
-        <div id='basicCalculatorInput'>
-<Stack gap={3} id='calculatorInputStack'>
-      <div className="p-2" id='calculatorInputBlock'>
-        <input
-            type='text'
-            className='input'
-            id='calculatorInput'
-            value={input}
-            tabIndex={0}
-            ref={inputRef}
-            readOnly
-            aria-label='currenct expression'
-            aria-readonly='true'
-        />
-         {/* ==========CALCUTLATOR 1: RESULT DISPLAY======== */}
-        <div id='result' tabIndex={-1} aria-live='polite' aria-atomic='true'>
-            {/* Result display with '=' prefix */}
-            <span id='calculator-output'>
-                <Equal fontWeight={800} size={24} style={{margin: '0px', padding: '0px'}} aria-hidden='true' focusable='false'/>
-                <h4 id='outputText'>{result}</h4>
-            </span>
-        </div>
-      </div>
-      <div className="p-2" id='calculatorBtnBlock'>
-        <ButtonGrid
-        handleBackspace={handleBackspace}
-        handleClick={handleClick}
-        handleEquals={handleEquals}
-        handleClear={handleClear}/>
-      </div>
-    </Stack>
-        </div>
-    </div>
-  )
+    )
 }
