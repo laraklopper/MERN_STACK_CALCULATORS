@@ -1,16 +1,21 @@
+// BasicCalculator.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/BasicCalculator.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 // import Button from 'react-bootstrap/Button';
 // IMPORT ICONS FROM LUCIDE-REACT
 import { Equal } from 'lucide-react';
-import {evaluateExpression, isCalculatorKey} from '../util/calculatorFunc'
+// IMPORT UTILITY FUNCTIONS
+import {evaluateExpression, isCalculatorKey} from '../util/calculatorFunc';
+// IMPORT CUSTOM COMPONENTS
 import ButtonGrid from './ButtonGrid';
 
 
 //Basic Calculator function component
-export default function BasicCalculator() {
+export default function BasicCalculator() {//Export default BasicCalculator.js component
     // ========STATE VARIABLES==============
     const [liveMessage, setLiveMessage] = useState('')
     const [result, setResult] = useState('')
@@ -80,6 +85,8 @@ export default function BasicCalculator() {
         return () => window.removeEventListener('keydown', handleKeyDown); // Cleanup on unmount
 
     },[handleEquals])
+
+    //============JSX RENDERING==================
     return (
         <div id='calculatorLayout' aria-labelledby='calculator1Descrip'>
             {/* Screen-reader live region for announcing actions (hidden visually) */}
@@ -89,6 +96,7 @@ export default function BasicCalculator() {
                 {liveMessage}
             </div>
             <div id='basicCalculatorInput'>
+            {/* CALCULATOR STACK */}
                 <Stack gap={3} id='calculatorInputStack'>
                     <div className="p-2" id='calculatorInputBlock'>
                         <input

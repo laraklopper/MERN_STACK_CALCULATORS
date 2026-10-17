@@ -1,10 +1,13 @@
 // Footer.js
 import React from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/Footer.css'
+// IMPORT ICONS FROM LUCIDE-REACT
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT ICONS FROM LUCIDE-REACT
 import { LogOut } from 'lucide-react';
 
 export default function Footer({logout}) {
