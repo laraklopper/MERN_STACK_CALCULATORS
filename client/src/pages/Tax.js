@@ -7,6 +7,9 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import IncomeTaxClaculator from '../components/IncomeTaxClaculator';
+import ProvisionalTaxCalculator from '../components/ProvisionalTaxCalculator';
+import VatCalculator from '../components/VatCalculator';
 /*Page to calculate ProvisionalTax,
 IncomeTax & vat
 */
@@ -47,10 +50,29 @@ export default function Tax({currentUser, logout}) {
           <Stack gap={3} id='toggleTaxCalculatorStack'>
       <div className="p-2" id='toggleTaxCalc1Block'>
         <Button 
-          variant='light' id='toggleTaxCalcBtn' onClick={toggleTaxCalculator}>{showTaxCalc ? 'Hide (INCOME) TAX CALCULATOR':'SHOW (INCOME) TAX CALCULATOR'}</Button>
+          variant='light' 
+          id='toggleTaxCalcBtn' 
+          type='button'
+          onClick={toggleTaxCalculator}
+          // ARIA ATTRIBUTES:
+          aria-label={showTaxCalc ? 'Hide (INCOME) TAX CALCULATOR':'SHOW (INCOME) TAX CALCULATOR'}
+          aria-pressed={showTaxCalc}
+          aria-expanded={showTaxCalc}
+          aria-controls='taxCalcPanal'
+          >
+          {showTaxCalc ? 'Hide (INCOME) TAX CALCULATOR':'SHOW (INCOME) TAX CALCULATOR'}</Button>
       </div>
       <div className="p-2" id='toggleTaxCalc2Block'>
-        <Button variant='light' id='toggleProvCalcBtn' onClick={toggleProvTaxCalculator}>{showProvTaxCalc ? 'HIDE PROVISIONAL TAX CALCULATOR':'SHOW PROVISIONAL TAX CALCULATOR'}</Button>
+        <Button 
+          variant='light' 
+          id='toggleProvCalcBtn' 
+          onClick={toggleProvTaxCalculator}
+          // ARIA ATTTRIBUTES:
+          aria-label={showProvTaxCalc ? 'HIDE PROVISIONAL TAX CALCULATOR':'SHOW PROVISIONAL TAX CALCULATOR'}
+          aria-pressed={showProvTaxCalc}
+          aria-expanded={showProvTaxCalc}
+          aria-controls='provTaxCalcPanal'
+          >{showProvTaxCalc ? 'HIDE PROVISIONAL TAX CALCULATOR':'SHOW PROVISIONAL TAX CALCULATOR'}</Button>
       </div>
       <div className="p-2" id='toggleTaxCalc3Block'>
         <Button 
@@ -59,6 +81,10 @@ export default function Tax({currentUser, logout}) {
           type='button'
           onClick={toggleVatCalculator}
           // ARIA ATTTRIBUTES
+          aria-label={showVatCalculator ? 'Hide Vat Calculator': 'Show VAT calculator'}
+          aria-pressed={showVatCalculator}
+          aria-expanded={showVatCalculator}
+          aria-controls='vatCalculatorPanal'
           >{showVatCalculator ? 'Hide Vat Calculator': 'Show VAT calculator'}</Button>
       </div>
     </Stack>
@@ -67,10 +93,46 @@ export default function Tax({currentUser, logout}) {
         <Col id='toggleTaxCalcCol2'/>
       </Row>
       </div>
-      <div>
-        {/* CALCULATOR DISPLAY */}
+      {/* TAX CALCULATORS DISPLAY */}
+      <div id='taxCalculatorDisplay'>
+        {/* TOGGLE (INCOME) TAX CALCULATOR */}
+        {showTaxCalc && (
+          <div id='taxCalcPanal'>
+            <Row id='incTaxCalcRow'>
+              <Col id='incTaxCalcRow'>
+                <div id='incomeTaxCalcBlock'>
+                  <IncomeTaxClaculator/>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        )}
+        {/* TOGGLE PROVISIONAL TAX CALCULATOR */}
+        {showProvTaxCalc &&(
+          <div id='provTaxCalcPanal'>
+            <Row id='provTaxCalcRow'>
+              <Col id='provTaxCalcCol'>
+                <div id='provTaxCalcBlock'>
+                  <ProvisionalTaxCalculator/>
+                </div>
+              </Col>
+            </Row>
+          </div>
+
+        )}
+        {/* TOGGLE VAT CALCULATOR */}
+        {showVatCalculator && (
+          <div id='vatCalculatorPanal'>
+            <Row id='vatCalculatorRow'>
+              <Col id='vatCalculatorCol'>
+                <div id='vatCalculatorBlock'>
+                  <VatCalculator/>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        )}
       </div>
-     
       </section>
       <Footer logout={logout}/>
     </div>
