@@ -9,8 +9,9 @@ import {evaluateExpression, isCalculatorKey} from '../util/calculatorFunc'
 import ButtonGrid from './ButtonGrid';
 
 
-
+//Basic Calculator function component
 export default function BasicCalculator() {
+    // ========STATE VARIABLES==============
     const [liveMessage, setLiveMessage] = useState('')
     const [result, setResult] = useState('')
     const [input, setInput] = useState('')
@@ -35,6 +36,8 @@ export default function BasicCalculator() {
         setLiveMessage('Backspace pressed');     // Announce the action for screen readers
     };
 
+    //--------CALCULATOR  LOGIC------------
+    // Memoized function that evaluates the mathematical expression
     const handleEquals = useCallback(() => {
         const { ok, value } = evaluateExpression(input)// Evaluate the mathematical expression using math.js
 
@@ -50,6 +53,7 @@ export default function BasicCalculator() {
 
     },[input])
 
+    //Use Effect hook
     useEffect(() => {
         const handleKeyDown = (event) => {
             const activeEl = document.activeElement;
