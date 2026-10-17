@@ -6,9 +6,42 @@
     margin: 10px 0px;
     padding: 10px 0px;
 }
+#toggleCalculatorRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+
+}
 #toggleCalculatorsStack{
     width: 100%;
     margin: 0px;
     padding: 10px 0px;
     display: flex;
+    justify-content: center;
+}
+#toggleBasicCalcBtn,
+#toggleIntCalcBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    height: 40px;
+    width: 300px;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    color: black;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+}
+#toggleBasicCalcBtn:hover,
+#toggleIntCalcBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+#toggleBasicCalcBtn:active,
+#toggleIntCalcBtn:active{
+    background-color: #323A42;
+    color: #E8F0F6;
+    text-decoration: underline;
 }
