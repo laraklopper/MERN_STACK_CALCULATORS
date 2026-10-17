@@ -8,79 +8,79 @@ import { NavLink } from 'react-router-dom';
 export default function Header({ pageHeader, currentUser }) {
   return (
     <header className="header">
-    <Row id='headerRow1'>
+      <Row id='headerRow1'>
         <Col></Col>
-    </Row>
-    <Row id='headerRow2'>
+      </Row>
+      <Row id='headerRow2'>
         <Col id='headingCol1'/>
         <Col xs={5} id='headingCol'>
-            <span id='headingPanal'>
- <h1 id="appTitle">CALCULATOR APP</h1>
-      <h2 id='pageHeading'>{pageHeader}</h2>
-            </span>
+          <span id='headingPanal'>
+            <h1 id="appTitle">CALCULATOR APP</h1>
+            <h2 id='pageHeading'>{pageHeader}</h2>
+          </span>
         </Col>
         <Col id='headingCol2'/>
       </Row>
-    <Row>
-    <Col/>
-    <Col md={8}>
-        <nav className="headerNav">
+      <Row>
+        <Col/>
+        <Col md={8}>
+          <nav className="headerNav">
             <ul className="headerNavList">
-            <Stack gap={3} id='navbarStack'>
-      <div className="p-2" id='navbarBlock1'>
-        {currentUser && (
-                <li className='linkItem'>
-                    <NavLink className="navLink" to="/">HOME</NavLink>
-                </li>   
-            )}
-            {currentUser && (
-                <li className='linkItem'>
-                    <NavLink className='navLink' to="/calculators">CALCULATORS</NavLink>
-                </li>
-            )}
-             {currentUser && (
-            <li className='linkItem'>
-                <NavLink className={'navLink'} to="/tax">TAX CALCULATORS</NavLink>
-            </li>
-        )}
-
-      </div>
-      <div className="p-2" id='navbarBlock2'>
-       {currentUser && (
-        <li className='linkItem'>
-            <NavLink className='navLink' to="/converter">CONVERTER</NavLink>
-        </li>
-       )}
-       {currentUser && (
-        <li className='linkItem'>
-            <NavLink to={'/history'} className="navLink">CALC</NavLink>
-
-        </li>
-       )}
-        {currentUser && (
-                            <li className='linkItem'>
-                                <NavLink to='/profile' className='navLink'>PROFILE</NavLink>
-                            </li>
-                        )}</div>
-                        {currentUser?.admin && (
-                                
-      <div className="p-2" id='navbarBlock3'>
- <li>
-                                <NavLink to='/users' className='navLink'>USERS</NavLink>
-                            </li>
-      </div>
-                        )}
- 
-    </Stack>
-            
-                
+              <Stack gap={3} id='navbarStack'>
+                <div className="p-2" id='navbarBlock1'>
+                    {/* Link to Home Page */}
+                  {currentUser && (
+                    <li className='linkItem'>
+                      <NavLink className="navLink" to="/">HOME</NavLink>
+                    </li>
+                  )}
+                  {/* Link to calculators page */}
+                  {currentUser && (
+                    <li className='linkItem'>
+                      <NavLink className='navLink' to="/calculators">CALCULATORS</NavLink>
+                    </li>
+                  )}
+                  {/* Link to Tax Calculators page */}
+                  {currentUser && (
+                    <li className='linkItem'>
+                      <NavLink className={'navLink'} to="/tax">TAX CALCULATORS</NavLink>
+                    </li>
+                  )}
+                </div>
+                <div className="p-2" id='navbarBlock2'>
+                {/* Link to Converter Page */}
+                  {currentUser && (
+                    <li className='linkItem'>
+                      <NavLink className='navLink' to="/converter">CONVERTER</NavLink>
+                    </li>
+                  )}
+                  {/* Link to Calculation History page */}
+                  {currentUser && (
+                    <li className='linkItem'>
+                      <NavLink to={'/history'} className="navLink">CALCULATION HISTORY</NavLink>
+                    </li>
+                  )}
+                  {/* Link to Profile page */}
+                  {currentUser && (
+                    <li className='linkItem'>
+                      <NavLink to='/profile' className='navLink'>PROFILE</NavLink>
+                    </li>
+                  )}
+                </div>
+                {/* Link to Users page (adminOnly) */}
+                {currentUser?.admin && (
+                  <div className="p-2" id='navbarBlock3'>
+                    <li className='linkItem'>
+                      <NavLink to='/users' className='navLink'>USERS</NavLink>
+                    </li>
+                  </div>
+                )}
+              </Stack>
             </ul>
-        </nav>
-    </Col>
-    <Col/>
-    </Row>
-     
-
+          </nav>
+        </Col>
+        <Col/>
+      </Row>
     </header>
   )
 }
