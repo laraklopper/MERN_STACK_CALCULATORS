@@ -51,6 +51,12 @@ export default function Header({ pageHeader, currentUser }) {
             <NavLink className='navLink' to="/converter">CONVERTER</NavLink>
         </li>
        )}
+       {currentUser && (
+        <li className='linkItem'>
+            <NavLink to={'/history'} className="navLink">CALC</NavLink>
+
+        </li>
+       )}
         {currentUser && (
                             <li className='linkItem'>
                                 <NavLink to='/profile' className='navLink'>PROFILE</NavLink>
