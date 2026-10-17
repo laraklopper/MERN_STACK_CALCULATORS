@@ -36,8 +36,6 @@ All Tax and Interest calculations are calculated in terms of South African Tax a
 ## 6. CALCULATION HISTORY
 ## 7. REFERENCES
 
-- https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/
-- https://www.sars.gov.za/types-of-tax/provisional-tax/
-- https://www.jse.co.za/learn-how-to-invest/what-interest
+- https://www.npmjs.com/package/mathjs
 - https://frankfurter.dev/
 - https://mathjs.org/docs/expressions/parsing.html
