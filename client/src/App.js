@@ -16,6 +16,7 @@ import Calculators from './pages/Calculators';
 import Tax from './pages/Tax';
 import Converter from './pages/Converter';
 import Users from './pages/Users';
+import History from './pages/History';
 export default function App() {
   const [userData, setUserData] = useState({
     username: '',
@@ -171,6 +172,11 @@ export default function App() {
                 <Converter currentUser={currentUser} logout={logout}/>
               </ProtectedUserRoute>
             }/>
+            <Route path='/history' element={
+              <ProtectedUserRoute currentUser={currentUser}>
+                <History currentUser={currentUser} logout={logout}/>
+              </ProtectedUserRoute>
+            }/>
             <Route path='/profile' element={
               <ProtectedUserRoute currentUser={currentUser}>
                 <Profile currentUser={currentUser} logout={logout}/>
@@ -199,7 +205,7 @@ export default function App() {
             }/>
             <Route path="/reg" element={<Registration setError={setError}/>}/>
             {/* Protected pages send logged-out users back to the login page */}
-            {['/calculators', '/tax', '/converter', '/profile', '/users'].map((path) => (
+            {['/calculators', '/tax', '/converter', '/history', '/profile', '/users'].map((path) => (
               <Route key={path} path={path} element={<Navigate to='/' replace/>}/>
             ))}
           </>
