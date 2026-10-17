@@ -55,13 +55,16 @@ export default function Header({ pageHeader, currentUser }) {
                             <li className='linkItem'>
                                 <NavLink to='/profile' className='navLink'>PROFILE</NavLink>
                             </li>
-                        )}
+                        )}</div>
                         {currentUser?.admin && (
-                            <li>
+                                
+      <div className="p-2" id='navbarBlock3'>
+ <li>
                                 <NavLink to='/users' className='navLink'>USERS</NavLink>
                             </li>
-                        )}
       </div>
+                        )}
+ 
     </Stack>
             
                 
