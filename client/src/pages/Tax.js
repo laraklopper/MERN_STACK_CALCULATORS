@@ -94,7 +94,6 @@ export default function Tax({currentUser, logout}) {
           >{showVatCalculator ? 'Hide Vat Calculator': 'Show VAT calculator'}</Button>
       </div>
     </Stack>
-
         </Col>
         <Col id='toggleTaxCalcCol2'/>
       </Row>
