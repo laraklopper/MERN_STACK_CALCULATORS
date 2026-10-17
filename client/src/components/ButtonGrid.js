@@ -160,7 +160,7 @@ export default function ButtonGrid({handleClick, handleEquals, handleClear, hand
                     {/* Button: 3 */}
                     <Button
                         variant='secondary'
-                        type='button' // Declares it as a Clicakble button (prevents form submission)
+                        type='button' // Declares it as a Clickable button (prevents form submission)
                         size='sm'
                         id='Btn3'
                         className='numButton' // Shared styling class
@@ -172,7 +172,7 @@ export default function ButtonGrid({handleClick, handleEquals, handleClear, hand
                     </Button>
                     {/* Button: Minus */}
                     <Button
-                        type='button' // Declares it as a Clicakble button (prevents form submission)
+                        type='button' // Declares it as a Clickable button (prevents form submission)
                         className='operationBtn' // Shared styling class
                         id='minusBtn'
                         onClick={() => handleClick('-', 'Minus')}// Appends minus operator to input with a live message
@@ -189,7 +189,7 @@ export default function ButtonGrid({handleClick, handleEquals, handleClear, hand
                     {/* Button: 0 */}
                     <Button
                         variant='secondary'
-                        type='button' // Declares it as a Clicakble button (prevents form submission)
+                        type='button' // Declares it as a Clickable button (prevents form submission)
                         className='numButton' // Shared styling class
                         onClick={() => handleClick('0', 'Zero')} // Appends '0' to the input expression
                         id='Btn0'
@@ -203,11 +203,11 @@ export default function ButtonGrid({handleClick, handleEquals, handleClear, hand
                     {/* Button: Decimal Point */}
                     <Button
                         variant='secondary'
-                        type='button' // Declares it as a Clicakble button (prevents form submission)
+                        type='button' // Declares it as a Clickable button (prevents form submission)
                         aria-label='Decimal Point' // Helps users with screen readers understand it's a decimal
                         className='operationBtn' // Shared styling class
                         onClick={() => handleClick('.', 'Decimal Point')} // Adds a decimal point to the input
-                        id='divideBtn'
+                        id='decimalBtn'
                         role='button'
                     >
                         .
@@ -215,7 +215,7 @@ export default function ButtonGrid({handleClick, handleEquals, handleClear, hand
                     {/* Button: Equals */}
                     <Button
                         variant='secondary'
-                        type='button' // Declares it as a Clicakble button (prevents form submission)
+                        type='button' // Declares it as a Clickable button (prevents form submission)
                         className='operationBtn' // Shared styling class
                         onClick={handleEquals} // Triggers the calculation logic
                         id='equalsBtn'
@@ -229,7 +229,7 @@ export default function ButtonGrid({handleClick, handleEquals, handleClear, hand
                     {/* Button: Plus */}
                     <Button
                         variant='secondary'
-                        type='button' // Declares it as a Clicakble button (prevents form submission)
+                        type='button' // Declares it as a Clickable button (prevents form submission)
                         className='operationBtn' // Shared styling class
                         onClick={() => handleClick('+', 'Plus')} // Appends '+' to the expression
                         id='plusBtn'

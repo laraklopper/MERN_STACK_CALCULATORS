@@ -95,10 +95,10 @@ export default function BasicCalculator() {
                             tabIndex={0}
                             ref={inputRef}
                             readOnly
-                            aria-label='currenct expression'
+                            aria-label='current expression'
                             aria-readonly='true'
                         />
-                        {/* ==========CALCUTLATOR 1: RESULT DISPLAY======== */}
+                        {/* ==========CALCULATOR 1: RESULT DISPLAY======== */}
                         <div id='result' tabIndex={-1} aria-live='polite' aria-atomic='true'>
                             {/* Result display with '=' prefix */}
                             <span id='calculator-output'>

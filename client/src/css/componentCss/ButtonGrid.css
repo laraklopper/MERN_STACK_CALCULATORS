@@ -40,7 +40,7 @@ https://react-bootstrap.netlify.app/docs/components/buttons
 /*------------- 
 OPERATIONS BUTTONS 
 ---------------*/
-#divideBtn, #multiplyBtn, #plusBtn,
+#divideBtn, #decimalBtn, #multiplyBtn, #plusBtn,
 #minusBtn, #equalsBtn, #backspaceBtn {
     width: 40px;
     height: 40px;
@@ -55,6 +55,7 @@ OPERATIONS BUTTONS
     border: #323A42 solid;
 }
 #divideBtn:hover,
+#decimalBtn:hover,
 #multiplyBtn:hover,
 #plusBtn:hover,
 #minusBtn:hover,
