@@ -1,6 +1,6 @@
-# CALCULATORS
+# APPLICATION CALCULATORS
 
-## 1. OVERVIEW
+# OVERVIEW
 
 The application provides users with these calculators:
 - TaxCalculator
@@ -19,3 +19,25 @@ The application provides users with these calculators:
 | Provisional tax (IRP6) | [ProvisionalTaxCalculator.js](../client/src/components/ProvisionalTaxCalculator.js) | [Tax.js](../client/src/pages/Tax.js) | `POST /api/provisional/calculate` | Yes |
 | Currency converter | [CurrencyConverterForm.js](../client/src/components/CurrencyConverterForm.js) | [Converter.js](../client/src/pages/Converter.js) | `GET /api/convert` | Yes |
 
+All Tax and Interest calculations are calculated in terms of South African Tax and Interest. 
+
+## TABLE OF CONTENTS
+1. [BASIC/GENERAL CALCULATOR](#1-basicgeneral-calculator)
+2. [INTEREST CALCULATOR](#2-interest-calculator)
+3. [TAX CALCULATOR](#3-income-tax-calculator)
+4. [PROVISIONAL TAX CALCULATOR](#4-provisional-tax-calculator)
+5. [CURRENCY CONVERTER](#5-currency-converter)
+
+## 1. BASIC/GENERAL CALCULATOR 
+## 2. INTEREST CALCULATOR
+## 3. (INCOME) TAX CALCULATOR
+## 4. PROVISIONAL TAX CALCULATOR
+## 5. CURRENCY CONVERTER
+## 6. CALCULATION HISTORY
+## 7. REFERENCES
+
+- https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/
+- https://www.sars.gov.za/types-of-tax/provisional-tax/
+- https://www.jse.co.za/learn-how-to-invest/what-interest
+- https://frankfurter.dev/
+- https://mathjs.org/docs/expressions/parsing.html
