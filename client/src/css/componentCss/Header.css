@@ -65,6 +65,11 @@
     margin: 5px 0px 10px 0px;
 }
 /* NAVIGATION BAR */
+#headerNavRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
 #mainHeaderNavStack{
     width: 100%;
     margin: 0px;
@@ -122,7 +127,8 @@
     justify-content: center;
 }
 #navbarBlock1,
-#navbarBlock2{
+#navbarBlock2,
+#navbarBlock3{
     display: flex;
     justify-content: center;
     margin: 0px;

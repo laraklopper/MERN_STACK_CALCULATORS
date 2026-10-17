@@ -8,9 +8,11 @@ import { NavLink } from 'react-router-dom';
 export default function Header({ pageHeader, currentUser }) {
   return (
     <header className="header">
+    {/* Header Row1 */}
       <Row id='headerRow1'>
         <Col></Col>
       </Row>
+      {/* Header Row 2 */}
       <Row id='headerRow2'>
         <Col id='headingCol1'/>
         <Col xs={5} id='headingCol'>
@@ -21,7 +23,8 @@ export default function Header({ pageHeader, currentUser }) {
         </Col>
         <Col id='headingCol2'/>
       </Row>
-      <Row>
+      {/* Header Row 3 */}
+      <Row id='headerNavRow'>
         <Col/>
         <Col md={8}>
           <nav className="headerNav">
