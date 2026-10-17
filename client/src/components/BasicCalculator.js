@@ -1,7 +1,12 @@
 import React, { useCallback, useRef, useState } from 'react'
 import '../css/componentCss/BasicCalculator.css'
-// import { evaluate } from 'mathjs';
-import '../css/componentCss/BasicCalculator.css'
+// IMPORT BOOTSTRAP COMPONENTS
+// import Stack from 'react-bootstrap/Stack';
+// import Button from 'react-bootstrap/Button';
+// IMPORT ICONS FROM LUCIDE-REACT
+import { Equal } from 'lucide-react';
+
+
 
 
 export default function BasicCalculator() {
