@@ -1,10 +1,15 @@
+//Tax.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/pageSetup.css'
 import '../css/pagesCss/TaxCalculators.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT CUSTOM COMPONENTS
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import IncomeTaxClaculator from '../components/IncomeTaxClaculator';
@@ -13,6 +18,7 @@ import VatCalculator from '../components/VatCalculator';
 /*Page to calculate ProvisionalTax,
 IncomeTax & vat
 */
+// =========MAIN TAX COMPONENT=============
 export default function Tax({currentUser, logout}) {
   const [showTaxCalc , setShowTaxCalc] = useState(false)
   const [showProvTaxCalc, setShowProvTaxCalc] = useState(false)
