@@ -69,13 +69,16 @@ export default function Calculators({logout, currentUser}) {
         )}
         {showIntCalculator && (
           <div id='InterstCalcPanal'>
-          <Col/>
+          <Row id='interestCalcRow'>
+              <Col />
             <Col xs={12} md={8}>
           <div id='interestCalculatorBlock'>
             <InterestCalculator/>
           </div>
         </Col>
         <Col/>
+          </Row>
+        
           </div>
         )}
 

@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import '../css/componentCss/InterestCalculator.css'
+import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import {  AlertCircle, Asterisk } from "lucide-react";
@@ -43,13 +45,13 @@ export default function InterestCalculator() {
   };
 
   return (
-    <div>
-      <form>
-        <div id='formHeadingBlock'>
-          <h3 id='calculatorHeading'>INTEREST CALCULATOR</h3>
+  
+      <form id='interestCalculator'>
+        <div id='intCalculatorHeadBlock'>
+          <h3 id='interestCalculatorHeading'>INTEREST CALCULATOR</h3>
           <span className='formTextSpan'>
              <p className="formText">
-            Calculate how much interest you'll earn or owe over time, using
+            Calculate how much interest you'll earn or owe over time, <br/>using
             simple or compound interest.
         </p>
           </span>
@@ -61,20 +63,24 @@ export default function InterestCalculator() {
         </div>
       )}
       <div id='interestCalculatorDetails'>
-        <div id='fieldGroup1'>
+      {/* =====GROUP 1============ */}
+        <div id='interestCalculatorGroup1'>
         {/* STACK 1 */}
            <Stack gap={3} id='interestFormStack1'>
-      <div className="p-2">
-        <label className="field-label">Interest type:</label><small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+      <div className="p-2" id='interestTypeSelectBlock'>
+        <span className='calculatorLabelSpan'>
+                <label className="calculatorLabel">Interest type:</label>
+                <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+        </span>
                   {/* Interest Type Buttons */}
-            <div className='button-div'>
+            <div id='interestTypeBtnBlock'>
                   {["simple", "compound"].map((t) => (
                     <Button
                     variant="light"
                       key={t}
                       type="button"
                       onClick={() => updateField("type", t)}
-                      id='interest-type-selectbtn'
+                      id='interestTypeSelectBtn'
                       className={`toggle-button${
                         form.type === t ? " toggle-button--active" : ""
                       }`}
@@ -86,6 +92,21 @@ export default function InterestCalculator() {
                   ))}
             </div>
       </div>
+      <div className="p-2" id='interestTypeInfo'>
+      <span id='interestDescriptionSpan' aria-describedby='interestTypeInfoList'>
+      <p className='visually-hidden' id='interestTypeInfoList'>Difference Between simple and compound interest</p>
+      <p className='interestTypeItem'>Simple interest is worked out on the principal, or original, amount of a loan.</p>
+            <p className='interestTypeItem'>Compound interest is calculated on the principal (original) amount and also on the added interest of previous periods.</p>
+
+      </span>
+
+          </div>
+    </Stack>
+
+        </div>
+        <div id='interestCalculatorGroup2'>
+          <Stack gap={3}>
+      <div className="p-2">First item</div>
       <div className="p-2">Second item</div>
       <div className="p-2">Third item</div>
     </Stack>
@@ -94,6 +115,6 @@ export default function InterestCalculator() {
 
       </div>
       </form>
-    </div>
+    
   )
 }
