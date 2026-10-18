@@ -69,6 +69,11 @@ export default function InterestCalculator({currentUser, calculateInterest, save
      e.preventDefault()
      
   },[])
+  
+    /* Bootstrap variant for the save button, so its colour reports the outcome
+  of the save rather than staying neutral once the button is disabled. */
+  const saveButtonVariant =
+    saveStatus === "saved" ? "success" : saveStatus === "error" ? "danger" : "light";
   /* Heading for the breakdown table's first column. Driven by the result, not
   the form, so the table always describes the figures currently on screen. */
   const breakdownHeading = result?.periodUnit === "months" ? "Month" : "Year";
@@ -386,11 +391,11 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                 onClick={handleSave}
                 /* Also disabled without a complete name: the record is filed
                 under it, so there is nothing to save it against. */
-                disabled={saveStatus === "saving" || saveStatus === "saved" || !canSaveFullName}
+                disabled={saveStatus === "saving" || saveStatus === "saved" }
                 className="save-link"
                 id='save-int-calcBtn'
                 // ARIA ATTRIBUTES:
-                aria-disabled={saveStatus === "saving" || saveStatus === "saved" || !canSaveFullName}
+                aria-disabled={saveStatus === "saving" || saveStatus === "saved" }
               >
                 {saveStatus === "saving"
                   ? "Saving..."
@@ -404,9 +409,9 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                 </span>
               )}
               {/* Explains an unusable save button before it is pressed */}
-              {!canSaveFullName && saveStatus !== "error" && (
+              {  saveStatus !== "error" && (
                 <span className="save-error">
-                  Your name could not be read from your profile, so this
+                  Your username name could not be read from your profile, so this
                   calculation cannot be saved.
                 </span>
               )}
