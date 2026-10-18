@@ -5,7 +5,7 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import {  AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from "lucide-react";
 import { BLANK_INTEREST_FORM, PERIOD_UNITS, periodConfig, COMPOUND_FREQUENCIES } from '../util/calculatorFunc';
-
+import { formatCurrency } from '../util/currencyFunc';
 // InterestCalculator
 // Simple & compound interest calculator, with optional recurring monthly
 // contributions. Posts to /interest/calculate and renders the result
