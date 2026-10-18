@@ -1,6 +1,14 @@
+// userSchema.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 const mongoose = require('mongoose');
+
+// ==============REGULAR EXPRESSIONS==================
+// Basic email validation pattern.
+/*It checks that the email contains text before "@", text 
+after "@", and a domain extension such as ".com" or ".co.za".*/ 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// ================= USER SCHEMA =================
 const userSchema = new mongoose.Schema({
      // Field for username(required for login)
     username: {
