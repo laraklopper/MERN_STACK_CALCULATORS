@@ -13,6 +13,7 @@ import InterestCalculator from '../components/InterestCalculator';
 export default function Calculators({logout, currentUser, setError}) {
   const [showCalculator, setShowCalculator] = useState(false)
   const [showIntCalculator, setShowIntCalculator] = useState(false)
+  const [interestData, setInterestData]
 
   //  Function to toggle general/number calculator
   const toggleCalculator = useCallback(() => {
@@ -26,7 +27,7 @@ export default function Calculators({logout, currentUser, setError}) {
   },[])
 
   // Function to calculate(simple or compound) interest
-  const calculateInterest = useCallback(async (params) => {
+  const calculateInterest = useCallback(async () => {
     try {
       const token = localStorage.getItem('token')
       // Send a POST request to /interest/calculate endpoint
@@ -36,13 +37,25 @@ export default function Calculators({logout, currentUser, setError}) {
         headers:{
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
-        }
+        },
+        body: JSON.stringify({
 
+        })
+
+        
       })
+      const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
+
+      if (!response.ok) {
+        console.error(`[ERROR: Calculators.js, calculateInterest]`, data.message );//Log an error message in the console for debugging purposes
+        throw new Error(data.message);
+        
+      }
     } catch (error) {
-      
+      console.error('[ERROR: Calculators.js, calculateInterest]: Error calcuting Interest:', error.message);//Log an error message in the console for debugging purposes
+        setError(`Error calcuting Interest:: ${error.message}`);// Set the error state to display the error in the UI
     }
-  },[])
+  },[setError])
   
   // Function to save interest calculation
   const saveInterest = useCallback(async () => {
@@ -51,7 +64,7 @@ export default function Calculators({logout, currentUser, setError}) {
     } catch (error) {
       
     }
-  })
+  },[])
   //===================JSX RENDERING============================
   return (
     <div id='pageContainer'>
