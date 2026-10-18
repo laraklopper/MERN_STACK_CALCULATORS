@@ -161,7 +161,7 @@ export default function App() {
             {/* Route to /calculators page */}
             <Route path='/calculators' element={
               <ProtectedUserRoute currentUser={currentUser}>
-                <Calculators currentUser={currentUser} logout={logout}/>
+                <Calculators currentUser={currentUser} logout={logout} setError={setError}/>
               </ProtectedUserRoute>
             }/>
             {/* route to /tax page */}

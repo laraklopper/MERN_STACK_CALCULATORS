@@ -10,7 +10,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import BasicCalculator from '../components/BasicCalculator'
 import InterestCalculator from '../components/InterestCalculator';
-export default function Calculators({logout, currentUser}) {
+export default function Calculators({logout, currentUser, setError}) {
   const [showCalculator, setShowCalculator] = useState(false)
   const [showIntCalculator, setShowIntCalculator] = useState(false)
 
@@ -28,12 +28,14 @@ export default function Calculators({logout, currentUser}) {
   // Function to calculate(simple or compound) interest
   const calculateInterest = useCallback(async (params) => {
     try {
+      const token = localStorage.getItem('token')
       // Send a POST request to /interest/calculate endpoint
       const response = await fetch(`http://localhost:3001/interest/calculate`, {
         method: 'POST',
         mode: 'cors',
         headers:{
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
         }
 
       })
@@ -41,6 +43,15 @@ export default function Calculators({logout, currentUser}) {
       
     }
   },[])
+  
+  // Function to save interest calculation
+  const saveInterest = useCallback(async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  })
   //===================JSX RENDERING============================
   return (
     <div id='pageContainer'>
