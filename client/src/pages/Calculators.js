@@ -26,7 +26,7 @@ export default function Calculators({logout, currentUser, setError}) {
     monthlyContribution:'',
     totalInterest: '',
     totalContributions:'',
-    finalAmount: '', 
+    finalAmount: '',
   })
 
   //  Function to toggle general/number calculator
@@ -56,92 +56,92 @@ export default function Calculators({logout, currentUser, setError}) {
 
         })
 
-        
+
       })
       const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
 
       if (!response.ok) {
         console.error(`[ERROR: Calculators.js, calculateInterest]`, data.message );//Log an error message in the console for debugging purposes
         throw new Error(data.message);
-        
+
       }
     } catch (error) {
       console.error('[ERROR: Calculators.js, calculateInterest]: Error calcuting Interest:', error.message);//Log an error message in the console for debugging purposes
-        setError(`Error calcuting Interest:: ${error.message}`);// Set the error state to display the error in the UI
+      setError(`Error calcuting Interest:: ${error.message}`);// Set the error state to display the error in the UI
     }
   },[setError])
-  
+
   // Function to save interest calculation
   const saveInterest = useCallback(async () => {
     try {
-      
+
     } catch (error) {
-      
+
     }
   },[])
   //===================JSX RENDERING============================
   return (
     <div id='pageContainer'>
-        <Header pageHeader={' CALCULATOR'} currentUser={currentUser}/>
-        <section id='calculatorsSec1'>
-          <Row id='toggleCalculatorsRow'>
-        <Col id='toggleCalcCol1'/>
-        <Col xs={6} id='toggleCalcCol'>
-          <Stack gap={2} className="col-md-5 mx-auto" id='toggleCalculatorsStack'>
-            <Button 
-              variant="light" 
-              id='toggleBasicCalcBtn' 
-              type='button'
-              onClick={toggleCalculator}>
-              {showCalculator ? 'Hide Calculator' : 'Show Calculator'}
-            </Button>
-            <Button 
-              variant="light" 
-              id='toggleIntCalcBtn' 
-              type='button'
-              onClick={toggleInterestCalculator}
+      <Header pageHeader={' CALCULATOR'} currentUser={currentUser}/>
+      <section id='calculatorsSec1'>
+        <Row id='toggleCalculatorsRow'>
+          <Col id='toggleCalcCol1'/>
+          <Col xs={6} id='toggleCalcCol'>
+            <Stack gap={2} className="col-md-5 mx-auto" id='toggleCalculatorsStack'>
+              <Button
+                variant="light"
+                id='toggleBasicCalcBtn'
+                type='button'
+                onClick={toggleCalculator}>
+                {showCalculator ? 'Hide Calculator' : 'Show Calculator'}
+              </Button>
+              <Button
+                variant="light"
+                id='toggleIntCalcBtn'
+                type='button'
+                onClick={toggleInterestCalculator}
               >
-              {showIntCalculator ? 'Hide Interest Calculator': 'Show Interest Calculator'}
-            </Button>
-          </Stack>
-        </Col>
-        <Col id='toggleCalcCol2'/>
-      </Row>
-      <div id='calculatorsPanal'>
-      {/* TOGGLE BASIC/GENERAL CALCULATOR: BasicCalculator.js */}
-        {showCalculator && (
-          <div id='generalCalcPanal'>
-            <Row id='basicCalcRow'>
-        <Col id='basicCalcCol1'/>
-        <Col xs={6} id='basicCalcCol'>
-          <div id='generalCalcBlock'>
-            <BasicCalculator/>
-          </div>
-        </Col>
-        <Col id='basicCalcCol2'/>
-      </Row>
-          </div>
-        )}
-        {showIntCalculator && (
-          <div id='InterstCalcPanal'>
-          <Row id='interestCalcRow'>
-              <Col id='interestCalcCol1' />
-            <Col xs={12} md={8} id='interestCalcCol'>
-          <div id='interestCalculatorBlock'>
-            <InterestCalculator
-              calculateInterest={calculateInterest}
-              saveInterest={saveInterest}
-              currentUser={currentUser}
-            />
-          </div>
-        </Col>
-        <Col id='interestCalcCol2'/>
-          </Row>
-          </div>
-        )}
-      </div>
-        </section>
-        <Footer logout={logout}/>
+                {showIntCalculator ? 'Hide Interest Calculator': 'Show Interest Calculator'}
+              </Button>
+            </Stack>
+          </Col>
+          <Col id='toggleCalcCol2'/>
+        </Row>
+        <div id='calculatorsPanal'>
+          {/* TOGGLE BASIC/GENERAL CALCULATOR: BasicCalculator.js */}
+          {showCalculator && (
+            <div id='generalCalcPanal'>
+              <Row id='basicCalcRow'>
+                <Col id='basicCalcCol1'/>
+                <Col xs={6} id='basicCalcCol'>
+                  <div id='generalCalcBlock'>
+                    <BasicCalculator/>
+                  </div>
+                </Col>
+                <Col id='basicCalcCol2'/>
+              </Row>
+            </div>
+          )}
+          {showIntCalculator && (
+            <div id='InterstCalcPanal'>
+              <Row id='interestCalcRow'>
+                <Col id='interestCalcCol1' />
+                <Col xs={12} md={8} id='interestCalcCol'>
+                  <div id='interestCalculatorBlock'>
+                    <InterestCalculator
+                      calculateInterest={calculateInterest}
+                      saveInterest={saveInterest}
+                      currentUser={currentUser}
+                    />
+                  </div>
+                </Col>
+                <Col id='interestCalcCol2'/>
+              </Row>
+            </div>
+          )}
+        </div>
+      </section>
+      <Footer logout={logout}/>
     </div>
   )
 }
