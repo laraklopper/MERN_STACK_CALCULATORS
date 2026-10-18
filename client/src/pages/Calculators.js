@@ -101,7 +101,10 @@ export default function Calculators({logout, currentUser, setError}) {
               <Col />
             <Col xs={12} md={8}>
           <div id='interestCalculatorBlock'>
-            <InterestCalculator/>
+            <InterestCalculator
+              calculateInterest={calculateInterest}
+              saveInterest={saveInterest}
+            />
           </div>
         </Col>
         <Col/>
