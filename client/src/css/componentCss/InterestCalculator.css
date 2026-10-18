@@ -179,3 +179,33 @@ overflow-y: scroll;
     background: #D6D6D6;
     border-radius: 8px;
 }
+#compoundingFreqBlock,
+#optControbutionBlock{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    align-items: center;
+    gap: 5px;
+}
+#interestform-btn-stack{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#calculateInterestBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+    width: 200px;
+    height: 40px;
+    border: solid #323A42 2px;
+}

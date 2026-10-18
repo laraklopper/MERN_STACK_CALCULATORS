@@ -2,6 +2,7 @@
 import React, { useCallback, useState } from 'react'
 import '../css/componentCss/InterestCalculator.css'
 import '../css/componentCss/FormSetup.css'
+import '../css/componentCss/CalculatorResult.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import {  AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from "lucide-react";
@@ -273,6 +274,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                     onChange={(e) => updateField("time", e.target.value)}
                     // ARIA ATTRIBUTES:
                     aria-label={`Time period in ${period.noun}`}
+                    aria-required='true'
                   />
                   <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
                   {errors.time && <p className="field-error">{errors.time}</p>}
@@ -284,12 +286,12 @@ export default function InterestCalculator({currentUser, calculateInterest, save
           <div id='interestCalculatorGroup3'>
             {/* STACK 3 */}
             <Stack gap={3} id='interestFormStack3'>
-              <div className="p-2" id='compounding-freq-block'>
+              <div className="p-2" id='compoundingFreqBlock'>
                 {/* COMPOUNDING FREQUENCY */}
-                <div className='input-div'>
+                <label className="calculatorLabel" htmlFor='compoundingFrequency'>Compounding frequency:</label>
+                <div className='inputDiv'>
                   {form.type === "compound" && (
-                    <div className="input-div">
-                      <label className="calculatorLabel" htmlFor='compoundingFrequency'>Compounding frequency</label>
+                    <div className="inputDiv">
                       <select
                         id='compoundingFrequency'
                         className='input'
@@ -306,9 +308,11 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                   )}
                 </div>
               </div>
-              <div className="p-2" id='opt-controbution-block'>
-                <div className="input-div">
-                  <label className="calculatorLabel" htmlFor='monthlyContribution'>Optional recurring monthly contribution (R)</label>
+              {/* OPTIONAL CONTRIBUTIONS */}
+              <div className="p-2" id='optControbutionBlock'>
+              <label className="calculatorLabel" htmlFor='monthlyContribution'>Optional recurring monthly contribution </label>
+                <div className="inputDiv">
+                  <p className='calculatorInpText'>(R)</p>
                   <input
                     type="number"
                     id='monthlyContribution'
@@ -324,7 +328,8 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                   )}
                 </div>
               </div>
-              <div className="p-2" id='usernameInputBlock'>
+              {/* HIDDEN USERNAME */}
+              <div className="p-2" id='usernameInputBlock' hidden>
                 <label className='calculatorLabel' htmlFor='interestUsername'>USERNAME:</label>
                 <input
                   type='text'
@@ -352,7 +357,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                 variant='light'
                 type="submit"
                 disabled={status === "calculating"}
-                id='calculate-interest-btn'
+                id='calculateInterestBtn'
                 // ARIA ATTRIBUTES
                 role='button'
                 aria-label={status === "calculating" ? "Calculating..." : "Calculate"}
@@ -362,7 +367,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                 {status === "calculating" ? "Calculating..." : "Calculate"}
               </Button>
               <Button variant='danger' type="button" onClick={resetForm} id='clearFormBtn'>
-                <RotateCcw size={16} /> Reset
+                <RotateCcw size={16} aria-hidden='true' focusable='false'/> Reset
               </Button>
             </Stack>
           </div>
@@ -372,27 +377,27 @@ export default function InterestCalculator({currentUser, calculateInterest, save
       {result && (
         <div className="results">
           <div className="result-header">
-            <TrendingUp size={32} className="results__icon" />
+            <TrendingUp size={32} className="results__icon" aria-hidden='true' focusable='false' />
             <h4 className="results__title">Result</h4>
           </div>
           <div className="results-summary">
             <Stack gap={1} id='result-summary-stack'>
-              <div className="p-2" id='results-block1'>
-                <p className="results-label">Total interest earned:</p>
-                <p className="results-value">{formatCurrency(result.totalInterest)}</p>
+              <div className="p-2" id='intResultsBlock1'>
+                <p className="resultsLabel">Total interest earned:</p>
+                <p className="resultsValue">{formatCurrency(result.totalInterest)}</p>
               </div>
               {/* Only worth showing when the user actually added contributions */}
               {result.totalContributions > 0 && (
                 <div className="p-2" id='resultsBlock3'>
-                  <p className="results-label">Total contributions:</p>
-                  <p className="results-value">
+                  <p className="resultsLabel">Total contributions:</p>
+                  <p className="resultsValue">
                     {formatCurrency(result.totalContributions)}
                   </p>
                 </div>
               )}
               <div className="p-2" id='resultsBlock2'>
-                <p className="results-label">Final amount:</p>
-                <p className="results-value">
+                <p className="resultsLabel">Final amount:</p>
+                <p className="resultsValue">
                   {formatCurrency(result.finalAmount)}
                 </p>
               </div>
