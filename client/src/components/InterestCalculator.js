@@ -5,7 +5,7 @@ import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import {  AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from "lucide-react";
-import { BLANK_INTEREST_FORM, PERIOD_UNITS, periodConfig, COMPOUND_FREQUENCIES } from '../util/calculatorFunc';
+import { BLANK_INTEREST_FORM, PERIOD_UNITS, periodConfig, COMPOUND_FREQUENCIES, validateInterestForm } from '../util/calculatorFunc';
 import { formatCurrency } from '../util/currencyFunc';
 
 
@@ -32,7 +32,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
 
   /* The logged in user's username, read from the user record rather than typed, so
   the FULL NAME fields below are filled in and read only. */
-  const username = currentUser.username
+  const username = currentUser?.username ?? ''
 
   /* Bootstrap variant for the save button, so its colour reports the outcome
   of the save rather than staying neutral once the button is disabled. */
@@ -45,6 +45,8 @@ export default function InterestCalculator({currentUser, calculateInterest, save
   // =============EVENT LISTENERS=============
   const updateField = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    // Clear the field's error as soon as the user starts correcting it
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
     setResult(null);
     setSaveStatus(null);
     setSaveMessage("");
@@ -67,24 +69,55 @@ export default function InterestCalculator({currentUser, calculateInterest, save
     setErrors({});
     setResult(null);
     setStatus(null);
+    setStatusMessage("");
     setSaveStatus(null);
     setSaveMessage("");
 
   };
 
   //=======REQUEST FUNCTION HANDLERS===========
-  //Function to submit calculatorForm
-  // call calculate interest function
+  /* Function to submit calculatorForm: validates the fields, then calls
+  calculateInterest (Calculators.js) which posts to /interest/calculate. */
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
-  },[])
 
-  //Function to handle save calculation button
-  // call saveInterestFunction
+    const formErrors = validateInterestForm(form);
+    setErrors(formErrors);
+    // Conditional rendering to stop the request when a field is invalid
+    if (Object.keys(formErrors).length > 0) return;
+
+    setStatus("calculating");
+    setStatusMessage("");
+    setResult(null);
+    setSaveStatus(null);
+    setSaveMessage("");
+    try {
+      const calculated = await calculateInterest(form);
+      setResult(calculated);
+      setStatus(null);
+    } catch (error) {
+      setStatus("error");
+      setStatusMessage(error.message || "Could not calculate interest. Try again.");
+    }
+  },[form, calculateInterest])
+
+  /* Function to handle save calculation button: calls saveInterest
+  (Calculators.js) which posts the same figures to /interest/save. The server
+  recalculates them, so the saved record cannot differ from what was shown. */
   const handleSave = useCallback(async (e) => {
     e.preventDefault()
 
-  },[])
+    setSaveStatus("saving");
+    setSaveMessage("");
+    try {
+      const data = await saveInterest(form);
+      setSaveStatus("saved");
+      setSaveMessage(data?.message || "Calculation saved to your history");
+    } catch (error) {
+      setSaveStatus("error");
+      setSaveMessage(error.message);
+    }
+  },[form, saveInterest])
 
 
   //=============================
@@ -225,10 +258,12 @@ export default function InterestCalculator({currentUser, calculateInterest, save
               </div>
               {/* TIME PERIOD (YEARS OR MONTHS, PER THE TOGGLE ABOVE) */}
               <div className="p-2" id='timePeriodBlock'>
-                <label className="calculatorLabel">Time period ({period.noun})</label>
+                <label className="calculatorLabel" htmlFor='interestTimePeriod'>Time period ({period.noun})</label>
                 <div className='inputDiv'>
                   <input
                     type="number"
+                    id='interestTimePeriod'
+                    required
                     min="1"
                     max={period.max}
                     step="1"
@@ -254,8 +289,9 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                 <div className='input-div'>
                   {form.type === "compound" && (
                     <div className="input-div">
-                      <label className="field-label">Compounding frequency</label>
+                      <label className="calculatorLabel" htmlFor='compoundingFrequency'>Compounding frequency</label>
                       <select
+                        id='compoundingFrequency'
                         className='input'
                         value={form.compoundingFrequency}
                         onChange={(e) => updateField("compoundingFrequency", e.target.value)}
@@ -272,9 +308,10 @@ export default function InterestCalculator({currentUser, calculateInterest, save
               </div>
               <div className="p-2" id='opt-controbution-block'>
                 <div className="input-div">
-                  <label className="field-label">Optional recurring monthly contribution (R)</label>
+                  <label className="calculatorLabel" htmlFor='monthlyContribution'>Optional recurring monthly contribution (R)</label>
                   <input
                     type="number"
+                    id='monthlyContribution'
                     min="0"
                     step="0.01"
                     placeholder="0"
@@ -387,7 +424,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
               </table>
             </div>
           )}
-          {currentUser && handleSave && (
+          {currentUser && (
             <div className="save-row">
               <Button
                 type="button"
@@ -395,13 +432,13 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                 history, red when the save was rejected. */
                 variant={saveButtonVariant}
                 onClick={handleSave}
-                /* Also disabled without a complete name: the record is filed
+                /* Also disabled without a username: the record is filed
                 under it, so there is nothing to save it against. */
-                disabled={saveStatus === "saving" || saveStatus === "saved" }
+                disabled={!username || saveStatus === "saving" || saveStatus === "saved"}
                 className="save-link"
                 id='save-int-calcBtn'
                 // ARIA ATTRIBUTES:
-                aria-disabled={saveStatus === "saving" || saveStatus === "saved" }
+                aria-disabled={!username || saveStatus === "saving" || saveStatus === "saved"}
               >
                 {saveStatus === "saving"
                   ? "Saving..."
@@ -414,8 +451,13 @@ export default function InterestCalculator({currentUser, calculateInterest, save
                   {saveMessage || "Could not save. Try again."}
                 </span>
               )}
+              {saveStatus === "saved" && saveMessage && (
+                <span className="save-success" role='status'>
+                  {saveMessage}
+                </span>
+              )}
               {/* Explains an unusable save button before it is pressed */}
-              {  saveStatus !== "error" && (
+              {!username && (
                 <span className="save-error">
                   Your username name could not be read from your profile, so this
                   calculation cannot be saved.

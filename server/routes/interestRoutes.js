@@ -1,7 +1,8 @@
 // interestRoutes.js
 /* Interest calculator endpoints, mounted at /interest by app.js.
 
-  
+  POST   /calculate   - work out simple or compound interest (saves nothing)
+  POST   /save        - save a calculation to the logged in user's history
   GET    /history     - the logged in user's saved calculations
   DELETE /history/:id - remove one of the logged in user's saved calculations*/
 
@@ -11,9 +12,9 @@ require('dotenv').config()
 // IMPORT REQUIRED MODULES AND PACKAGES
 const express = require('express');
 const Interest = require('../models/interestSchema')
-const User = requrire('../models/userSchema.js')
+const User = require('../models/userSchema.js')
 const { checkJwtToken } = require('../middleware/middleware');
-const {PERIOD_UNITS, INTEREST_TYPES} = require('../util/calculationUtil')
+const {PERIOD_UNITS, INTEREST_TYPES, COMPOUND_FREQUENCIES, MAX_DURATION} = require('../util/calculationUtil')
 const {calculateInterest} = require('../util/utilFunc')
 const router = express.Router()
 
@@ -140,7 +141,7 @@ router.post('/save', checkJwtToken, async (req, res) => {
         const result = calculateInterest(input);
         const saved = await Interest.create({
             user: user._id,
-            fullName,
+            username: user.username,
             principal: result.principal,
             interestRate: result.rate,
             // The schema stores the duration and its unit separately

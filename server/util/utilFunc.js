@@ -1,4 +1,7 @@
-import { COMPOUND_FREQUENCIES } from "./calculationUtil";
+const { COMPOUND_FREQUENCIES } = require("./calculationUtil");
+
+// Round a money figure to 2 decimal places (cents)
+const round2 = (value) => Math.round((value + Number.EPSILON) * 100) / 100;
 
 /*=============================
 INTEREST CALCULATION
@@ -14,7 +17,7 @@ compound interest formula while giving a usable month-by-month breakdown.
 
 Simple interest is only ever charged on capital paid in (the principal plus
 any recurring contributions), never on interest already earned. */
-export const calculateInterest = ({
+const calculateInterest = ({
     type = 'simple',
     principal,
     rate,
@@ -98,3 +101,5 @@ export const calculateInterest = ({
         breakdown,
     };
 };
+
+module.exports = { calculateInterest, round2 };

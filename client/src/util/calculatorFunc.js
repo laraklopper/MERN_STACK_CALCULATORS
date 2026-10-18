@@ -50,3 +50,45 @@ export const BLANK_INTEREST_FORM = {
     compoundingFrequency: "annually",
     monthlyContribution: "",
 };
+
+/* Check the interest form before it is sent, mirroring the backend's rules so
+the user sees a message beside the field instead of a failed request. Returns
+an object of field -> message; an empty object means the form is usable. */
+export const validateInterestForm = (form) => {
+    const errors = {};
+    const period = periodConfig(form.periodUnit);
+    const principal = parseFloat(form.principal);
+    const rate = parseFloat(form.rate);
+    const time = Number(form.time);
+
+    if (isNaN(principal) || principal <= 0) {
+        errors.principal = "Enter a principal amount greater than 0.";
+    }
+    if (isNaN(rate) || rate <= 0 || rate > 100) {
+        errors.rate = "Enter an interest rate greater than 0 and no more than 100.";
+    }
+    if (form.time === "" || !Number.isInteger(time) || time < 1 || time > period.max) {
+        errors.time = `Enter a whole number of ${period.noun} between 1 and ${period.max}.`;
+    }
+    // The contribution is optional, so only check it when something was entered
+    if (form.monthlyContribution !== "") {
+        const contribution = parseFloat(form.monthlyContribution);
+        if (isNaN(contribution) || contribution < 0) {
+            errors.monthlyContribution = "Enter a contribution of 0 or more.";
+        }
+    }
+    return errors;
+};
+
+/* Map the form's fields onto the body the /interest/calculate and
+/interest/save routes expect. The form calls the length `time`, while the
+backend calls it `duration`. */
+export const toInterestPayload = (form) => ({
+    type: form.type,
+    principal: form.principal,
+    rate: form.rate,
+    duration: form.time,
+    periodUnit: form.periodUnit,
+    compoundingFrequency: form.compoundingFrequency,
+    monthlyContribution: form.monthlyContribution,
+});
