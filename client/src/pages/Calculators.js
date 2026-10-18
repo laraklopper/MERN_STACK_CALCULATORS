@@ -13,7 +13,21 @@ import InterestCalculator from '../components/InterestCalculator';
 export default function Calculators({logout, currentUser, setError}) {
   const [showCalculator, setShowCalculator] = useState(false)
   const [showIntCalculator, setShowIntCalculator] = useState(false)
-  const [interestData, setInterestData]
+  const [interestData, setInterestData] = useState({
+    username: '',
+    principal: '',
+    interestRate: '',
+    time: {
+      duration: '',
+      unit: '',//years, months
+    },
+    interestType: '',//enum: ['simple', 'compound']
+    compoundFrequency: '',
+    monthlyContribution:'',
+    totalInterest: '',
+    totalContributions:'',
+    finalAmount: '', 
+  })
 
   //  Function to toggle general/number calculator
   const toggleCalculator = useCallback(() => {
