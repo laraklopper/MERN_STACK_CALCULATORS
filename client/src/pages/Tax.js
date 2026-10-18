@@ -129,11 +129,13 @@ export default function Tax({currentUser, logout}) {
         {showVatCalculator && (
           <div id='vatCalculatorPanal'>
             <Row id='vatCalculatorRow'>
-              <Col id='vatCalculatorCol'>
+              <Col id='vatCalcCol1'/>
+              <Col id='vatCalculatorCol' xs={6} md={6}>
                 <div id='vatCalculatorBlock'>
                   <VatCalculator/>
                 </div>
               </Col>
+              <Col id='vatCalcCol2'/>
             </Row>
           </div>
         )}

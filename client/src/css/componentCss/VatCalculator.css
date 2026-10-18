@@ -1,0 +1,34 @@
+#vatCalculator{
+      gap: 10px;
+    display: flex;
+    flex-direction: column;
+  background-color: #A8AEB3;
+  margin: 0px;
+  padding: 10px;
+  width: 100%;
+  
+}
+#vatFormGroup1{
+    display: flex;
+}
+#vatCalcBtnDiv{
+    display: flex;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+}
+#vatCalculatorBlock1,
+#vatCalculatorBlock2{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    flex-direction: column;
+    align-items: center;
+}
+#vatCalculatorBlock3{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+    align-items: center;
+}

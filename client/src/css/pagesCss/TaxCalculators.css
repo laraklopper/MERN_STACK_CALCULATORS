@@ -36,6 +36,24 @@
     margin: 0px;
     padding: 0px;
 }
+#vatCalculatorCol{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    
+}
+#vatCalculatorBlock{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+}
+#vatCalcCol1,
+#vatCalcCol2{
+    margin: 0px;
+    padding: 0px;
+}
 /* BUTTONS */
 #toggleTaxCalcBtn,
 #toggleProvCalcBtn,
