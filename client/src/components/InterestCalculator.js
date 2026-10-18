@@ -204,7 +204,6 @@ export default function InterestCalculator({currentUser, calculateInterest, save
               value={form.rate}
               onChange={(e) => updateField("rate", e.target.value)}
               // ARIA ATTRIBUTES
-
             />
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.rate && <p className="field-error">{errors.rate}</p>}
@@ -217,7 +216,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
       {/* TIME PERIOD (YEARS OR MONTHS, PER THE TOGGLE ABOVE) */}
       <div className="p-2" id='time-period-block'>
 <div className='input-div'>
-<label className="field-label">Time period ({period.noun})</label>
+<label className="calculatorLabel">Time period ({period.noun})</label>
      <input
               type="number"
               min="1"
@@ -235,7 +234,6 @@ export default function InterestCalculator({currentUser, calculateInterest, save
 </div>
       </div>
     </Stack>
-
         </div>
         {/* GROUP 3: Compounding Frequency + Optional recurring monthly contribution */}
         <div id='interestCalculatorGroup3'>
@@ -320,9 +318,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
             <RotateCcw size={16} /> Reset
           </Button>
     </Stack>
-
         </div>
-
       </div>
       </form>
          {/* --- Results --- */}

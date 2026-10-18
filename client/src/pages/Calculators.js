@@ -131,6 +131,7 @@ export default function Calculators({logout, currentUser, setError}) {
             <InterestCalculator
               calculateInterest={calculateInterest}
               saveInterest={saveInterest}
+              currentUser={currentUser}
             />
           </div>
         </Col>
