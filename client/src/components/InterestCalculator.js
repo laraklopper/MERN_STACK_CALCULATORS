@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import '../css/componentCss/InterestCalculator.css'
 import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
@@ -6,6 +6,16 @@ import Button from 'react-bootstrap/Button';
 import {  AlertCircle, Asterisk } from "lucide-react";
 import { BLANK_INTEREST_FORM } from '../util/calculatorFunc';
 
+// InterestCalculator
+// Simple & compound interest calculator, with optional recurring monthly
+// contributions. Posts to /interest/calculate and renders the result
+// plus a period-by-period breakdown table.
+//
+// The TIME PERIOD toggle lets the user work in either ANNUAL periods (time
+// entered in years, one breakdown row per year) or MONTHLY periods (time
+// entered in months, one breakdown row per month). The interest rate is
+// always entered as an annual nominal rate so both options can be compared
+// against the same quoted rate.
 export default function InterestCalculator() {
    const [form, setForm] = useState(BLANK_INTEREST_FORM);
   const [errors, setErrors] = useState({});
@@ -40,9 +50,12 @@ export default function InterestCalculator() {
     setStatus(null);
     setSaveStatus(null);
     setSaveMessage("");
-    /* The FULL NAME fields are not reset: they are read from the logged in
-    user rather than entered, so there is nothing of the user's to clear. */
+
   };
+
+  // const handleSubmit = useCallback(async (e) => {
+  //   e.
+  // },[])
 
   return (
   

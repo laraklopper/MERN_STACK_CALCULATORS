@@ -24,6 +24,23 @@ export default function Calculators({logout, currentUser}) {
     setShowIntCalculator(prev => !prev)
     setShowCalculator(false)
   },[])
+
+  // Function to calculate(simple or compound) interest
+  const calculateInterest = useCallback(async (params) => {
+    try {
+      // Send a POST request to /interest/calculate endpoint
+      const response = await fetch(`http://localhost:3001/interest/calculate`, {
+        method: 'POST',
+        mode: 'cors',
+        headers:{
+          'Content-Type': 'application/json',
+        }
+
+      })
+    } catch (error) {
+      
+    }
+  },[])
   //===================JSX RENDERING============================
   return (
     <div id='pageContainer'>
