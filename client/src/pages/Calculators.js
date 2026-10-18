@@ -125,8 +125,8 @@ export default function Calculators({logout, currentUser, setError}) {
         {showIntCalculator && (
           <div id='InterstCalcPanal'>
           <Row id='interestCalcRow'>
-              <Col />
-            <Col xs={12} md={8}>
+              <Col id='interestCalcCol1' />
+            <Col xs={12} md={8} id='interestCalcCol'>
           <div id='interestCalculatorBlock'>
             <InterestCalculator
               calculateInterest={calculateInterest}
@@ -135,12 +135,10 @@ export default function Calculators({logout, currentUser, setError}) {
             />
           </div>
         </Col>
-        <Col/>
+        <Col id='interestCalcCol2'/>
           </Row>
-        
           </div>
         )}
-
       </div>
         </section>
         <Footer logout={logout}/>

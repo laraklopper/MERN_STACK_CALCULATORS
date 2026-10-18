@@ -1,3 +1,4 @@
+// InterestCalculator.js
 import React, { useCallback, useState } from 'react'
 import '../css/componentCss/InterestCalculator.css'
 import '../css/componentCss/FormSetup.css'
@@ -6,7 +7,8 @@ import Button from 'react-bootstrap/Button';
 import {  AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from "lucide-react";
 import { BLANK_INTEREST_FORM, PERIOD_UNITS, periodConfig, COMPOUND_FREQUENCIES } from '../util/calculatorFunc';
 import { formatCurrency } from '../util/currencyFunc';
-// InterestCalculator
+
+
 // Simple & compound interest calculator, with optional recurring monthly
 // contributions. Posts to /interest/calculate and renders the result
 // plus a period-by-period breakdown table.
@@ -27,6 +29,20 @@ export default function InterestCalculator({currentUser, calculateInterest, save
 
   // Config (label, noun, max) for the time period unit the user selected
   const period = periodConfig(form.periodUnit);
+
+  /* The logged in user's username, read from the user record rather than typed, so
+  the FULL NAME fields below are filled in and read only. */
+  const username = currentUser.username
+
+  /* Bootstrap variant for the save button, so its colour reports the outcome
+  of the save rather than staying neutral once the button is disabled. */
+  const saveButtonVariant =
+    saveStatus === "saved" ? "success" : saveStatus === "error" ? "danger" : "light";
+
+  /* Heading for the breakdown table's first column. Driven by the result, not
+  the form, so the table always describes the figures currently on screen. */
+  const breakdownHeading = result?.periodUnit === "months" ? "Month" : "Year";
+  // =============EVENT LISTENERS=============
    const updateField = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     setResult(null);
@@ -45,6 +61,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
     setSaveMessage("");
   };
 
+  //Function to resetForm
     const resetForm = () => {
     setForm(BLANK_INTEREST_FORM);
     setErrors({});
@@ -54,29 +71,22 @@ export default function InterestCalculator({currentUser, calculateInterest, save
     setSaveMessage("");
 
   };
-   /* The logged in user's username, read from the user record rather than typed, so
-  the FULL NAME fields below are filled in and read only. */
-  const username = currentUser.username
 
+//=======REQUEST FUNCTION HANDLERS===========
   //Function to submit calculatorForm
+  // call calculate interest function
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
   },[])
 
   //Function to handle save calculation button
-  // import 
+  // call saveInterestFunction
   const handleSave = useCallback(async (e) => {
      e.preventDefault()
      
   },[])
   
-    /* Bootstrap variant for the save button, so its colour reports the outcome
-  of the save rather than staying neutral once the button is disabled. */
-  const saveButtonVariant =
-    saveStatus === "saved" ? "success" : saveStatus === "error" ? "danger" : "light";
-  /* Heading for the breakdown table's first column. Driven by the result, not
-  the form, so the table always describes the figures currently on screen. */
-  const breakdownHeading = result?.periodUnit === "months" ? "Month" : "Year";
+  
   //=============================
   return (
   <div>
@@ -85,7 +95,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
           <h3 id='interestCalculatorHeading'>INTEREST CALCULATOR</h3>
           <span className='formTextSpan'>
              <p className="formText">
-            Calculate how much interest you'll earn or owe over time, <br/>using
+            Calculate how much interest you'll earn or owe over time, using
             simple or compound interest.
         </p>
           </span>
@@ -96,6 +106,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
           {statusMessage}
         </div>
       )}
+      {/* INPUT */}
       <div id='interestCalculatorDetails'>
       {/* =====GROUP 1============ */}
         <div id='interestCalculatorGroup1'>
@@ -131,25 +142,24 @@ export default function InterestCalculator({currentUser, calculateInterest, save
       <p className='visually-hidden' id='interestTypeInfoList'>Difference Between simple and compound interest</p>
       <p className='interestTypeItem'>Simple interest is worked out on the principal, or original, amount of a loan.</p>
             <p className='interestTypeItem'>Compound interest is calculated on the principal (original) amount and also on the added interest of previous periods.</p>
-
       </span>
-
           </div>
     </Stack>
-
         </div>
-        {/* GROUP 2 */}
+        {/* GROUP 2: Principal Tax Amount, annual interest rate time period,  */}
         <div id='interestCalculatorGroup2'>
         {/* STACK 2 */}
           <Stack gap={3} id='interestFormStack2'>
       <div className="p-2" id='principalAmountBlock'>
         {/* PRINCIPAL TAX AMOUNT */}
-          <div className="inputDiv">
-            <label className="field-label" htmlFor='principal-tax-amount'>Principal amount: (R)</label>
+            <label className='calculatorLabel' htmlFor='principalTaxAmount'>Principal amount: </label>
+            <div id="principalAmountInputDiv">
+            <p className='calculatorInpText'>(R)</p>
             <input
               type="number"
-              id='principal-tax-amount'
+              id='principalTaxAmount'
               min="0"
+              required
               step="0.01"
               placeholder="10000"
               className='input'
@@ -162,8 +172,8 @@ export default function InterestCalculator({currentUser, calculateInterest, save
       </div>
       {/* TIME PERIOD TOGGLE: calculate over annual or monthly periods */}
       <div className="p-2" id='interestTimeBlock'>
+                      <label className='calculatorLabel' htmlFor='interestPeriodSelectBtn'>TIME PERIOD:</label>
         <div id='periodBtnBlock'>
-          <label>TIME PERIOD:</label>
           {PERIOD_UNITS.map((p) => (
             <Button
             variant='light'
@@ -182,7 +192,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
           ))}
           <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
-        <p className='form-text'>
+        <p className='formText'>
           {form.periodUnit === "months"
             ? "Monthly: enter the time period in months and get a month-by-month breakdown."
             : "Annual: enter the time period in years and get a year-by-year breakdown."}
@@ -190,8 +200,8 @@ export default function InterestCalculator({currentUser, calculateInterest, save
       </div>
       {/* ANNUAL INTEREST RATE */}
       <div className="p-2" id='annualInterestBlock'>
-        <div className="input-div">
-            <label className="calculatorLabel" htmlFor='annualInterest'>Annual interest rate (%)</label>
+      <label className="calculatorLabel" htmlFor='annualInterest'>Annual interest rate (%)</label>
+        <div className="inputDiv">
             <input
               type="number"
               id='annualInterest'
@@ -214,9 +224,9 @@ export default function InterestCalculator({currentUser, calculateInterest, save
           </p>
       </div>
       {/* TIME PERIOD (YEARS OR MONTHS, PER THE TOGGLE ABOVE) */}
-      <div className="p-2" id='time-period-block'>
-<div className='input-div'>
-<label className="calculatorLabel">Time period ({period.noun})</label>
+      <div className="p-2" id='timePeriodBlock'>
+      <label className="calculatorLabel">Time period ({period.noun})</label>
+<div className='inputDiv'>
      <input
               type="number"
               min="1"
@@ -336,14 +346,14 @@ export default function InterestCalculator({currentUser, calculateInterest, save
       </div>
       {/* Only worth showing when the user actually added contributions */}
       {result.totalContributions > 0 && (
-      <div className="p-2" id='results-block3'>
+      <div className="p-2" id='resultsBlock3'>
               <p className="results-label">Total contributions:</p>
               <p className="results-value">
                 {formatCurrency(result.totalContributions)}
               </p>
       </div>
       )}
-      <div className="p-2" id='results-block2'>
+      <div className="p-2" id='resultsBlock2'>
               <p className="results-label">Final amount:</p>
               <p className="results-value">
                 {formatCurrency(result.finalAmount)}

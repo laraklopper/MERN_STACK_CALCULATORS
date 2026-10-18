@@ -52,7 +52,7 @@
     margin: 0px;
     padding: 0px;
     font-weight: 500;
-    text-align: center
+    font-size: 14px;
 }
 #interestTypeBtnBlock{
     display: flex;
@@ -79,4 +79,103 @@
     flex-direction: column;
     align-items: center;
 }
+#interestCalculatorDetails{
+    display: flex;
+  flex-direction: column;
+  background-color: #BFBFBF;
+  margin: 0px;
+  padding: 10px;
+  gap: 10px;
+border: #323A42 2px solid;
+border-radius: 5px;
+overflow-y: scroll;
+}
+/* GROUP 1: Interest Type */
+#interestCalculatorGroup1{
+    display: flex;
+    margin: 0px;
+    padding: 10px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
+/* GROUP 2: Principalamount + TimePeriod + Annual Interest Rate + Time period*/
+#interestCalculatorGroup2{
+     display: flex;
+    margin: 0px;
+    padding: 10px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
 
+#principalAmountInputDiv{
+        display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0px;
+    padding: 0px;
+
+}
+#periodBtnBlock{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+#interestPeriodSelectBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 40px;
+    margin: 0px;
+    padding: 0px;
+    border: solid #323A42 2px;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+#interestPeriodSelectBtn:hover{
+    background-color: #323A42;
+    color: #E8F0F6;
+}
+#interestPeriodSelectBtn:active{
+    background-color: #323A42;
+    color: #E8F0F6;
+    text-decoration: underline;
+}
+/* BOOTSTRAP */
+/* Stack */
+#interestFormStack2{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#principalAmountBlock,
+#interestTimeBlock,
+#annualInterestBlock,
+#timePeriodBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+.calculatorInpText{
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+/* GROUP 3 */
+#interestCalculatorGroup3{
+     display: flex;
+    margin: 0px;
+    padding: 10px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    border-radius: 8px;
+}
