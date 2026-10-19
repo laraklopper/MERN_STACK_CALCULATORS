@@ -133,7 +133,7 @@ export default function App() {
       <Container id='appContainer' role='main'>
        <Row id='globalErrorRow'>
           <Col xs={0} md id='errorCol1'/>
-          <Col xs={12} md={6} id='globalErrorCol' aria-live='polite'>
+          <Col xs={12} md={8} id='globalErrorCol' aria-live='polite'>
           {/* ---------GLOBAL ERROR DISPLAY------------- */}
             <div id='globalErrorBlock' role='alert' aria-atomic='true'>
               {error && 
