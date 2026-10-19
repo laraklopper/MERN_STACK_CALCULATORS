@@ -24,7 +24,47 @@
     text-transform: uppercase;
     text-decoration: underline;
 }
+.calculatorTextSpan{
+    display: flex;
+    justify-content: center;
+    
+}
+.calculatorLabel{
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 16px;
+    text-decoration: underline;
+     margin: 0px;
+    padding: 0px;
+}
 /* INPUT */
+.calcLabelSpan{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+.calcTextInputDiv{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    align-items: baseline;
+    gap: 10px;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+.calcInputDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+    margin: 0px;
+    padding: 0px;
+}
 .calculatorInput{
     width:200px;
     height:40px;
@@ -34,6 +74,20 @@
     padding:4px;
     text-align: center;
     font-family: "Fira Mono", monospace;
+}
+.calcFormText{
+    font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+}
+.calculatorInpText{
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0px;
+    padding: 0px;
 }
 /* ===============
 BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons

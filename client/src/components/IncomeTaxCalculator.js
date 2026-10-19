@@ -1,10 +1,15 @@
 //IncomeTaxCalculator.js
+// IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback, useEffect, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/CalculatorSetup.css'
 import '../css/componentCss/IncomeTaxCalculator.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT ICONS FROM LUCIDE-REACT
 import { AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from 'lucide-react'
+// IMPORT UTILITY FUNCTIONS
 import { BLANK_TAX_FORM, formatPercent, toTaxPayload, validateTaxForm } from '../util/calculatorFunc'
 import { formatCurrency } from '../util/currencyFunc';
 
@@ -170,10 +175,8 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
         {/* INCOME PERIOD */}
       <div className="p-2" id="taxCalcBlock1">
       <span id='taxPeriodBtnSpan'>
-
-      
         <label className='calculatorLabel' htmlFor=''>INCOME PERIOD:</label>
-        <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+        <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
       </span>
         <div id="taxPeriodBtnDiv">
             {["annual", "monthly"].map((t) => (
@@ -191,28 +194,31 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
                 {t}
               </Button>
             ))}
-          </div>
-         
+          </div>        
       </div>
         <div className="p-2" id="taxCalcBlock2">
        {/* ANNUAL/MONTHLY INCOME */}
-            <div className="inputDiv">
-             <label className="calculatorLabel">
+        <span className='calcLabelSpan'>
+                <label className="calculatorLabel">
               {form.incomeType === "monthly" ? "Monthly income (R)" : "Annual income (R)"}:
             </label>
+            </span>
+            <div className="calcTextInputDiv">
+            {/* display the R in the input tag */}
+            <p className='calculatorInpText'>R:</p>
             <input
               type="number"
               min="0"
               step="0.01"
               placeholder={form.incomeType === "monthly" ? "25000" : "300000"}
-              className="input"
+              className="calculatorInput"
               value={form.income}
               required
               onChange={(e) => updateField("income", e.target.value)}
               // ARIA ATTRIBUTES:
               aria-required='true'
             />
-            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+            <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
             {errors.income && <p className="field-error">{errors.income}</p>}
             </div>
       </div>
@@ -222,7 +228,7 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
           <div id='taxCalculatorGroup2'>
           {/* INPUT STACK 2 */}
              <Stack gap={3} id='taxCalcInputStack2'>
-       <div className="p-2">
+       <div className="p-2" id='taxAgeBlock'>
       {/* AGE */}
       <label className="calculatorLabel" htmlFor="taxAgeInput">Age:</label>
         <div className="inputDiv">
@@ -240,12 +246,12 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
               // ARIA ATTRIBUTES:
               aria-required='true'
             />
-              <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+              <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
             {errors.age && <p className="field-error">{errors.age}</p>}
           </div>
       </div>
       {/* TAX YEAR */}
-      <div className="p-2">
+      <div className="p-2" id='taxYearBlock'>
         <label className="calculatorLabel">Tax year:</label>
           <div className="inputDiv">
             <select
@@ -268,10 +274,10 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
             {errors.taxYear && <p className="field-error">{errors.taxYear}</p>}
           </div>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='taxMedicalAIDBlock'>
          {/* MEDICAL AID DEPENDENTS */}
          <label className="calculatorLabel" htmlFor=''>Medical aid dependants:</label>
-<div className="inputDiv">
+<div className="calcInputDiv">
             <input
               type="number"
               min="0"
@@ -284,12 +290,11 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
             {errors.dependants && <p className="fieldError">{errors.dependants}</p>}
             {/* Recorded with the calculation, but no credit is applied yet -
             the tax year data holds no medical scheme fees credit figures. */}
-            <span>
-                            <p className="form-text">
-              Saved with your calculation for reference. Medical scheme fees tax
+            <span className='calculatorTextSpan'>
+                            <p className="calcFormText" id='medicalAidText'>
+              Saved with your calculation for reference. Medical scheme fees tax<br/>
               credits are not applied to the result.
             </p>
-
             </span>
           </div>
       </div>

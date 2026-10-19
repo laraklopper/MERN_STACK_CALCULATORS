@@ -30,16 +30,7 @@
     margin: 0px;
     padding: 0px;
 }
-.calculatorLabel{
-    font-family: "Fira Mono", monospace;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 16px;
-    text-decoration: underline;
-     margin: 0px;
-    padding: 0px;
-}
+
 #interestTypeSelectBlock{
     display: flex;
     flex-direction: column;
@@ -165,11 +156,7 @@ overflow-y: scroll;
     margin: 0px;
     padding: 0px;
 }
-.calculatorInpText{
-    font-family: "Fira Mono", monospace;
-    font-weight: 700;
-    text-transform: uppercase;
-}
+
 /* GROUP 3 */
 #interestCalculatorGroup3{
      display: flex;

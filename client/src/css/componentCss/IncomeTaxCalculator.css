@@ -56,6 +56,7 @@ INPUT LAYOUT
     padding: 0px;
 }
 #taxCalcInputStack1{
+    display: flex;
     width: 100%;
     margin: 0px;
     padding: 0px;
@@ -72,6 +73,8 @@ INPUT LAYOUT
 }
 #taxCalcBlock2{
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     width: 100%;
     margin: 0px;
@@ -103,4 +106,54 @@ INPUT LAYOUT
     text-transform: uppercase;
     letter-spacing: 2px;
 }
+#incomeStatedBtn:hover{
+    background-color: #323A42;
+    color: #E8F0F6;
+}
+#incomeStatedBtn:active{
+    background-color: #323A42;
+    color: #E8F0F6;
+    text-decoration: underline;
+}
 /* GROUP 2 */
+#taxCalculatorGroup2{
+display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #D6D6D6;
+    border: solid #323A42 2px;    
+}
+#taxAgeBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#taxYearBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#taxMedicalAIDBlock{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+    align-items: center;
+}
+#medicalAidText{
+    font-family: "Open Sans", sans-serif;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-align: center;
+}
