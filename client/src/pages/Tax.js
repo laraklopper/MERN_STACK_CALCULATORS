@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button';
 // IMPORT CUSTOM COMPONENTS
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import IncomeTaxClaculator from '../components/IncomeTaxClaculator';
+import IncomeTaxCalculator from '../components/IncomeTaxCalculator';
 import ProvisionalTaxCalculator from '../components/ProvisionalTaxCalculator';
 import VatCalculator from '../components/VatCalculator';
 /*Page to calculate ProvisionalTax,
@@ -109,11 +109,13 @@ export default function Tax({currentUser, logout}) {
         {showTaxCalc && (
           <div id='taxCalcPanal'>
             <Row id='incTaxCalcRow'>
-              <Col id='incTaxCalcRow'>
+            <Col id='incTaxCalcCol1'/>
+              <Col id='incTaxCalcCol' xs={12} md={8}>
                 <div id='incomeTaxCalcBlock'>
-                  <IncomeTaxClaculator/>
+                  <IncomeTaxCalculator/>
                 </div>
               </Col>
+              <Col id='incTaxCalcCol2'/>
             </Row>
           </div>
         )}
@@ -135,7 +137,7 @@ export default function Tax({currentUser, logout}) {
           <div id='vatCalculatorPanal'>
             <Row id='vatCalculatorRow'>
               <Col id='vatCalcCol1'/>
-              <Col id='vatCalculatorCol' xs={6} md={6}>
+              <Col id='vatCalculatorCol' xs={12} md={8}>
                 <div id='vatCalculatorBlock'>
                   <VatCalculator
                     currentUser={currentUser}
