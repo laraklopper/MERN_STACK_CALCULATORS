@@ -98,6 +98,7 @@ export default function CurrencyConverterForm(
                 className='input'
                 id='converterAmount'
                 type='number'
+                placeholder='0'
                 step='0.01'
                 min='0.01'
                 name='amount'
@@ -142,8 +143,6 @@ export default function CurrencyConverterForm(
                 value={form.to}
                 onChange={handleChange}
               >
-                <option value=''>SELECT</option>
-                {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
                 <option value=''>SELECT</option>
                 {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
                 {currencyOptions.map(({code, name})=> (
