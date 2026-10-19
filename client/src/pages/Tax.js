@@ -114,7 +114,8 @@ const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
               <Col id='incTaxCalcCol' xs={12} md={8}>
                 <div id='incomeTaxCalcBlock'>
                   <IncomeTaxCalculator
-                    taxYear={taxYears}
+                    currentUser={currentUser}
+                    taxYears={taxYears}
                   />
                 </div>
               </Col>

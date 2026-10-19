@@ -1,4 +1,8 @@
-export const taxSeedData = {
+// taxSeedData.js
+/* SARS 2025-2026 tax year. Used by taxRoutes.js as the fallback tax year when
+no matching TaxYearConfig has been saved to the database yet. Exported with
+module.exports because the server is a CommonJS project. */
+const taxSeedData = {
   "taxYear": "2025-2026",
   "startDate": "2025-03-01",
   "endDate": "2026-02-28",
@@ -23,3 +27,5 @@ export const taxSeedData = {
   },
   "isActive": true
 }
+
+module.exports = { taxSeedData };

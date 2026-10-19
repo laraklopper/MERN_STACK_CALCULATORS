@@ -1,4 +1,4 @@
-const { COMPOUND_FREQUENCIES } = require("./calculationUtil");
+const { COMPOUND_FREQUENCIES, SECONDARY_REBATE_AGE, TERTIARY_REBATE_AGE } = require("./calculationUtil");
 const { SARS_VAT_RATE } = require("./schemaUtil");
 
 // Round a money figure to 2 decimal places (cents)
@@ -142,4 +142,87 @@ const calculateVat = ({ amount, mode = 'exclusive', isZeroRated = false }) => {
     };
 };
 
-module.exports = { calculateInterest, calculateVat, round2 };
+/*=============================
+INCOME TAX CALCULATION
+==============================*/
+/* Works out SARS income tax for one tax year from its configuration
+(a TaxYearConfig document, or the seed data in dataArrays/taxSeedData.js).
+
+A monthly income is annualised (x12) first, because the brackets, rebates and
+thresholds are all annual figures. Gross tax is the bracket's base amount plus
+the marginal rate on the income above the bracket's lower bound. The rebates
+are then deducted: primary for everyone, secondary from 65, tertiary from 75.
+Tax can never be negative, so a rebate larger than the gross tax leaves nil.
+
+The bracket breakdown shows how much of the income fell into each bracket and
+the tax on that slice, so the user can see where the gross tax came from. */
+const calculateIncomeTax = ({ income, incomeType = 'annual', age, dependants = 0 }, config) => {
+    const period = incomeType === 'monthly' ? 'monthly' : 'annual';
+    const annualIncome = period === 'monthly' ? income * 12 : income;
+
+    // Brackets sorted by lower bound, so the breakdown reads from lowest to highest
+    const brackets = [...config.brackets].sort((a, b) => a.min - b.min);
+
+    /* The bracket the top rand of income falls into. SARS brackets start at
+    R1, so a lower bound of `min` means income ABOVE `min - 1` is taxed at it. */
+    const bracket = brackets.find((b) =>
+        annualIncome >= b.min && (b.max === null || b.max === undefined || annualIncome <= b.max)
+    );
+
+    const grossTax = bracket
+        ? bracket.baseAmount + (annualIncome - (bracket.min - 1)) * bracket.rate
+        : 0;
+
+    const bracketBreakdown = [];
+    for (const b of brackets) {
+        const lower = b.min - 1;
+        const upper = b.max === null || b.max === undefined ? Infinity : b.max;
+        const amountInBracket = Math.min(annualIncome, upper) - lower;
+        if (amountInBracket <= 0) break;
+        bracketBreakdown.push({
+            min: b.min,
+            max: b.max ?? null,
+            rate: b.rate,
+            amountInBracket: round2(amountInBracket),
+            taxForBracket: round2(amountInBracket * b.rate),
+        });
+    }
+
+    // Rebates the taxpayer's age entitles them to
+    let rebate = config.rebates.primary;
+    if (age >= SECONDARY_REBATE_AGE) rebate += config.rebates.secondary;
+    if (age >= TERTIARY_REBATE_AGE) rebate += config.rebates.tertiary;
+
+    // The tax threshold for the taxpayer's age group
+    const threshold = age >= TERTIARY_REBATE_AGE
+        ? config.thresholds.age75plus
+        : age >= SECONDARY_REBATE_AGE
+        ? config.thresholds.age65to74
+        : config.thresholds.under65;
+
+    /* Rebate actually used against the tax: never more than the gross tax, so
+    the figures on the result reconcile (gross - rebate = net). */
+    const rebateApplied = Math.min(rebate, grossTax);
+    const netTax = annualIncome <= threshold ? 0 : Math.max(0, grossTax - rebateApplied);
+
+    return {
+        taxYear: config.taxYear,
+        incomeType: period,
+        income: round2(income),
+        annualIncome: round2(annualIncome),
+        age,
+        dependants,
+        threshold,
+        belowThreshold: annualIncome <= threshold,
+        grossTax: round2(grossTax),
+        rebate: round2(rebateApplied),
+        netTax: round2(netTax),
+        monthlyNetTax: round2(netTax / 12),
+        // Both rates are percentages, e.g. 18 for 18%
+        effectiveRate: annualIncome > 0 ? round2((netTax / annualIncome) * 100) : 0,
+        marginalRate: bracket ? round2(bracket.rate * 100) : 0,
+        bracketBreakdown,
+    };
+};
+
+module.exports = { calculateInterest, calculateVat, calculateIncomeTax, round2 };

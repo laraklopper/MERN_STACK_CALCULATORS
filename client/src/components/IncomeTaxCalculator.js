@@ -4,11 +4,34 @@ import '../css/componentCss/CalculatorSetup.css'
 import '../css/componentCss/IncomeTaxCalculator.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-import { AlertCircle, Asterisk, Calculator, RotateCcw } from 'lucide-react'
-import { BLANK_TAX_FORM } from '../util/calculatorFunc'
-import { formatCurrency, formatPercent } from '../util/currencyFunc';
+import { AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from 'lucide-react'
+import { BLANK_TAX_FORM, formatPercent, toTaxPayload, validateTaxForm } from '../util/calculatorFunc'
+import { formatCurrency } from '../util/currencyFunc';
 
-export default function IncomeTaxCalculator({currentUser, taxYears}) {
+/* Function to send a POST request to /tax/<path> with the logged in user's token.
+Shared by calculateTax and saveTaxCalculation, which post the same body.
+Returns the parsed response, or throws with the server's message. */
+const postTax = async (path, payload) => {
+  const token = localStorage.getItem('token')
+  // Send a POST request to the /tax/<path> endpoint
+  const response = await fetch(`http://localhost:3001/tax/${path}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
+    },
+    body: JSON.stringify(payload)
+  })
+  const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
+
+  if (!response.ok) {
+    throw new Error(data.message || `Request failed with status ${response.status}`);
+  }
+  return data
+}
+
+export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
   const [form, setForm] = useState({
     ...BLANK_TAX_FORM,
     taxYear: taxYears[0] ?? "",
@@ -27,22 +50,25 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
   },[taxYears])
 
 
-  //Request to calculate taxCalculation
-//POST /tax/calculate  
-  const calculateTax = useCallback(async () => {
+  /* Request to calculate taxCalculation: sends a POST request to /tax/calculate.
+  Returns the calculated result, or throws with the server's message. */
+  const calculateTax = useCallback(async (payload) => {
     try {
-      
+      const data = await postTax('calculate', payload)
+      return data.result
     } catch (error) {
-      
+      console.error('[ERROR: IncomeTaxCalculator.js, calculateTax]: Error calculating income tax:', error.message);//Log an error message in the console for debugging purposes
+      throw error
     }
   },[])
-  // Request function to save calculation
-//POST /tax/save
-  const saveTaxCalculation = useCallback(async () => {
+  /* Request function to save calculation: sends a POST request to /tax/save.
+  Returns the server's response, or throws with the server's message. */
+  const saveTaxCalculation = useCallback(async (payload) => {
     try {
-      
+      return await postTax('save', payload)
     } catch (error) {
-      
+      console.error('[ERROR: IncomeTaxCalculator.js, saveTaxCalculation]: Error saving income tax calculation:', error.message);//Log an error message in the console for debugging purposes
+      throw error
     }
   },[])
 
@@ -59,16 +85,53 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
     setStatus(null);
     setSaveStatus(null);
   };
-  // Function to submit tax calculator
-  // call the calculateTax function
-  const handleSubmit = () => {
+  /* Function to submit tax calculator: validates the form, then calls
+  calculateTax which posts to /tax/calculate. */
+  const handleSubmit = async (e) => {
+    e.preventDefault()
 
+    const formErrors = validateTaxForm(form)
+    setErrors(formErrors)
+    // Conditional rendering to stop the request when a field is unusable
+    if (Object.keys(formErrors).length > 0) {
+      setResult(null)
+      return
+    }
+
+    setStatus("calculating")
+    setStatusMessage("")
+    setResult(null)
+    setSaveStatus(null)
+    try {
+      const calculated = await calculateTax(toTaxPayload(form))
+      setResult(calculated)
+      setStatus(null)
+    } catch (error) {
+      setStatus("error")
+      setStatusMessage(error.message || "Could not calculate tax. Try again.")
+    }
   }
 
-  // Function to saveCalculation
-  // call the saveTaxCalculation request function
-  const handleSave = () => {
+  /* Function to saveCalculation: posts the inputs of the result on screen to
+  /tax/save. The server recalculates from them, so the saved record cannot
+  differ from what was shown. */
+  const handleSave = async () => {
+    // Conditional rendering to make sure there is a calculation to save
+    if (!result) return
 
+    setSaveStatus("saving")
+    try {
+      await saveTaxCalculation({
+        incomeType: result.incomeType,
+        income: result.income,
+        age: result.age,
+        taxYear: result.taxYear,
+        dependants: result.dependants,
+      })
+      setSaveStatus("saved")
+    } catch (error) {
+      setSaveStatus("error")
+    }
   }
     /* Bootstrap variant for the save button, so its colour reports the outcome
   of the save rather than staying neutral once the button is disabled. */
@@ -106,11 +169,13 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
         <Stack gap={3} id='taxCalcInputStack1'>
         {/* INCOME PERIOD */}
       <div className="p-2" id="taxCalcBlock1">
+      <span id='taxPeriodBtnSpan'>
+
+      
         <label className='calculatorLabel' htmlFor=''>INCOME PERIOD:</label>
         <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
-      </div>
-      <div className="p-2" id="taxCalcBlock2">
-        <div className="button-div">
+      </span>
+        <div id="taxPeriodBtnDiv">
             {["annual", "monthly"].map((t) => (
               <Button
                 key={t}
@@ -127,7 +192,9 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
               </Button>
             ))}
           </div>
-           <div className="p-2">
+         
+      </div>
+        <div className="p-2" id="taxCalcBlock2">
        {/* ANNUAL/MONTHLY INCOME */}
             <div className="inputDiv">
              <label className="calculatorLabel">
@@ -148,7 +215,6 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.income && <p className="field-error">{errors.income}</p>}
             </div>
-      </div>
       </div>
     </Stack>
         </div>

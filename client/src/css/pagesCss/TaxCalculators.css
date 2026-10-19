@@ -36,12 +36,14 @@
     margin: 0px;
     padding: 0px;
 }
+#incTaxCalcCol,
 #vatCalculatorCol{
     display: flex;
     margin: 0px;
     padding: 0px;
     
 }
+#incomeTaxCalcBlock,
 #vatCalculatorBlock{
     width: 100%;
     margin: 0px;
@@ -49,6 +51,13 @@
     display: flex;
     align-items: center;
 }
+#incTaxCalcRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#incTaxCalcCol1,
+#incTaxCalcCol2,
 #vatCalcCol1,
 #vatCalcCol2{
     margin: 0px;

@@ -27,9 +27,22 @@ const MAX_DURATION = {
     months: 1200, // 100 years expressed in months
 };
 /*=====================================
-
+INCOME TAX ROUTES: taxRoutes.js
 ===========*/
+// Values the income tax calculator accepts for the income period
+const INCOME_TYPES = ['annual', 'monthly'];
+// Age range the income tax calculator accepts (matches the form's min/max)
+const MIN_TAX_AGE = 16;
+const MAX_TAX_AGE = 120;
+// Most medical aid dependants a calculation will record
+const MAX_DEPENDANTS = 50;
+// Ages from which the SARS secondary and tertiary rebates apply
+const SECONDARY_REBATE_AGE = 65;
+const TERTIARY_REBATE_AGE = 75;
 
 /* The server is a CommonJS project ("type": "commonjs" in package.json), so
 the values are exported with module.exports for require() to pick up. */
-module.exports = { HISTORY_LIMIT, PERIOD_UNITS, INTEREST_TYPES, COMPOUND_FREQUENCIES, MAX_DURATION };
+module.exports = {
+    HISTORY_LIMIT, PERIOD_UNITS, INTEREST_TYPES, COMPOUND_FREQUENCIES, MAX_DURATION,
+    INCOME_TYPES, MIN_TAX_AGE, MAX_TAX_AGE, MAX_DEPENDANTS, SECONDARY_REBATE_AGE, TERTIARY_REBATE_AGE,
+};
