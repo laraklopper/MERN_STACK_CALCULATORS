@@ -1,6 +1,6 @@
 // VatCalculator.js
 //IMPORT REQUIRED MODULES AND PACKAGES
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/componentCss/FormSetup.css'
 import '../css/componentCss/CalculatorResult.css'
@@ -12,32 +12,15 @@ import Button from 'react-bootstrap/Button';
 import { Asterisk, Save } from 'lucide-react';
 // IMPORT UTILITY FUNCTIONS
 import { formatCurrency } from '../util/currencyFunc';
-// SARS standard VAT rate. Centralised here so a future rate change
-// (as nearly happened for 2025/2026) only needs updating in one place.
-const SARS_VAT_RATE = 0.15;
+import { ZERO_RATED_CATEGORIES, SARS_VAT_RATE } from '../util/calculatorFunc';
 
-const ZERO_RATED_CATEGORIES = [
-  'Brown bread',
-  'Maize meal',
-  'Rice',
-  'Vegetables',
-  'Fruit',
-  'Milk',
-  'Eggs',
-  'Vegetable oil',
-  'Dried beans',
-  'Lentils',
-  'Paraffin',
-  'Brown wheaten meal',
-  'Pilchards/sardinella in tins',
-];
 
 // VatCalculator function component
 export default function VatCalculator(//Export default VatCalculator.js component
   {//PROPS PASSED FROM PARENT COMPONENT (Tax.js)
-    currentUser, 
-    calculateVat
+    currentUser
   }) {
+  // ========STATE VARIABLES==================
   const [amount, setAmount] = useState('')
   const [mode, setMode] = useState('exclusive')
   const [isZeroRated, setIsZeroRated] = useState(false)
@@ -45,35 +28,8 @@ export default function VatCalculator(//Export default VatCalculator.js componen
   const [error, setError] = useState(null)
 
 
-  const calculateVat = (rawAmount, calcMode, zeroRated) => {
-    const rate = zeroRated ? 0 : SARS_VAT_RATE;
-
-    let netAmount;
-    let vatAmount;
-    let grossAmount;
-
-    if (calcMode === 'exclusive') {
-      // User entered the amount excluding VAT — add VAT on top
-      netAmount = rawAmount;
-      vatAmount = netAmount * rate;
-      grossAmount = netAmount + vatAmount;
-    } else {
-      // User entered the amount including VAT — strip VAT back out
-      grossAmount = rawAmount;
-      netAmount = rate === 0 ? grossAmount : grossAmount / (1 + rate);
-      vatAmount = grossAmount - netAmount;
-    }
-
-    return {
-      mode: calcMode,
-      isZeroRated: zeroRated,
-      ratePercent: rate * 100,
-      netAmount: Number(netAmount.toFixed(2)),
-      vatAmount: Number(vatAmount.toFixed(2)),
-      grossAmount: Number(grossAmount.toFixed(2)),
-      calculatedAt: new Date().toISOString(),
-    };
-  };
+ 
+  
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
@@ -92,35 +48,38 @@ export default function VatCalculator(//Export default VatCalculator.js componen
     runCalculation(amount, mode, checked);
   };
 
-  const runCalculation = (rawValue, calcMode, zeroRated) => {
-    const parsed = parseFloat(rawValue);
-
-    if (rawValue === '' || Number.isNaN(parsed)) {
-      setResult(null);
-      setError('');
-      return;
+  // Function to calculate VAT
+  const calculateVat = useCallback(async () => {
+    const token = localStorage.getItem('token')
+    try {
+      const response = await fetch('')
+    } catch (error) {
+      
     }
+  },[])
 
-    if (parsed < 0) {
-      setError('Amount cannot be negative.');
-      setResult(null);
-      return;
+  const saveCalculation = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('token')
+    } catch (error) {
+      
     }
-
-    setError('');
-    const calcResult = calculateVat(parsed, calcMode, zeroRated);
-    setResult(calcResult);
-
-    // if (onCalculate) {
-      // onCalculate(calcResult);
-    // }
-  };
-
+  },[])
+  // / Function to submit vat calculation POST request
+   const handleCalculation = useCallback(async (w) => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  })
+  
   // Function to save the VAT calculation
-  // call the saveVatCalculation request function
-  // const handleSave = () => {
+  // const handleSave = (e) => {
     
   // }
+  
+  /
   // ================JSX RENDERING===================
   return (
     <form id='vatCalculator' method='POST' /*onSubmit={}*/ aria-labelledby='formHeading'>

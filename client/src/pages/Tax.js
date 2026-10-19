@@ -40,6 +40,9 @@ export default function Tax({currentUser, logout}) {
     setShowProvTaxCalc(false)
   },[])
 
+
+  
+
   // ==========JSX RENDERING==========================
   return (
     <div id='pageContainer'>
@@ -91,7 +94,9 @@ export default function Tax({currentUser, logout}) {
           aria-pressed={showVatCalculator}
           aria-expanded={showVatCalculator}
           aria-controls='vatCalculatorPanal'
-          >{showVatCalculator ? 'Hide Vat Calculator': 'Show VAT calculator'}</Button>
+          >
+            {showVatCalculator ? 'Hide Vat Calculator': 'Show VAT calculator'}
+          </Button>
       </div>
     </Stack>
         </Col>
@@ -132,7 +137,9 @@ export default function Tax({currentUser, logout}) {
               <Col id='vatCalcCol1'/>
               <Col id='vatCalculatorCol' xs={6} md={6}>
                 <div id='vatCalculatorBlock'>
-                  <VatCalculator/>
+                  <VatCalculator
+                    currentUser={currentUser}
+                  />
                 </div>
               </Col>
               <Col id='vatCalcCol2'/>
