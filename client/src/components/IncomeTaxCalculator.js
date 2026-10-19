@@ -25,7 +25,28 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
       taxYears.includes(prev.taxYear) ? prev : { ...prev, taxYear: taxYears[0] }
     );
   },[taxYears])
-  const updateField = (field, value) => {
+
+
+  //Request to calculate taxCalculation
+//POST /tax/calculate  
+  const calculateTax = useCallback(async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  },[])
+  // Request function to save calculation
+//POST /tax/save
+  const saveTaxCalculation = useCallback(async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  },[])
+
+    const updateField = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     setResult(null);
     setSaveStatus(null);
@@ -38,16 +59,6 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
     setStatus(null);
     setSaveStatus(null);
   };
-
-//POST /tax/calculate  
-  const calculateTax = useCallback(async () => {
-    
-  },[])
-  
-  const saveTaxCalculation = useCallback(async () => {
-    
-  },[])
-
   // Function to submit tax calculator
   // call the calculateTax function
   const handleSubmit = () => {
@@ -56,13 +67,13 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
 
   // Function to saveCalculation
   // call the saveTaxCalculation request function
-  const saveCalculation = () => {
+  const handleSave = () => {
 
   }
     /* Bootstrap variant for the save button, so its colour reports the outcome
   of the save rather than staying neutral once the button is disabled. */
-  // const saveButtonVariant =
-    // saveStatus === "saved" ? "success" : saveStatus === "error" ? "danger" : "light";
+  const saveButtonVariant =
+    saveStatus === "saved" ? "success" : saveStatus === "error" ? "danger" : "light";
 
   //===========JSX RENDERING======================
   return (
@@ -73,7 +84,7 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
           {statusMessage}
         </div>
       )}
-      <form id='taxCalculatorForm' aria-labelledby='calculatorHeading'>
+      <form id='taxCalculatorForm' method='POST' onSubmit={handleSubmit} aria-labelledby='calculatorHeading'>
         <div id='calculatorHeadingBlock'>
           <Stack gap={3} id='calculatorHeadingStack'>
       <div className="p-2" id='taxCalculatorHeadingBlock'>
@@ -85,7 +96,6 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
           and the selected tax year.
         </p>
       </div>
-     
     </Stack>
         </div>
         {/* =====INPUT=========== */}
@@ -191,13 +201,11 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
             <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
             {errors.taxYear && <p className="field-error">{errors.taxYear}</p>}
           </div>
-
       </div>
       <div className="p-2">
          {/* MEDICAL AID DEPENDENTS */}
-         <label className="calculatorLabel">Medical aid dependants:</label>
+         <label className="calculatorLabel" htmlFor=''>Medical aid dependants:</label>
 <div className="inputDiv">
-            
             <input
               type="number"
               min="0"
@@ -238,7 +246,7 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
             disabled={status === "calculating"}
             variant="light"
           >
-            <Calculator size={16} />
+            <Calculator size={16} fontWeight={700} aria-hidden='true' focusable='false'/>
             {status === "calculating" ? "Calculating..." : "Calculate"}
           </Button>
       </div>
@@ -325,7 +333,8 @@ export default function IncomeTaxCalculator({currentUser, taxYears}) {
             practitioner for official calculations.
           </p>
           {/* RESULT */}
-          {isAuthenticated && onSave && (
+
+          {currentUser && (
             <div className="save-row">
               <Button
                 type="button"
