@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import '../css/pagesCss/pageSetup.css'
+import '../css/pagesCss/Converter.css'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Header from '../components/Header'
@@ -20,7 +21,7 @@ export default function Converter({currentUser, logout}) {
         <section id='converterSec1'>
           <Row id='currencyConverterRow'>
         <Col id='converterCol1'/>
-        <Col xs={12} md={8} id='converterCol'>
+        <Col xs={6}  id='converterCol'>
           <div id='currencyConverterPanal'>
             <CurrencyConverterForm/>
           </div>
