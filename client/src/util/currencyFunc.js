@@ -65,6 +65,25 @@ export const NAMES_BY_CODE = currencyCountries.reduce((lookup, { code, name }) =
     return lookup;
 }, {});
 
+
+/* An amount in rands, e.g. R 1 500,00. The tax and interest calculators work
+only in rands, so their lists show the symbol, matching what the calculator
+forms themselves display. */
+export const toRands = (value) => formatMoney(value, 'ZAR', 'symbol')
+
+// Format a percentage held as a number, e.g. 26.5 as 26,50%
+export const toPercent = (value) => {
+  if (typeof value !== 'number' || isNaN(value)) return NOT_AVAILABLE
+  return `${value.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
+}
+
+/* Format a plain number, e.g. an exchange rate or a duration. Rates are quoted
+to far more than 2 decimals, and rounding one to currency precision would show a
+weak pair as 0,00, so the caller says how many decimals to keep. */
+export const toDecimal = (value, maximumFractionDigits = 2) => {
+  if (typeof value !== 'number' || isNaN(value)) return NOT_AVAILABLE
+  return value.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits })
+}
 /* Format a figure as rands, e.g. R 1 500,00. Used by the tax and interest
 calculator forms, which work only in rands. A missing figure is shown as R 0,00
 rather than as nothing, because a result card with no number in it reads as a
@@ -75,4 +94,53 @@ export const formatCurrency = (value) => {
         currency: "ZAR",
         maximumFractionDigits: 2,
     }).format(value || 0);
+}
+//===========================================================================
+// CONVERSION RESULT (CurrencyConvertForm.js)
+//===========================================================================
+/* A converted amount, to currency precision. The figure comes back from the API
+as a number, so it is fixed to 2 decimals the way money is written. */
+export const toConvertedAmount = (value) => Number(value).toFixed(2)
+
+/* An exchange rate as quoted. Rates are quoted to far more than 2 decimals, and
+rounding one to currency precision would show a weak pair as 0.00, so 4 are
+kept. */
+export const toQuotedRate = (value) => Number(value).toFixed(4)
+
+//===========================================================================
+// SAVED CONVERSIONS (CurrencyCalculations.js)
+//===========================================================================
+/* Format an exchange rate with the pair it prices. Rates are quoted to far more
+than 2 decimals, so a rate is shown to 6 rather than being rounded to currency
+precision, which would show a weak pair as 0,00. */
+export const toRate = (rate, baseCurrency, targetCurrency) => {
+    const formatted = toDecimal(rate, 6)
+    if (formatted === NOT_AVAILABLE || !baseCurrency || !targetCurrency) return formatted
+    return `${formatted} ${targetCurrency} PER 1 ${baseCurrency}`
+}
+
+/* A currency's full name, e.g. 'ZAR' gives 'South African Rand'. A saved
+conversion stores only the two codes, so the name is looked for in the currency
+list the converter loaded from the provider, and in the local country data for
+any code that list reports without a name. */
+export const currencyNameOf = (code, currencies = []) => {
+    if (!code) return '';
+    const match = currencies.find((currency) => currency.code === code);
+    return match?.name || NAMES_BY_CODE[code] || '';
+}
+
+/* A saved conversion's currency written out in full, e.g. 'ZAR - South African
+Rand'. Falls back to the code alone for a currency nothing has a name for, and
+to a dash for a record missing the code itself. */
+export const currencyLabelOf = (code, currencies) =>
+    code ? currencyOptionLabel(code, currencyNameOf(code, currencies)) : NOT_AVAILABLE
+
+/* The converted amount as stored. The schema exposes it as a virtual, so it
+arrives on the record; it is recomputed from amount * rate only as a fallback. */
+export const convertedAmountOf = (conversion) => {
+    if (typeof conversion?.convertedAmount === 'number') return conversion.convertedAmount
+    if (typeof conversion?.amount === 'number' && typeof conversion?.rate === 'number') {
+        return conversion.amount * conversion.rate
+    }
+    return null
 }
