@@ -17,6 +17,7 @@ taken from the request, so a user can only ever read or delete their own
 records. */
 const express = require('express');
 const router = express.Router()
-
+const User = require('../models/userSchema');
+const TaxCalc = require('../models/taxCalcSchema');
 
 module.exports = router
