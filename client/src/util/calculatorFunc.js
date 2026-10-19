@@ -94,7 +94,7 @@ export const toInterestPayload = (form) => ({
 });
 
 /*=================================
-
+TAX CALCULATOR
 =====================*/
 // The tax calculator's inputs before the user has filled anything in
 export const BLANK_TAX_FORM = {
@@ -104,7 +104,8 @@ export const BLANK_TAX_FORM = {
     taxYear: "",
     dependants: "0",
 };
-
+// Format a percentage held as a number, e.g. 26.5 as 26.50%
+export const formatPercent = (value) => `${(value || 0).toFixed(2)}%`;
 /*===================================
 VAT CALCULATOR 
 ===========================*/
