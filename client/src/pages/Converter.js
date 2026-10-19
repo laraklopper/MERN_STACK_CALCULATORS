@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import '../css/pagesCss/pageSetup.css'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import CurrencyConverterForm from '../components/CurrencyConverterForm';
 
 export default function Converter({currentUser, logout}) {
   const [form, setForm] = useState()// Stores the user's form inputs
@@ -15,6 +18,15 @@ export default function Converter({currentUser, logout}) {
     <div id='pageContainer'>
         <Header pageHeader={'CURRENCY CONVERTER'} currentUser={currentUser}/>
         <section id='converterSec1'>
+          <Row id='currencyConverterRow'>
+        <Col id='converterCol1'/>
+        <Col xs={12} md={8} id='converterCol'>
+          <div id='currencyConverterPanal'>
+            <CurrencyConverterForm/>
+          </div>
+        </Col>
+        <Col id='converterCol2'/>
+      </Row>
 
         </section>
         <Footer logout={logout}/>
