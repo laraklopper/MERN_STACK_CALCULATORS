@@ -15,6 +15,7 @@ import Footer from '../components/Footer'
 import IncomeTaxCalculator from '../components/IncomeTaxCalculator';
 import ProvisionalTaxCalculator from '../components/ProvisionalTaxCalculator';
 import VatCalculator from '../components/VatCalculator';
+import { taxSeedData } from '../util/taxSeedData';
 /*Page to calculate ProvisionalTax,
 IncomeTax & vat
 */
@@ -23,7 +24,7 @@ export default function Tax({currentUser, logout}) {
   const [showTaxCalc , setShowTaxCalc] = useState(false)
   const [showProvTaxCalc, setShowProvTaxCalc] = useState(false)
   const [showVatCalculator, setShowVatCalc] = useState(false)
-
+const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
   const toggleTaxCalculator = useCallback(() => {
     setShowTaxCalc(prev => !prev)
     setShowProvTaxCalc(false)
