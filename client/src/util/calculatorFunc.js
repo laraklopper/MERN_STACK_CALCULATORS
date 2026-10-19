@@ -93,6 +93,18 @@ export const toInterestPayload = (form) => ({
     monthlyContribution: form.monthlyContribution,
 });
 
+/*=================================
+
+=====================*/
+// The tax calculator's inputs before the user has filled anything in
+export const BLANK_TAX_FORM = {
+    incomeType: "annual", // "annual" | "monthly"
+    income: "",
+    age: "",
+    taxYear: "",
+    dependants: "0",
+};
+
 /*===================================
 VAT CALCULATOR 
 ===========================*/
