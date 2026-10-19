@@ -15,6 +15,7 @@
     letter-spacing: 2px;
     text-decoration: underline;
 }
+/* INPUT */
 .calculatorInput{
     width:200px;
     height:40px;
@@ -47,7 +48,7 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 180px;
+    width: 200px;
     height: 40px;
     font-family: "Fira Mono", monospace;
     font-weight: 700;
@@ -63,4 +64,34 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
 #clearCalculatorBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;    
+}
+#requiredCalcInput{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+    gap: 3px;
+}
+.reqInputText{
+    font-family: "Open Sans", sans-serif;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.reqCalcInputSpan{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#formSubmitBlock,
+#clearCalculatorBlock{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+
 }

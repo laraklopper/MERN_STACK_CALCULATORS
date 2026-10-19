@@ -240,7 +240,13 @@ export default function VatCalculator(//Export default VatCalculator.js componen
           </Button>
         </div>
       </div>
-      {/* ZERO RATED */}
+   
+    </Stack>
+        </div>
+        {/* GROUP 2 */}
+        <div id='vatFormGroup2'>
+        <Stack gap={3}>
+         {/* ZERO RATED */}
       <div className="p-2" id='vatCalculatorBlock3'>
         <input
           type='checkbox'
@@ -251,44 +257,52 @@ export default function VatCalculator(//Export default VatCalculator.js componen
         />
         <label className='calculatorLabel' htmlFor='vatZeroRated'>This item is zero rated</label>
       </div>
-    </Stack>
-        </div>
-        {/* GROUP 2 */}
-        <div id='vatFormGroup2'>
-          {isZeroRated && (
+       {isZeroRated && (
+            <div className="p-2">
             <p className="zeroRatedCategories">
               Common zero-rated items: {ZERO_RATED_CATEGORIES.join(', ')}.
             </p>
+            </div>
           )}
           {error && (
-            <p className="vatCalculatorError" role='alert'>
-              <AlertCircle size={16} color='#C22419' aria-hidden='true' focusable='false' /> {error}
-            </p>
-          )}
-        </div>
-        {/* BUTTONS */}
-        <div className="form-actions">
-          <Stack gap={2} className="col-md-5 mx-auto" id='vatFormBtnStack'>
-            <div className="p-2" id='requiredInfo'>
-              <p className='infoText' aria-hidden='true'>
-                <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
+            <div className="p-2">
+              <p className="vatCalculatorError" role='alert'>
+                <AlertCircle size={16} color='#C22419' aria-hidden='true' focusable='false' /> {error}
               </p>
             </div>
-            <Button
-              variant='light'
-              type='submit'
-              id='calculateVatBtn'
-              disabled={status === 'calculating'}
-              // ARIA ATTRIBUTES:
-              aria-disabled={status === 'calculating'}
-            >
-              <Calculator size={16} aria-hidden='true' focusable='false' />
-              {status === 'calculating' ? 'Calculating...' : 'Calculate'}
-            </Button>
-            <Button variant='danger' type='button' onClick={resetForm} id='clearFormBtn'>
-              <RotateCcw size={16} aria-hidden='true' focusable='false' /> Reset
-            </Button>
-          </Stack>
+          )}
+    </Stack>
+        </div>
+        {/* BUTTONS */}
+        <div className="vatFormActions">
+           <Stack gap={3} id='vatFormBtnStack'>
+              <div className="p-2" id='requiredCalcInput'>
+                <span className='reqCalcInputSpan'>
+              <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+                  <p className='reqInputText' aria-hidden='true'>
+                    Indicates required information
+                  </p>
+                  </span>
+              </div>
+              <div className="p-2" id='formSubmitBlock'>
+              <Button
+                variant='light'
+                type='submit'
+                id='submitCalculatorBtn'
+                disabled={status === 'calculating'}
+                // ARIA ATTRIBUTES:
+                aria-disabled={status === 'calculating'}
+              >
+                <Calculator size={16} aria-hidden='true' focusable='false' />
+                {status === 'calculating' ? 'Calculating...' : 'Calculate'}
+              </Button>
+            </div>
+            <div className="p-2" id='clearCalculatorBlock'>
+              <Button variant='danger' type='button' onClick={resetForm} id='clearCalculatorBtn'>
+                  <RotateCcw size={16} fontWeight={700} aria-hidden='true' focusable='false' /> Reset
+              </Button>
+            </div>
+           </Stack>
         </div>
         {/* ----END OF INPUT------- */}
         {/* RESULTS */}

@@ -8,9 +8,15 @@
   width: 100%;
   
 }
+/* GROUP 1 */
 #vatFormGroup1{
     display: flex;
+    width: 100%;
+    margin: 0px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
 }
+/* GROUP */
 #vatCalcBtnDiv{
     display: flex;
     gap: 10px;
@@ -31,6 +37,18 @@
     padding: 0px;
     justify-content: center;
     align-items: center;
+}
+#vatFormActions{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+}
+#vatFormBtnStack{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
 }
 /* CALCULATION TYPE TOGGLE */
 .vatCalculatorToggleBtn{
