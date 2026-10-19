@@ -13,6 +13,7 @@ const port = process.env.PORT || 3000; // Define the port to listen on, defaulti
 const userRoutes = require('./routes/userRoutes')
 const authRoutes = require('./routes/authRoutes')
 const interestRoutes = require('./routes/interestRoutes')
+const vatRoutes = require('./routes/vatRoutes')
 const connectDB = require('./config/connect'); // Import the database connection function
 
 
@@ -28,7 +29,8 @@ app.use(helmet()); // Use Helmet for security headers
 
 app.use('/users', userRoutes);//User Routes: /me , fetchUsers,
 app.use('/auth', authRoutes)//auth Routes: /login, /register
-app.use('/interest', interestRoutes)
+app.use('/interest', interestRoutes)// interest Routes:
+app.use('/vat', vatRoutes)//vat routes:
 // ================== MONGOOSE CONFIG ==================
 // Disable strict populate to prevent errors
 // when populating paths that are conditionally defined
