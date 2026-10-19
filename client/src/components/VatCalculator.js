@@ -8,11 +8,36 @@ import '../css/componentCss/VatCalculator.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 // IMPORT ICONS FROM LUCIDE-REACT
-import { Asterisk, Save } from 'lucide-react';
+import { AlertCircle, Asterisk, Calculator, RotateCcw, Save } from 'lucide-react';
 // IMPORT UTILITY FUNCTIONS
 import { formatCurrency } from '../util/currencyFunc';
 import { ZERO_RATED_CATEGORIES, SARS_VAT_RATE } from '../util/calculatorFunc';
 
+// Upper bound on the amount, mirroring MAX_AMOUNT in vatRoutes.js
+const MAX_AMOUNT = 1_000_000_000;
+
+/* Function to send a POST request to /vat/<path> with the logged in user's token.
+Shared by calculateVat and saveCalculation, which post the same body.
+Returns the parsed response, or throws with the server's message. */
+const postVat = async (path, payload) => {
+  const token = localStorage.getItem('token')
+  // Send a POST request to the /vat/<path> endpoint
+  const response = await fetch(`http://localhost:3001/vat/${path}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
+    },
+    body: JSON.stringify(payload)
+  })
+  const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
+
+  if (!response.ok) {
+    throw new Error(data.message || `Request failed with status ${response.status}`);
+  }
+  return data
+}
 
 // VatCalculator function component
 export default function VatCalculator(//Export default VatCalculator.js component
@@ -21,76 +46,140 @@ export default function VatCalculator(//Export default VatCalculator.js componen
   }) {
   // ========STATE VARIABLES==================
   const [amount, setAmount] = useState('')
-  const [mode, setMode] = useState('exclusive')
+  const [mode, setMode] = useState('exclusive') // 'exclusive' | 'inclusive'
   const [isZeroRated, setIsZeroRated] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
+  const [status, setStatus] = useState(null) // null | 'calculating'
+  const [saveStatus, setSaveStatus] = useState(null) // null | 'saving' | 'saved' | 'error'
+  const [saveMessage, setSaveMessage] = useState('')
 
+  /* Bootstrap variant for the save button, so its colour reports the outcome
+  of the save rather than staying neutral once the button is disabled. */
+  const saveButtonVariant =
+    saveStatus === 'saved' ? 'success' : saveStatus === 'error' ? 'danger' : 'light';
 
- 
-  
+  /* Any change to the inputs makes the result on screen out of date, so it is
+  cleared rather than left showing figures for a different question. */
+  const clearResult = () => {
+    setResult(null);
+    setError(null);
+    setSaveStatus(null);
+    setSaveMessage('');
+  };
 
+  // =============EVENT LISTENERS=============
   const handleAmountChange = (e) => {
-    const value = e.target.value;
-    setAmount(value);
-    runCalculation(value, mode, isZeroRated);
+    setAmount(e.target.value);
+    clearResult();
   };
 
   const handleModeChange = (newMode) => {
+    if (newMode === mode) return;
     setMode(newMode);
-    runCalculation(amount, newMode, isZeroRated);
+    clearResult();
   };
 
   const handleZeroRatedToggle = (e) => {
-    const checked = e.target.checked;
-    setIsZeroRated(checked);
-    runCalculation(amount, mode, checked);
+    setIsZeroRated(e.target.checked);
+    clearResult();
   };
 
-  // Function to calculate VAT
-  const calculateVat = useCallback(async () => {
-    const token = localStorage.getItem('token')
+  //Function to reset the form
+  const resetForm = () => {
+    setAmount('');
+    setMode('exclusive');
+    setIsZeroRated(false);
+    setStatus(null);
+    clearResult();
+  };
+
+  //=======REQUEST FUNCTION HANDLERS===========
+  /* Function to calculate VAT: sends a POST request to /vat/calculate.
+  Returns the calculated result, or throws with the server's message. */
+  const calculateVat = useCallback(async (payload) => {
     try {
-      const response = await fetch('')
+      const data = await postVat('calculate', payload)
+      return data.result
     } catch (error) {
-      
+      console.error('[ERROR: VatCalculator.js, calculateVat]: Error calculating VAT:', error.message);//Log an error message in the console for debugging purposes
+      throw error
     }
   },[])
 
-  const saveCalculation = useCallback(async () => {
+  /* Function to save a VAT calculation: sends a POST request to /vat/save.
+  Returns the server's response, or throws with the server's message. */
+  const saveCalculation = useCallback(async (payload) => {
     try {
-      const token = localStorage.getItem('token')
+      return await postVat('save', payload)
     } catch (error) {
-      
+      console.error('[ERROR: VatCalculator.js, saveCalculation]: Error saving VAT calculation:', error.message);//Log an error message in the console for debugging purposes
+      throw error
     }
   },[])
-  // / Function to submit vat calculation POST request
-   const handleCalculation = useCallback(async (w) => {
-    try {
-      
-    } catch (error) {
-      
+
+  /* Function to submit the vat calculation form: validates the amount, then
+  calls calculateVat which posts to /vat/calculate. */
+  const handleCalculation = useCallback(async (e) => {
+    e.preventDefault()
+
+    const value = parseFloat(amount);
+    // Conditional rendering to stop the request when the amount is unusable
+    if (amount === '' || !Number.isFinite(value) || value < 0 || value > MAX_AMOUNT) {
+      setError(`Enter an amount between 0 and ${formatCurrency(MAX_AMOUNT)}.`);
+      setResult(null);
+      return;
     }
-  })
-  
-  // Function to save the VAT calculation
-  // const handleSave = (e) => {
-    
-  // }
-  
-  /
+
+    setStatus('calculating');
+    setError(null);
+    setResult(null);
+    try {
+      const calculated = await calculateVat({ amount: value, mode, isZeroRated });
+      setResult(calculated);
+    } catch (error) {
+      setError(error.message || 'Could not calculate VAT. Try again.');
+    } finally {
+      setStatus(null);
+    }
+  },[amount, mode, isZeroRated, calculateVat])
+
+  /* Function to handle the save calculation button: posts the inputs of the
+  result on screen to /vat/save. The server recalculates from them, so the
+  saved record cannot differ from what was shown. */
+  const handleSave = useCallback(async (e) => {
+    e.preventDefault()
+    // Conditional rendering to make sure there is a calculation to save
+    if (!result) return;
+
+    setSaveStatus('saving');
+    setSaveMessage('');
+    try {
+      const data = await saveCalculation({
+        amount: result.amount,
+        mode: result.mode,
+        isZeroRated: result.isZeroRated,
+      });
+      setSaveStatus('saved');
+      setSaveMessage(data?.message || 'Calculation saved to your history');
+    } catch (error) {
+      setSaveStatus('error');
+      setSaveMessage(error.message || 'Could not save. Try again.');
+    }
+  },[result, saveCalculation])
+
   // ================JSX RENDERING===================
   return (
-    <form id='vatCalculator' method='POST' /*onSubmit={}*/ aria-labelledby='formHeading'>
+    <form id='vatCalculator' method='POST' onSubmit={handleCalculation} aria-labelledby='formHeading'>
     {/* Heading */}
     <div id='vatCalcHeadingBlock'>
       <h3 id='formHeading'>VAT CALCULATOR</h3>
       <span className='formTextSpan'>
- <p className="formText">
-        South African standard rate: {SARS_VAT_RATE * 100}% (SARS)
-      </p>
+        <p className="formText">
+          South African standard rate: {SARS_VAT_RATE * 100}% (SARS)
+        </p>
       </span>
-      </div>
+    </div>
       {/* CALCULATOR INPUT */}
       <div id='vatCalculatorInput'>
       {/* GROUP 1 */}
@@ -98,7 +187,7 @@ export default function VatCalculator(//Export default VatCalculator.js componen
          <Stack gap={3} id='vatCalcStack1'>
          {/* VAT AMOUNT */}
       <div className="p-2" id='vatCalculatorBlock1'>
-        <label className='calculatorLabel' id='vatAmount'>AMOUNT (ZAR):</label>
+        <label className='calculatorLabel' htmlFor='vatAmount'>AMOUNT (ZAR):</label>
         <div className='inputDiv'>
           <input
             type='number'
@@ -106,6 +195,7 @@ export default function VatCalculator(//Export default VatCalculator.js componen
             id='vatAmount'
             step="0.01"
             min="0"
+            max={MAX_AMOUNT}
             required
             name='amount'
             value={amount}
@@ -118,33 +208,39 @@ export default function VatCalculator(//Export default VatCalculator.js componen
           <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
+      {/* CALCULATION TYPE */}
       <div className="p-2" id='vatCalculatorBlock2'>
-        <label className="calculatorLabel" htmlFor=''>Calculation type:</label>
-                      <div id='vatCalcBtnDiv'>
-                <Button
-                variant='light'
-                type="button"
-                id='vatCalcTypebtn1'
-            className={`vat-calculator__toggle-btn ${
-              mode === 'exclusive' ? 'vatCalculatorToggleBtn--active' : ''
+        <label className="calculatorLabel" htmlFor='vatCalcTypebtn1'>Calculation type:</label>
+        <div id='vatCalcBtnDiv'>
+          <Button
+            variant='light'
+            type="button"
+            id='vatCalcTypebtn1'
+            className={`vatCalculatorToggleBtn${
+              mode === 'exclusive' ? ' vatCalculatorToggleBtn--active' : ''
             }`}
             onClick={() => handleModeChange('exclusive')}
-                >
-                  Add VAT (excl. → incl.)
-                </Button>
-                 <Button
-                 variant='light'
+            // ARIA ATTRIBUTES:
+            aria-pressed={mode === 'exclusive'}
+          >
+            Add VAT (excl. → incl.)
+          </Button>
+          <Button
+            variant='light'
             type="button"
             id='vatCalcTypebtn2'
-            className={`vat-calculator__toggle-btn ${
-              mode === 'inclusive' ? 'vat-calculator__toggle-btn--active' : ''
+            className={`vatCalculatorToggleBtn${
+              mode === 'inclusive' ? ' vatCalculatorToggleBtn--active' : ''
             }`}
             onClick={() => handleModeChange('inclusive')}
+            // ARIA ATTRIBUTES:
+            aria-pressed={mode === 'inclusive'}
           >
             Remove VAT (incl. → excl.)
           </Button>
-              </div>
+        </div>
       </div>
+      {/* ZERO RATED */}
       <div className="p-2" id='vatCalculatorBlock3'>
         <input
           type='checkbox'
@@ -159,49 +255,93 @@ export default function VatCalculator(//Export default VatCalculator.js componen
         </div>
         {/* GROUP 2 */}
         <div id='vatFormGroup2'>
-            {isZeroRated && (
-        <p className="zeroRatedCategories">
-          Common zero-rated items: {ZERO_RATED_CATEGORIES.join(', ')}.
-        </p>
-      )}
-      {error && <p className="vatCalculatorError">{error}</p>}
+          {isZeroRated && (
+            <p className="zeroRatedCategories">
+              Common zero-rated items: {ZERO_RATED_CATEGORIES.join(', ')}.
+            </p>
+          )}
+          {error && (
+            <p className="vatCalculatorError" role='alert'>
+              <AlertCircle size={16} color='#C22419' aria-hidden='true' focusable='false' /> {error}
+            </p>
+          )}
+        </div>
+        {/* BUTTONS */}
+        <div className="form-actions">
+          <Stack gap={2} className="col-md-5 mx-auto" id='vatFormBtnStack'>
+            <div className="p-2" id='requiredInfo'>
+              <p className='infoText' aria-hidden='true'>
+                <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
+              </p>
+            </div>
+            <Button
+              variant='light'
+              type='submit'
+              id='calculateVatBtn'
+              disabled={status === 'calculating'}
+              // ARIA ATTRIBUTES:
+              aria-disabled={status === 'calculating'}
+            >
+              <Calculator size={16} aria-hidden='true' focusable='false' />
+              {status === 'calculating' ? 'Calculating...' : 'Calculate'}
+            </Button>
+            <Button variant='danger' type='button' onClick={resetForm} id='clearFormBtn'>
+              <RotateCcw size={16} aria-hidden='true' focusable='false' /> Reset
+            </Button>
+          </Stack>
         </div>
         {/* ----END OF INPUT------- */}
         {/* RESULTS */}
- {result && (
-        <div>
-          <div className="vat-calculator__result-row">
-            <span>Amount excl. VAT</span>
-            <span>{formatCurrency(result.netAmount)}</span>
+        {result && (
+          <div id='vatCalculatorResults' aria-live='polite'>
+            <div className="vatCalculatorResultRow">
+              <span>Amount excl. VAT</span>
+              <span>{formatCurrency(result.netAmount)}</span>
+            </div>
+            <div className="vatCalculatorResultRow">
+              <span>VAT ({result.ratePercent}%)</span>
+              <span>{formatCurrency(result.vatAmount)}</span>
+            </div>
+            <div className="vatCalculatorResultRow vatCalculatorResultRow--total">
+              <span>Amount incl. VAT</span>
+              <span>{formatCurrency(result.grossAmount)}</span>
+            </div>
           </div>
-          <div className="vat-calculator__result-row">
-            <span>VAT ({result.ratePercent}%)</span>
-            <span>{formatCurrency(result.vatAmount)}</span>
+        )}
+        {result && (currentUser ? (
+          <div id='vatSaveRow'>
+            <Button
+              /* Turns green once the calculation is safely in the user's
+              history, red when the save was rejected. */
+              variant={saveButtonVariant}
+              type='button'
+              id='saveVatCalculationBtn'
+              onClick={handleSave}
+              disabled={saveStatus === 'saving' || saveStatus === 'saved'}
+              // ARIA ATTRIBUTES:
+              aria-label='Save VAT calculation to your history'
+              aria-disabled={saveStatus === 'saving' || saveStatus === 'saved'}
+            >
+              <Save aria-hidden='true' focusable='false' />
+              {saveStatus === 'saving'
+                ? 'SAVING...'
+                : saveStatus === 'saved'
+                ? 'SAVED TO HISTORY'
+                : 'SAVE CALCULATION'}
+            </Button>
+            {saveStatus === 'error' && (
+              <span className='vatCalculatorError' role='alert'>{saveMessage}</span>
+            )}
+            {saveStatus === 'saved' && saveMessage && (
+              <span className='vatSaveSuccess' role='status'>{saveMessage}</span>
+            )}
           </div>
-          <div className="vat-calculator__result-row vat-calculator__result-row--total">
-            <span>Amount incl. VAT</span>
-            <span>{formatCurrency(result.grossAmount)}</span>
-          </div>
-        </div>
-      )}
-      {currentUser ? (
-        <Button
-        variant='light'
-        type='saveVatCalculationBtn'
-        // onClick={handleSave}
-        // ARIA ATTRIBUTES:
-        // aria-label=''
-        >
-          <Save aria-hidden='true'  />SAVE CALCULATION
-        </Button>
-      ):(
-        result && (
+        ) : (
           <p className="vatCalculatorAuthHint">
             Log in to save this calculation to your history.
           </p>
-        )
-      )}
-       </div>
+        ))}
+      </div>
     </form>
   )
 }

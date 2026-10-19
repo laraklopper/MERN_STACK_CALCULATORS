@@ -1,4 +1,5 @@
 const { COMPOUND_FREQUENCIES } = require("./calculationUtil");
+const { SARS_VAT_RATE } = require("./schemaUtil");
 
 // Round a money figure to 2 decimal places (cents)
 const round2 = (value) => Math.round((value + Number.EPSILON) * 100) / 100;
@@ -102,4 +103,43 @@ const calculateInterest = ({
     };
 };
 
-module.exports = { calculateInterest, round2 };
+/*=============================
+VAT CALCULATION
+==============================*/
+/* Works out the net, VAT and gross figures for one amount.
+
+'exclusive': the amount is the price BEFORE VAT, so VAT is added on top.
+'inclusive': the amount is the price AFTER VAT, so the VAT in it is stripped
+back out by dividing by (1 + rate).
+
+A zero-rated item is still a taxable supply, just at 0%, so it runs through
+the same maths with a rate of nil and comes out with net = gross. */
+const calculateVat = ({ amount, mode = 'exclusive', isZeroRated = false }) => {
+    const rate = isZeroRated ? 0 : SARS_VAT_RATE;
+    const direction = mode === 'inclusive' ? 'inclusive' : 'exclusive';
+
+    let netAmount;
+    let grossAmount;
+    if (direction === 'inclusive') {
+        grossAmount = round2(amount);
+        netAmount = round2(amount / (1 + rate));
+    } else {
+        netAmount = round2(amount);
+        grossAmount = round2(amount * (1 + rate));
+    }
+    /* VAT is the difference between the two rounded figures, so the three
+    amounts always reconcile to the cent. */
+    const vatAmount = round2(grossAmount - netAmount);
+
+    return {
+        amount: round2(amount),
+        mode: direction,
+        isZeroRated: Boolean(isZeroRated),
+        ratePercent: round2(rate * 100),
+        netAmount,
+        vatAmount,
+        grossAmount,
+    };
+};
+
+module.exports = { calculateInterest, calculateVat, round2 };

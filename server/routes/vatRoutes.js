@@ -26,8 +26,10 @@ const express = require('express');
 const User = require('../models/userSchema')
 const VatCalc = require('../models/vatCalcSchema')
 // IMPORT CUSTOM MIDDLEWARE
-import {checkJwtToken} from '../middleware/middleware'
+const { checkJwtToken } = require('../middleware/middleware');
 // IMPORT UTILITY FUNCTIONS
+const { VAT_MODES } = require('../util/schemaUtil');
+const { calculateVat } = require('../util/utilFunc');
 
 const router = express.Router()
 
@@ -99,7 +101,7 @@ const validateVatInput = (input) => {
  ─────────────────────────────────────────────────────────────────────────*/
 // Route to calculate VAT calculation
  //  Send a POST request to the /vat/calculate route
-// FRONT END FILE: 
+// FRONT END FILE: /client/src/components/VatCalculator.js
 router.post('/calculate', checkJwtToken, async (req, res) => {
     const input = parseVatInput(req.body)
 
@@ -111,7 +113,9 @@ router.post('/calculate', checkJwtToken, async (req, res) => {
     }
 
     try {
-        
+        const result = calculateVat(input)
+        console.log('[SUCCESS: vatRoutes.js, /calculate] Calculated', input.mode, 'VAT at', result.ratePercent + '%');
+        return res.status(200).json({ success: true, result });
     } catch (error) {
         console.error('[ERROR: vatRoutes.js, /calculate]', error.message);// Log an error message in the console for debugging purposes
         return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
@@ -119,9 +123,55 @@ router.post('/calculate', checkJwtToken, async (req, res) => {
 })
  //Route to save a Vat calculation
  //  Send a POST request to the /vat/save route
- // FRONT END FILE: 
-router.post('/save', async (req, res) => {
-    
+ // FRONT END FILE: /client/src/components/VatCalculator.js
+router.post('/save', checkJwtToken, async (req, res) => {
+    const input = parseVatInput(req.body)
+
+    const validationMessage = validateVatInput(input)
+
+    // Conditional rendering to check the submitted figures are usable
+    if (validationMessage) {
+        console.warn('[WARN: vatRoutes.js, /save] Rejected:', validationMessage);
+        return res.status(400).json({ success: false, message: validationMessage })// Send a 400 (Bad Request) status code with a message
+    }
+
+    try {
+        // The username is read from the database rather than trusted from the body
+        const user = await User.findById(req.user.userId)
+            .select('username')
+            .exec();
+
+        // Conditional rendering to check the user on the token still exists
+        if (!user) {
+            console.warn('[WARN: vatRoutes.js, /save] No user found for id', req.user.userId);
+            return res.status(401).json({ success: false, message: 'Invalid token. Please login again.' });
+        }
+
+        /* Recalculated from the inputs rather than stored as sent, so the saved
+        record always reconciles (see the note at the top of this file). */
+        const result = calculateVat(input)
+        const saved = await VatCalc.create({
+            user: user._id,
+            username: user.username,
+            mode: result.mode,
+            isZeroRated: result.isZeroRated,
+            ratePercent: result.ratePercent,
+            netAmount: result.netAmount,
+            vatAmount: result.vatAmount,
+            grossAmount: result.grossAmount,
+        });
+
+        console.log('[SUCCESS: vatRoutes.js, /save] Saved VAT calculation', saved._id, 'for user', user._id);
+        return res.status(201).json({ success: true, message: 'Calculation saved to your history', saved, result });// Return a 201 (Created) status code with the saved record
+    } catch (error) {
+        // A schema validation failure is the user's input, not a server fault
+        if (error.name === 'ValidationError') {
+            console.error('[ERROR: vatRoutes.js, /save] Validation failed:', error.message);
+            return res.status(400).json({ success: false, message: error.message });
+        }
+        console.error('[ERROR: vatRoutes.js, /save]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
 })
 
  module.exports = router
