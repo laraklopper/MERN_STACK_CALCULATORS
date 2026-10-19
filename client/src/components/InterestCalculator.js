@@ -1,8 +1,8 @@
 // InterestCalculator.js
 import React, { useCallback, useState } from 'react'
+import '../css/componentCss/CalculatorSetup.css'
 import '../css/componentCss/InterestCalculator.css'
 import '../css/componentCss/FormSetup.css'
-import '../css/componentCss/CalculatorResult.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import {  AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from "lucide-react";

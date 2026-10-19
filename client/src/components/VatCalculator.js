@@ -3,7 +3,6 @@
 import React, { useCallback, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/componentCss/FormSetup.css'
-import '../css/componentCss/CalculatorResult.css'
 import '../css/componentCss/VatCalculator.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
