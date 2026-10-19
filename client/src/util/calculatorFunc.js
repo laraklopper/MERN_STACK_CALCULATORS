@@ -96,6 +96,8 @@ export const toInterestPayload = (form) => ({
 /*===================================
 VAT CALCULATOR 
 ===========================*/
+
+// VARIABLES
 export const ZERO_RATED_CATEGORIES = [
   'Brown bread',
   'Maize meal',

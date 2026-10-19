@@ -201,7 +201,6 @@ export default function VatCalculator(//Export default VatCalculator.js componen
             Log in to save this calculation to your history.
           </p>
         )
-
       )}
        </div>
     </form>
