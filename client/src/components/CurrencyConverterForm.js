@@ -1,13 +1,20 @@
+//CurrencyConverterForm.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/CurrencyConverter.css'
 import '../css/componentCss/FormSetup.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT ICONS FROM LUCIDE REACT
 import { Asterisk, RotateCcw } from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
 import { currencyOptionLabel, toQuotedRate, toConvertedAmount } from '../util/currencyFunc';
 
-export default function CurrencyConverterForm(
-  {
+//CurrencyConverterForm function component.js
+export default function CurrencyConverterForm(//Export default CurrencyConverterForm.js component
+  {//PROPS PASSED FROM PARENT COMPONENT(Converter.js)
     form,
     setForm,
     setError,
@@ -90,7 +97,9 @@ export default function CurrencyConverterForm(
         <h3 id='formHeading'>CURRENCY CONVERTER</h3>
       </div>
       <div id='currencyConverterInput'>
-        <Stack gap={3}>
+      {/* STACK 1 */}
+        <Stack gap={3} id='converterStack1'>
+        {/* AMOUNT */}
           <div className="p-2" id='convertAmountBlock'>
             <label className='converterLabel'>AMOUNT:</label>
             <div className='inputDiv'>
@@ -111,6 +120,7 @@ export default function CurrencyConverterForm(
               <small><Asterisk color='#C22419' fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
             </div>
           </div>
+          {/* CONVERT FROM */}
           <div className="p-2" id='convertFromBlock'>
             <label className='converterLabel'>CONVERT FROM:</label>
             <div className='inputDiv'>
@@ -132,6 +142,7 @@ export default function CurrencyConverterForm(
               <small><Asterisk color='#C22419' fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
             </div>
           </div>
+          {/* CONVERT TO: TARGET CURRENCY */}
           <div className="p-2" id='convertToBlock'>
             <label className='converterLabel'>CONVERT TO:</label>
             <div className='inputDiv'>
@@ -154,6 +165,7 @@ export default function CurrencyConverterForm(
           </div>
         </Stack>
       </div>
+      {/* STACK 2 */}
       <Stack gap={3} id='converterStack2'>
         <div className="p-2" id='requiredInfos'>
           <span className='formTextSpan'>

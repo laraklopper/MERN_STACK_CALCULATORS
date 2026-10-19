@@ -338,11 +338,7 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
           </Button>
       </div>
     </Stack>
-
         </div>
-        {/* RESULTS */}
-        
-
       </form>
           {/* --- Results --- */}
           <div id='incomeTaxResults'>
