@@ -8,6 +8,19 @@
   width: 100%;
   
 }
+#vatCalculatorInput{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+#calculatorTextBlock{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
 /* GROUP 1 */
 #vatFormGroup1{
     display: flex;
@@ -17,6 +30,13 @@
     background: #D6D6D6;
 }
 /* GROUP */
+#vatFormGroup2{
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+}
 #vatCalcBtnDiv{
     display: flex;
     gap: 10px;
@@ -106,11 +126,45 @@
     color: #1E7B34;
     font-family: "Open Sans", sans-serif;
     font-weight: 700;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+#vatCalcTypebtn1,
+#vatCalcTypebtn2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 260px;
+    height: 40px;
+}
+#vatResultsBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
 }
 #saveVatCalculationBtn{
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 230px;
+    height: 40px;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0px;
     gap: 5px;
-    margin: 0px auto;
+    letter-spacing: 2px;
+    padding: 0px;
+    border: solid 2px #323A42;
+}
+#saveVatCalculationBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;   
 }

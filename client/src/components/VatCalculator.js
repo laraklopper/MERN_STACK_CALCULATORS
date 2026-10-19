@@ -172,13 +172,21 @@ export default function VatCalculator(//Export default VatCalculator.js componen
   return (
     <form id='vatCalculator' method='POST' onSubmit={handleCalculation} aria-labelledby='formHeading'>
     {/* Heading */}
-    <div id='vatCalcHeadingBlock'>
-      <h3 id='formHeading'>VAT CALCULATOR</h3>
-      <span className='formTextSpan'>
-        <p className="formText">
+    <div id='calculatorHeadingBlock'>
+    <Stack gap={1} id='vatCalculatorHeadStack'>
+      <div id='vatCalcHeadingBlock'>
+        <h3 id='formHeading'>VAT CALCULATOR</h3>
+      </div>
+      <div id='calculatorTextBlock'>
+        <span className='formTextSpan'>
+        <p className="calculatorText">
           South African standard rate: {SARS_VAT_RATE * 100}% (SARS)
         </p>
       </span>
+      </div>
+    </Stack>
+      
+      
     </div>
       {/* CALCULATOR INPUT */}
       <div id='vatCalculatorInput'>
@@ -273,6 +281,7 @@ export default function VatCalculator(//Export default VatCalculator.js componen
           )}
     </Stack>
         </div>
+        </div>
         {/* BUTTONS */}
         <div className="vatFormActions">
            <Stack gap={3} id='vatFormBtnStack'>
@@ -306,6 +315,7 @@ export default function VatCalculator(//Export default VatCalculator.js componen
         </div>
         {/* ----END OF INPUT------- */}
         {/* RESULTS */}
+        <div id='vatResultsBlock'>
         {result && (
           <div id='vatCalculatorResults' aria-live='polite'>
             <div className="vatCalculatorResultRow">

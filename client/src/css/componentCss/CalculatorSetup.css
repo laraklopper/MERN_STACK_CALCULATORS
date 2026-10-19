@@ -15,6 +15,15 @@
     letter-spacing: 2px;
     text-decoration: underline;
 }
+.calculatorText{
+        font-family: "Open Sans", sans-serif;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: underline;
+}
 /* INPUT */
 .calculatorInput{
     width:200px;
@@ -60,6 +69,7 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     padding: 0px;
     border: solid 2px #323A42;
 }
+
 #submitCalculatorBtn:hover,
 #clearCalculatorBtn:hover{
     color: #E8F0F6;
