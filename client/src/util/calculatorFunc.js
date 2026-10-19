@@ -1,5 +1,6 @@
 import { evaluate } from 'mathjs'
-
+// Shown in place of any detail a record does not carry
+export const NOT_AVAILABLE = 'NOT AVAILABLE'
 //===========================================================================
 // BASIC CALCULATOR (NumberCalculator.js)
 //===========================================================================
