@@ -28,6 +28,21 @@
 /* ===============
 BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
 ====================== */
+#submitCalculatorBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+    width: 200px;
+    height: 40px;
+    border: solid #323A42 2px;
+    gap: 5px;
+}
 #clearFormBtn{
     display: flex;
     align-items: center;
@@ -44,6 +59,7 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     padding: 0px;
     border: solid 2px #323A42;
 }
+#submitCalculatorBtn:hover,
 #clearFormBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;    
