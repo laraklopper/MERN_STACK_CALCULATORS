@@ -1,4 +1,7 @@
 #incomeTaxCalculator{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     background-color: #9E9E9E;
     padding: 10px;
@@ -156,4 +159,50 @@ display: flex;
     text-transform: uppercase;
     text-decoration: underline;
     text-align: center;
+}
+#taxCalcBtnStack{
+    display: flex;
+    align-items: center;
+}
+.table-wrapper{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+.breakdownTable{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+#saveTaxCalculationBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 230px;
+    height: 40px;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0px;
+    gap: 5px;
+    letter-spacing: 2px;
+    padding: 0px;
+    border: solid 2px #323A42;
+}
+#saveTaxCalculationBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;   
+}
+/* CALCULATOR RESULTS */
+#incomeTaxResults{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    flex-direction: column;
+    background-color: #BFBFBF;
 }

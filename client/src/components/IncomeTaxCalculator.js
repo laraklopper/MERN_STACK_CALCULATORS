@@ -8,7 +8,7 @@ import '../css/componentCss/IncomeTaxCalculator.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 // IMPORT ICONS FROM LUCIDE-REACT
-import { AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from 'lucide-react'
+import { AlertCircle, Asterisk, Calculator, RotateCcw, Save, TrendingUp } from 'lucide-react'
 // IMPORT UTILITY FUNCTIONS
 import { BLANK_TAX_FORM, formatPercent, toTaxPayload, validateTaxForm } from '../util/calculatorFunc'
 import { formatCurrency } from '../util/currencyFunc';
@@ -304,28 +304,37 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
         {/* END OF INPUT */}
         {/* GROUP 3: FORM ACTIONS(BUTTONS) */}
         <div id='taxCalculatorGroup3'>
-            <Stack gap={3}>
+            <Stack gap={3} id='taxCalcBtnStack'>
        <div className="p-2" id='required-calculafInfo'>
               <p className='infoText' aria-live='polite' aria-hidden='true'>
                   <small><Asterisk color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false' /> Indicates required information</small>
               </p>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='formSubmitBlock'>
           <Button
             type="submit"
-            id="calculateTaxBtn"
+            id="submitCalculatorBtn"
             disabled={status === "calculating"}
             variant="light"
+            // ARIA ATTRIBUTES:
+            aria-label={status === "calculating" ? "Calculating..." : "Calculate"}
+            aria-disabled={status === "calculating"}
           >
             <Calculator size={16} fontWeight={700} aria-hidden='true' focusable='false'/>
             {status === "calculating" ? "Calculating..." : "Calculate"}
           </Button>
       </div>
-      <div className="p-2">
+      <div className="p-2" id='clearCalculatorBlock'>
         <Button 
           variant="danger"
-          type="button" onClick={resetForm} id="clearFormBtn">
-            <RotateCcw size={16} /> Reset
+          type="button" 
+          onClick={resetForm} 
+          id="clearCalculatorBtn"
+          disabled={status === "calculating"}
+          // ARIA ATTRIBUTES:
+          aria-disabled={status === "calculating"}
+          >
+            <RotateCcw size={16} fontWeight={700} aria-hidden='true' focusable='false' /> Reset
           </Button>
       </div>
     </Stack>
@@ -336,42 +345,40 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
 
       </form>
           {/* --- Results --- */}
+          <div id='incomeTaxResults'>
       {result && (
         <div className="results">
-          <div className="results__header">
-            <TrendingUp size={18} className="results__icon" />
-            <h2 className="results__title">Result</h2>
+          <div className="resultsHeader">
+            <TrendingUp size={28} color=' #1b9891' className="results__icon" />
+            <h2 className="resultsTitle">Result</h2>
           </div>
-
-          <div className="results-summary">
-            <div className="results-card">
-              <p className="results-card__label">Gross tax</p>
-              <p className="results-card__value">{formatCurrency(result.grossTax)}</p>
+          <div className="resultsSummary">
+            <div className="resultsDiv">
+              <p className="resultsLabel">Gross tax</p>
+              <p className="resultsValue">{formatCurrency(result.grossTax)}</p>
             </div>
-            <div className="results-card">
-              <p className="results-card__label">Rebate applied</p>
-              <p className="results-card__value">{formatCurrency(result.rebate)}</p>
+            <div className="resultsDiv">
+              <p className="resultsLabel">Rebate applied</p>
+              <p className="resultsValue">{formatCurrency(result.rebate)}</p>
             </div>
-            <div className="results-card results-card--highlight">
-              <p className="results-card__label">Net tax payable</p>
-              <p className="results-card__value">{formatCurrency(result.netTax)}</p>
-            </div>
-          </div>
-
-          <div className="results-summary results-summary--rates">
-            <div className="rate-pill">
-              <span className="rate-pill__label">Effective rate</span>
-              <span className="rate-pill__value">{formatPercent(result.effectiveRate)}</span>
-            </div>
-            <div className="rate-pill">
-              <span className="rate-pill__label">Marginal rate</span>
-              <span className="rate-pill__value">{formatPercent(result.marginalRate)}</span>
+            <div className="resultsDiv resultsDiv--highlight">
+              <p className="resultsLabel">Net tax payable</p>
+              <p className="resultsValue">{formatCurrency(result.netTax)}</p>
             </div>
           </div>
-
+          <div className="resultsSummary results-summary--rates">
+            <div className="ratePill">
+              <span className="ratePillLabel">Effective rate</span>
+              <span className="ratePillValue">{formatPercent(result.effectiveRate)}</span>
+            </div>
+            <div className="ratePill">
+              <span className="ratePillLabel">Marginal rate</span>
+              <span className="ratePillValue">{formatPercent(result.marginalRate)}</span>
+            </div>
+          </div>
           {result.bracketBreakdown?.length > 0 && (
             <div className="table-wrapper">
-              <table className="breakdown-table">
+              <table className="breakdownTable">
                 <thead>
                   <tr>
                     <th>Bracket (R)</th>
@@ -397,14 +404,12 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
               </table>
             </div>
           )}
-
           <p className="disclaimer">
             This calculator is for estimation purposes only and does not
-            constitute tax advice. Consult SARS or a registered tax
+            constitute tax advice. <br/>Consult <strong>SARS</strong> or a registered tax
             practitioner for official calculations.
           </p>
           {/* RESULT */}
-
           {currentUser && (
             <div className="save-row">
               <Button
@@ -412,11 +417,12 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
                 /* Turns green once the calculation is safely in the user's
                 history, red when the save was rejected. */
                 variant={saveButtonVariant}
-                id="saveCalculationBtn"
+                id="saveTaxCalculationBtn"
                 onClick={handleSave}
                 disabled={saveStatus === "saving" || saveStatus === "saved"}
                 className="save-link"
               >
+              <Save/>
                 {saveStatus === "saving"
                   ? "Saving..."
                   : saveStatus === "saved"
@@ -430,6 +436,7 @@ export default function IncomeTaxCalculator({currentUser, taxYears = []}) {
           )}
         </div>
       )}
+      </div>
     </div>
   )
 }

@@ -159,3 +159,102 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     width: 100%;
 
 }
+/* RESULTS */
+.results{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 5px;
+    margin: 0px;
+    align-items: center;
+    gap: 10px;
+}
+.resultsHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 0px 5px 0px;
+    padding: 10px 0px;
+    background-color: #d1d5db;
+    border-top: #404040 solid 2px;
+    border-bottom: #404040 solid 2px;
+    gap: 10px;
+    font-family: "Fira Sans", sans-serif;
+    width: 100%;
+}
+.resultsTitle{
+    font-size: 24px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #1f2937;
+    margin: 0px;
+    padding: 0px;
+}
+.resultsSummary{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    flex-direction: column;
+        background-color: #d1d5db;
+}
+.resultsDiv{
+        display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: solid #323A42 1.5px;
+}
+.resultsLabel{
+     font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 18px;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+.resultsValue{
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #000;
+    margin: 0px;
+    padding: 0px;
+}
+.ratePill{
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    padding: 5px 10px;
+    background-color: #D6D6D6;
+    border: solid #999d9f 1px;
+}
+.ratePillLabel{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    color: #000;
+}
+.ratePillValue{
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    color: #000;
+}
+.disclaimer{
+    font-family: "Fira Sans", sans-serif;
+    font-size: 14px;
+    font-style: italic;
+    color: #323A42;
+    margin: 0px;
+    padding: 5px 0px;
+    text-align: center;
+    text-decoration: underline;
+}
