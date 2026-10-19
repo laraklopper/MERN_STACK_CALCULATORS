@@ -1,16 +1,28 @@
+// RegistrationForm.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useMemo, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/FormSetup.css'
 import '../css/componentCss/RegisterForm.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
+//IMPORT ICONS FROM LUCIDE-REACT
 import { Eye, EyeOff, Asterisk, Bug  } from 'lucide-react';
 
-// Same rules as the server (middleware.js checkPassword / userSchema.js email)
-// so the user sees the error before the request is sent
+/*---------------REGULAR EXPRESSIONS-------------------------
+Same rules as the server (middleware.js checkPassword / userSchema.js email)
+so the user sees the error before the request is sent*/
 const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function RegistrationForm({newUserData, setNewUserData, addUser}) {
+// RegistrationForm.js function component
+export default function RegistrationForm(//Export the default RegistrationForm.js function component
+    {//PROPS PASSED FROM PARENT COMPONENT(Registration.js)
+        newUserData, 
+        setNewUserData, 
+        addUser
+    }) {
     // ==========STATE VARIABLES==============
     //state to display password
     const [showPassword, setShowPassword] = useState(false)

@@ -1,11 +1,15 @@
 // InterestCalculator.js
 import React, { useCallback, useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/CalculatorSetup.css'
 import '../css/componentCss/InterestCalculator.css'
 import '../css/componentCss/FormSetup.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+//IMPORT ICONS FROM LUCIDE-REACT
 import {  AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp } from "lucide-react";
+// IMPORT UTILITY FUNCTIONS
 import { BLANK_INTEREST_FORM, PERIOD_UNITS, periodConfig, COMPOUND_FREQUENCIES, validateInterestForm } from '../util/calculatorFunc';
 import { formatCurrency } from '../util/currencyFunc';
 
