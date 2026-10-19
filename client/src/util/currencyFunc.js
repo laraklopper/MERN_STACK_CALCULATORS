@@ -40,6 +40,31 @@ export const FALLBACK_CURRENCIES = currencyCountries.map(
     ({ code, name }) => ({ code, name, symbol: '' })
 );
 
+/* Label a currency in the converter's dropdowns, e.g. 'ZAR - South African
+Rand'. A code the provider reports without a name is still offered, listed by
+its code alone. */
+export const currencyOptionLabel = (code, name) => (name ? `${code} - ${name}` : code)
+
+/* Country lookup by currency code, built once from the static data rather than
+searched through for every row. */
+const COUNTRIES_BY_CODE = currencyCountries.reduce((lookup, { code, countries }) => {
+    lookup[code] = countries;
+    return lookup;
+}, {});
+
+/* The countries a currency is used in, as one string. This is not something the
+currencies API reports, so it is looked up in the local currencyCountries data
+and left as a dash for any code that data does not cover. */
+export const countriesForCode = (code) =>
+    COUNTRIES_BY_CODE[code] ? COUNTRIES_BY_CODE[code].join(', ') : '—'
+
+/* Name lookup by currency code, built once from the static data, and the
+fallback for a code the provider list does not carry a name for. */
+export const NAMES_BY_CODE = currencyCountries.reduce((lookup, { code, name }) => {
+    lookup[code] = name;
+    return lookup;
+}, {});
+
 /* Format a figure as rands, e.g. R 1 500,00. Used by the tax and interest
 calculator forms, which work only in rands. A missing figure is shown as R 0,00
 rather than as nothing, because a result card with no number in it reads as a

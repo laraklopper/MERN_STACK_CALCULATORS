@@ -1,0 +1,55 @@
+#currencyConverterForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #A8AEB3;
+margin: 0px;
+padding: 0px;
+width: 100%;
+}
+#currencyConverterInput{
+          background-color: #BFBFBF;
+  width: 80%;
+  margin: 0px;
+padding: 0px;
+
+}
+#convertAmountBlock,
+#convertFromBlock,
+#convertToBlock{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#convertBtnBlock,
+#clearConverterBlock{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+.converterLabel{
+  font-family: "Fira Mono", monospace;
+  font-weight: 700;
+  margin: 0px;
+  letter-spacing: 2px;
+  padding: 0px;
+}
+#convertBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 180px;
+    border: solid 2px #323A42;
+    color: #000;
+    font-weight: 700;
+    font-family: "Fira Mono", monospace;
+    text-transform: uppercase;
+}
+#convertBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
