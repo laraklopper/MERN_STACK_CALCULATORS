@@ -1,0 +1,50 @@
+#calculatorHeadingBlock{
+    width:100%;
+    margin:0px;
+    padding:0px;
+    display:flex;
+    justify-content:center;
+}
+#calculatorHeading{
+    font-weight:700;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    font-family: "Roboto Mono", monospace;
+    font-size: 28px;
+    letter-spacing: 2px;
+    text-decoration: underline;
+}
+.calculatorInput{
+    width:200px;
+    height:40px;
+    border-radius:5px;
+    font-size:16px;
+    margin:0px;
+    padding:4px;
+    text-align: center;
+    font-family: "Fira Mono", monospace;
+}
+/* ===============
+BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
+====================== */
+#clearFormBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 40px;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0px;
+    gap: 5px;
+    letter-spacing: 2px;
+    padding: 0px;
+    border: solid 2px #323A42;
+}
+#clearFormBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;    
+}
