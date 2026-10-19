@@ -4,7 +4,7 @@ import '../css/componentCss/CalculatorResult.css'
 import '../css/componentCss/VatCalculator.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-import { Asterisk } from 'lucide-react';
+import { Asterisk, Save } from 'lucide-react';
 import { formatCurrency } from '../util/currencyFunc';
 // SARS standard VAT rate. Centralised here so a future rate change
 // (as nearly happened for 2025/2026) only needs updating in one place.
@@ -27,7 +27,7 @@ const ZERO_RATED_CATEGORIES = [
 ];
 
 
-export default function VatCalculator() {
+export default function VatCalculator({currentUser}) {
   const [amount, setAmount] = useState('')
   const [mode, setMode] = useState('exclusive')
   const [isZeroRated, setIsZeroRated] = useState(false)
@@ -105,8 +105,16 @@ export default function VatCalculator() {
       // onCalculate(calcResult);
     // }
   };
+
+  // Function to save the VAT calculation
+  // call the saveVatCalculation request function
+  // const handleSave = () => {
+    
+  // }
+  // ================JSX RENDERING===================
   return (
-    <form id='vatCalculator' method='' aria-labelledby='formHeading'>
+    <form id='vatCalculator' method='POST' /*onSubmit={}*/ aria-labelledby='formHeading'>
+    {/* Heading */}
     <div id='vatCalcHeadingBlock'>
       <h3 id='formHeading'>VAT CALCULATOR</h3>
       <span className='formTextSpan'>
@@ -117,8 +125,10 @@ export default function VatCalculator() {
       </div>
       {/* CALCULATOR INPUT */}
       <div id='vatCalculatorInput'>
+      {/* GROUP 1 */}
         <div id='vatFormGroup1'>
          <Stack gap={3} id='vatCalcStack1'>
+         {/* VAT AMOUNT */}
       <div className="p-2" id='vatCalculatorBlock1'>
         <label className='calculatorLabel' id='vatAmount'>AMOUNT (ZAR):</label>
         <div className='inputDiv'>
@@ -131,9 +141,11 @@ export default function VatCalculator() {
             required
             name='amount'
             value={amount}
-            // onChange={}
+            onChange={handleAmountChange}
             placeholder='0.00'
             // ARIA ATTRIBUTES:
+            aria-label='Vat amount'
+            aria-required='true'
           />
           <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
@@ -177,6 +189,7 @@ export default function VatCalculator() {
       </div>
     </Stack>
         </div>
+        {/* GROUP 2 */}
         <div id='vatFormGroup2'>
             {isZeroRated && (
         <p className="zeroRatedCategories">
@@ -185,6 +198,8 @@ export default function VatCalculator() {
       )}
       {error && <p className="vatCalculatorError">{error}</p>}
         </div>
+        {/* ----END OF INPUT------- */}
+        {/* RESULTS */}
  {result && (
         <div>
           <div className="vat-calculator__result-row">
@@ -200,6 +215,24 @@ export default function VatCalculator() {
             <span>{formatCurrency(result.grossAmount)}</span>
           </div>
         </div>
+      )}
+      {currentUser ? (
+        <Button
+        variant='light'
+        type='saveVatCalculationBtn'
+        // onClick={handleSave}
+        // ARIA ATTRIBUTES:
+        // aria-label=''
+        >
+          <Save aria-hidden='true'  />SAVE CALCULATION
+        </Button>
+      ):(
+        result && (
+          <p className="vatCalculatorAuthHint">
+            Log in to save this calculation to your history.
+          </p>
+        )
+
       )}
        </div>
     </form>
