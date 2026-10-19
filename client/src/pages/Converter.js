@@ -16,8 +16,8 @@ export default function Converter({currentUser, logout}) {
     const [result, setResult] = useState(null);// Stores the conversion returned by the API
     const [loading, setLoading] = useState(false);// Indicates whether an API request is currently running
     const [error, setError] = useState('');// Stores any error messages shown to the user
-    const [showCurrencies, setShowCurrencies] = useState(false)
-    const [showCurrCalculations, setShowCurrCalculations] = useState(false)
+    // const [showCurrencies, setShowCurrencies] = useState(false)
+    // const [showCurrCalculations, setShowCurrCalculations] = useState(false)
  const [currencyOptions, setCurrencyOptions] = useState(FALLBACK_CURRENCIES)
     const submitConvert = useCallback(async () => {
       setError('')
@@ -103,8 +103,10 @@ export default function Converter({currentUser, logout}) {
               saveConversion={saveConversion}
               submitConvert={submitConvert}
               form={form}
+              loading={loading}
               currencyOptions={currencyOptions}
               EMPTY_CONVERT_FORM={EMPTY_CONVERT_FORM}
+              error={error}
             />
           </div>
         </Col>

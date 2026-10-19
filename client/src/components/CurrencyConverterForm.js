@@ -4,6 +4,7 @@ import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { Asterisk, RotateCcw } from 'lucide-react';
+import { currencyOptionLabel, toQuotedRate, toConvertedAmount } from '../util/currencyFunc';
 
 export default function CurrencyConverterForm(
   {
@@ -16,7 +17,8 @@ export default function CurrencyConverterForm(
     currencyOptions = [],
     loading,
     saveConversion,
-    submitConvert
+    submitConvert,
+    error
   }
 ) {
   /* Status of the save request for the conversion currently on screen:
@@ -65,6 +67,18 @@ export default function CurrencyConverterForm(
             setSaveError(err?.message || 'Could not save the conversion. Please try again.');
         }
     };
+        //Function to clear the form
+    const handleClear = () => {
+        setForm(EMPTY_CONVERT_FORM);// Reset all form inputs (amount, from, and to) to their default values.
+        setResult(null);// Remove the previous conversion result from the screen.
+
+        setError('');// Clear any displayed error messages.
+        resetSaveStatus();// Clear the save status along with the result it belonged to
+    };
+    /* Bootstrap variant for the save button, so its colour reports the
+        outcome of the save rather than staying neutral once it is disabled. */
+        const saveButtonVariant =
+            saveStatus === 'saved' ? 'success' : saveStatus === 'error' ? 'danger' : 'light';
   return (
     <form id='currencyConverterForm' method='GET' onSubmit={handleConvert} >
       <div id='formHeadingBlock'>
@@ -116,9 +130,21 @@ export default function CurrencyConverterForm(
       <div className="p-2" id='convertToBlock'>
         <label className='converterLabel'>CONVERT TO:</label>
         <div className='inputDiv'>
-          <select className='input'>
+          <select 
+          className='input'
+          required
+          id='convertTo'
+          name='to'
+          value={form.to}
+          onChange={handleChange}
+          >
             <option value=''>SELECT</option>
             {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
+            <option value=''>SELECT</option>
+            {/* MAP ALL AVAILABLE CURRENCIES WITH SELECT AS THE PLACEHOLDER */}
+            {currencyOptions.map(({code, name})=> (
+              <option key={code} value={code}>{currencyOptionLabel(code, name)}</option>
+            ))}
           </select>
           <small><Asterisk color='#C22419' fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
@@ -137,8 +163,14 @@ export default function CurrencyConverterForm(
         variant='light'
         id='convertBtn'
         type='submit'
+        disabled={loading}
+        // ARIA ATTRIBUTES:
+                            role='button'
+                            aria-label={loading ? 'CONVERTING...' : 'CONVERT'}
+                            aria-disabled={loading}
+
         >
-          CONVERT
+          {loading ? 'CONVERTING...' : 'CONVERT'}
         </Button>
       </div>
       <div className="p-2" id='clearConverterBlock'>
@@ -146,12 +178,63 @@ export default function CurrencyConverterForm(
           variant='danger'
           id='clearFormBtn'
           type='button'
-          // onClick={}
+          onClick={handleClear}
+          disabled={loading}
           // ARIA ATTRIBUTES
           >
             <RotateCcw fontSize={16} fontWeight={700} aria-hidden='true' focusable='false'/>CLEAR
           </Button>
       </div>
+          <div className="p-2" id='converterResultBlock' aria-live='polite'>
+        {/* Only display the Result after form submission */}
+        {result && (
+            <>
+            <p className='infoText'>
+                {result.amount} {result.from} = {toConvertedAmount(result.result)} {result.to}
+            </p>
+            {/* The day Frankfurter published the rate, so the figure is dated */}
+            {result.date && (
+                <p className='infoText'>
+                    1 {result.from} = {toQuotedRate(result.rate)} {result.to} (rate of {result.date})
+                </p>
+            )}
+            {/* BUTTON TO SAVE CURRENCY CONVERTER CALCULATION.
+            Only rendered once a conversion is on screen, and disabled while the
+            request is running or after it has succeeded, so the same conversion
+            cannot be written to the history twice. */}
+            {saveConversion && (
+                <>
+            <Button
+                id='saveConversionBtn'
+                /* Turns green once the conversion is safely in the user's
+                history, red when the save was rejected. */
+                variant={saveButtonVariant}
+                type='button'
+                onClick={handleSave}
+                disabled={saveStatus === 'saving' || saveStatus === 'saved'}
+                // ARIA ATTRIBUTES:
+                aria-label='Save this conversion to your history'
+                aria-disabled={saveStatus === 'saving' || saveStatus === 'saved'}
+                >
+                {saveStatus === 'saving'
+                    ? 'SAVING...'
+                    : saveStatus === 'saved'
+                    ? 'SAVED TO HISTORY'
+                    : 'SAVE CALCULATION'}
+                </Button>
+                {/* Only shown when the save itself failed; the conversion is unaffected */}
+                {saveStatus === 'error' && (
+                    <p className='infoText' style={{ color: '#C22419' }} role='alert'>{saveError}</p>
+                )}
+                </>
+            )}
+            </>
+        )}
+      </div>
+        {/* ========ERROR MESSAGE==================== */}
+        {error && (
+            <p className='infoText' style={{ color: '#C22419' }} role='alert' aria-live='assertive'>{error}</p>
+        )}
     </Stack>
 
     </form>
