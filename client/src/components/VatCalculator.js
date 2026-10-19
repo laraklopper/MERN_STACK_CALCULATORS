@@ -1,10 +1,16 @@
+// VatCalculator.js
+//IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useState } from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/FormSetup.css'
 import '../css/componentCss/CalculatorResult.css'
 import '../css/componentCss/VatCalculator.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+// IMPORT ICONS FROM LUCIDE-REACT
 import { Asterisk, Save } from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
 import { formatCurrency } from '../util/currencyFunc';
 // SARS standard VAT rate. Centralised here so a future rate change
 // (as nearly happened for 2025/2026) only needs updating in one place.
@@ -26,8 +32,12 @@ const ZERO_RATED_CATEGORIES = [
   'Pilchards/sardinella in tins',
 ];
 
-
-export default function VatCalculator({currentUser}) {
+// VatCalculator function component
+export default function VatCalculator(//Export default VatCalculator.js component
+  {//PROPS PASSED FROM PARENT COMPONENT (Tax.js)
+    currentUser, 
+    calculateVat
+  }) {
   const [amount, setAmount] = useState('')
   const [mode, setMode] = useState('exclusive')
   const [isZeroRated, setIsZeroRated] = useState(false)
