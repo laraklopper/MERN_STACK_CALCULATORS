@@ -9,11 +9,19 @@
     font-weight:700;
     margin: 0px;
     padding: 0px;
+    text-transform: uppercase;
     text-align: center;
     font-family: "Roboto Mono", monospace;
     font-size: 28px;
     letter-spacing: 2px;
     text-decoration: underline;
+}
+#taxCalcTextBlock{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
 }
 .calculatorText{
         font-family: "Open Sans", sans-serif;
