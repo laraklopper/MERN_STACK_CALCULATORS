@@ -1,5 +1,8 @@
 /* CalculatorResults.css */
-/* RESULTS: */
+/* RESULTS: 
+- ProvisionalTaxResults.js
+- VatCalculator.js
+- IncomeTaxCalculator.js*/
 .results{
     display: flex;
     flex-direction: column;
