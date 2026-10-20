@@ -79,7 +79,7 @@ export default function ProvisionalTaxCalculator({
       console.error('[ERROR: ProvisionalTaxCalculator.js, calculateProvTax]: Error calculating provisional tax:', error.message);//Log an error message in the console for debugging purposes
       throw error
     }
-  },[])
+  }, [])
 
   /* Request function to save provisional tax calculation: sends a POST request
   to /provisional/save. Returns the server's response, or throws with the
@@ -91,8 +91,9 @@ export default function ProvisionalTaxCalculator({
       console.error('[ERROR: ProvisionalTaxCalculator.js, saveCalculation]: Error saving provisional tax calculation:', error.message);//Log an error message in the console for debugging purposes
       throw error
     }
-  },[])
-/* Any edit clears the result and the save status, so the figures on screen
+  }, [])
+
+  /* Any edit clears the result and the save status, so the figures on screen
   always belong to the inputs above them. */
   const updateField = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -101,16 +102,17 @@ export default function ProvisionalTaxCalculator({
   };
 
   //Functio to reset calculator form
-   const resetForm = () => {
+  const resetForm = () => {
     setForm({ ...BLANK_PROV_TAX_FORM, taxYear: taxYears[0] ?? "" });
     setErrors({});
     setResult(null);
     setStatus(null);
     setSaveStatus(null);
   };
-/* Function to check the inputs and show any field errors. 
+
+  /* Function to check the inputs and show any field errors.
   Returns true when the form is good to submit. */
-  const validate =() => {
+  const validate = () => {
     const errs = validateProvTaxForm(form)
     setErrors(errs)
     return Object.keys(errs).length === 0;
@@ -177,34 +179,34 @@ export default function ProvisionalTaxCalculator({
       )}
       <form id='provisionalTaxCalculater' onSubmit={handleSubmit} method='POST' aria-labelledby='calculatorHeading' aria-describedby='provTaxCalcDescrip'>
         <div id='calculatorHeadingBlock'>
-        {/* HEADING STACK */}
-        <Stack gap={3} id='calcHeadStack'>
-      <div className="p-2" id='calcHeadingBlock1'>
-        <h3 id='calculatorHeading'>PROVISIONAL TAX CALCULATOR</h3>
-      </div>
-      <div className="p-2" id='calcHeadBlock2'>
-        <p className="calculatorText" id='provTaxCalcDescrip'>
+          {/* HEADING STACK */}
+          <Stack gap={3} id='calcHeadStack'>
+            <div className="p-2" id='calcHeadingBlock1'>
+              <h3 id='calculatorHeading'>PROVISIONAL TAX CALCULATOR</h3>
+            </div>
+            <div className="p-2" id='calcHeadBlock2'>
+              <p className="calculatorText" id='provTaxCalcDescrip'>
                 Work out what is payable on an IRP6 from your estimated taxable
                 income for the whole year of assessment. Provisional tax is not a
                 separate tax: it is the same SARS income tax, paid in advance.
               </p>
-      </div>
-    </Stack>
+            </div>
+          </Stack>
         </div>
         {/* ------CALCULATOR INPUT------- */}
         <div id='provTaxCalcInput'>
-        {/* GROUP 1 */}
+          {/* GROUP 1 */}
           <div id='provTaxGroup1'>
-          {/* INPUT STACK 1: */}
-          <Stack gap={3} id='provTaxInputStack1'>
-            <div className="p-2" id='provTaxPeriodBlock1'>
-              <span className='calculatorTextSpan'>
-              <label className='calculatorLabel'>WHICH PAYMENT:</label>
-              <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
-              </span>
-              <div id='buttonDiv'>
-              {PROVISIONAL_PERIODS.map((p) => (
-                <Button
+            {/* INPUT STACK 1: */}
+            <Stack gap={3} id='provTaxInputStack1'>
+              <div className="p-2" id='provTaxPeriodBlock1'>
+                <span className='calculatorTextSpan'>
+                  <label className='calculatorLabel'>WHICH PAYMENT:</label>
+                  <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+                </span>
+                <div id='buttonDiv'>
+                  {PROVISIONAL_PERIODS.map((p) => (
+                    <Button
                       key={p.value}
                       type="button"
                       variant="light"
@@ -218,36 +220,36 @@ export default function ProvisionalTaxCalculator({
                       aria-pressed={form.period === p.value}
                     >
                       {p.label}
-                </Button>
-              ))}
+                    </Button>
+                  ))}
+                </div>
               </div>
-            </div>
-            {/* What the selected payment covers and when it falls due */}
-              <div  id="provTaxPeriodBlock2">
+              {/* What the selected payment covers and when it falls due */}
+              <div id="provTaxPeriodBlock2">
                 <p className="provCalcText" aria-live="polite">
                   <strong>{period.heading}:</strong> <br/> {period.portionLabel}. <br/> {period.dueLabel}.
                 </p>
               </div>
-            <div className="p-2">
-              {errors.period && <p className="field-error">{errors.period}</p>}
-            </div>
-          </Stack>
+              <div className="p-2">
+                {errors.period && <p className="field-error">{errors.period}</p>}
+              </div>
+            </Stack>
           </div>
           {/* GROUP 2: THE ESTIMATE + AGE + TAX YEAR*/}
-          <div id='provTaxGroup2'> 
-          {/* INPUT STACK 2: ESTIMATED TAXABLE 
-          INCOME FOR THE FULL YEAR */}
-              <Stack gap={3} id='provTaxInputStack2'>
-      <div className="p-2" id='taxEstimateBlock1'>
-        <span className='calcLabelSpan'>
-          <label className="calculatorLabel" htmlFor="provEstimatedIncome">
-            Estimated taxable income for the year:
-          </label>
-        </span>
-        <div className='calcTextInputDiv'>
-        <p className='calculatorInpText'>R:</p>
-              <input
-               id="provEstimatedIncome"
+          <div id='provTaxGroup2'>
+            {/* INPUT STACK 2: ESTIMATED TAXABLE
+            INCOME FOR THE FULL YEAR */}
+            <Stack gap={3} id='provTaxInputStack2'>
+              <div className="p-2" id='taxEstimateBlock1'>
+                <span className='calcLabelSpan'>
+                  <label className="calculatorLabel" htmlFor="provEstimatedIncome">
+                    Estimated taxable income for the year:
+                  </label>
+                </span>
+                <div className='calcTextInputDiv'>
+                  <p className='calculatorInpText'>R:</p>
+                  <input
+                    id="provEstimatedIncome"
                     type="number"
                     min="0"
                     step="0.01"
@@ -259,59 +261,59 @@ export default function ProvisionalTaxCalculator({
                     // ARIA ATTRIBUTES:
                     // aria-label=''
                     aria-required='true'
-              />
-               <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
-        </div>
-      </div>
-      <div className="p-2" id='taxEstimateBlock2'>
-        <p className='provCalcText'>
+                  />
+                  <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                </div>
+              </div>
+              <div className="p-2" id='taxEstimateBlock2'>
+                <p className='provCalcText'>
                   Always the estimate for the FULL year of assessment. The
                   brackets are annual and progressive, so the portion for this
                   payment is taken off the tax, not off the income.
                 </p>
-      </div>
-      <div className="p-2">
-        {/* ERROR MESSAGE */}
-        {errors.estimatedIncome && <p className="field-error">{errors.estimatedIncome}</p>}
-      </div>
-    </Stack>
-    {/* INPUT STACK 3: AGE */}
-    <Stack gap={3} id='provTaxInputStack3'>
-      <div className="p-2" id='provTaxAgeBlock1'>
-        <span className='calcLabelSapn'>
-          <label className='calculatorLabel' htmlFor="provTaxAgeInput">AGE:</label>
-        </span>
-        <div className='calculatorInputDiv'>
-          <input
-              id="provTaxAgeInput"
-              type="number"
-              required
-              min="16"
-              max="120"
-              step="1"
-              placeholder="35"
-              className="input"
-              value={form.age}
-              onChange={(e) => updateField("age", e.target.value)}
-              aria-required='true'
-            />
-            <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
-        </div>
-      </div>
-      <div className="p-2" id='provTaxAgeBlock2'>
-        {/* ERROR */}
-        {errors.age && <p className="field-error">{errors.age}</p>}
-      </div>
-    </Stack>
-    {/*INPUT STACK 4: TAX YEAR */}
-    <Stack gap={3} id='provTaxInputStack4'>
-      <div className="p-2" id='provTaxYearBlock1'>
-        {/* LABEL & INPUT */}
-        <span className='calcLabelSpan'>
-          <label className='calculatorLabel' htmlFor='provTaxYear'>TAX YEAR:</label>
-        </span>
-        <div className='calculatorInputDiv'>
-              <select
+              </div>
+              <div className="p-2">
+                {/* ERROR MESSAGE */}
+                {errors.estimatedIncome && <p className="field-error">{errors.estimatedIncome}</p>}
+              </div>
+            </Stack>
+            {/* INPUT STACK 3: AGE */}
+            <Stack gap={3} id='provTaxInputStack3'>
+              <div className="p-2" id='provTaxAgeBlock1'>
+                <span className='calcLabelSapn'>
+                  <label className='calculatorLabel' htmlFor="provTaxAgeInput">AGE:</label>
+                </span>
+                <div className='calculatorInputDiv'>
+                  <input
+                    id="provTaxAgeInput"
+                    type="number"
+                    required
+                    min="16"
+                    max="120"
+                    step="1"
+                    placeholder="35"
+                    className="input"
+                    value={form.age}
+                    onChange={(e) => updateField("age", e.target.value)}
+                    aria-required='true'
+                  />
+                  <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                </div>
+              </div>
+              <div className="p-2" id='provTaxAgeBlock2'>
+                {/* ERROR */}
+                {errors.age && <p className="field-error">{errors.age}</p>}
+              </div>
+            </Stack>
+            {/*INPUT STACK 4: TAX YEAR */}
+            <Stack gap={3} id='provTaxInputStack4'>
+              <div className="p-2" id='provTaxYearBlock1'>
+                {/* LABEL & INPUT */}
+                <span className='calcLabelSpan'>
+                  <label className='calculatorLabel' htmlFor='provTaxYear'>TAX YEAR:</label>
+                </span>
+                <div className='calculatorInputDiv'>
+                  <select
                     id="provTaxYear"
                     className="input"
                     required
@@ -321,40 +323,40 @@ export default function ProvisionalTaxCalculator({
                     // ARIA ATTRIBUTES:
                     aria-label='Provisional-Tax Year input'
                   >
-                  {/* MAP ALL TAX YEARS WITH SELCT YEAR AS THE PLACEHOLDER*/}
-                  <option value={''}>SELECT YEAR</option>
+                    {/* MAP ALL TAX YEARS WITH SELCT YEAR AS THE PLACEHOLDER*/}
+                    <option value={''}>SELECT YEAR</option>
                     {taxYears.map((year) => (
                       <option key={year} value={year}>
                         {year}
                       </option>
                     ))}
                   </select>
-              <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
-        </div>
-      </div>
-      <div className="p-2" id='provTaxYearBlock2'>
-         {errors.taxYear && <p className="field-error">{errors.taxYear}</p>}
-      </div>
-    </Stack>
+                  <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+                </div>
+              </div>
+              <div className="p-2" id='provTaxYearBlock2'>
+                {errors.taxYear && <p className="field-error">{errors.taxYear}</p>}
+              </div>
+            </Stack>
           </div>
           {/* GROUP 3: WHAT COMES OFF THE PAYMENT  */}
           <div id='provTaxGroup3'>
-          {/* INPUT STACK 5 */}
-                <span className='calcLabelSpan'>
-<label className="calculatorLabel" id="provlabel">
-                  Already withheld or paid:
-                </label>
-      </span>
-      {/*INPUT STACK 5: EMPLOYEES' TAX (PAYE) */}
-          <Stack gap={3} id='provTaxInputStack5'>   
-      <div className="p-2" id="provTaxPayeBlock">
-                    <span className='calculatorLabelSpan'>
-                      <label className="calculatorLabel" id='provEmpLabel' htmlFor="provEmployeesTax">
+            {/* INPUT STACK 5 */}
+            <span className='calcLabelSpan'>
+              <label className="calculatorLabel" id="provlabel">
+                Already withheld or paid:
+              </label>
+            </span>
+            {/*INPUT STACK 5: EMPLOYEES' TAX (PAYE) */}
+            <Stack gap={3} id='provTaxInputStack5'>
+              <div className="p-2" id="provTaxPayeBlock">
+                <span className='calculatorLabelSpan'>
+                  <label className="calculatorLabel" id='provEmpLabel' htmlFor="provEmployeesTax">
                     Employees’ tax (PAYE) for <br/>this period (R):
                   </label>
-                    </span>
-                    <div className='calculatorInputDiv'>
-                      <input
+                </span>
+                <div className='calculatorInputDiv'>
+                  <input
                     id="provEmployeesTax"
                     type="number"
                     min="0"
@@ -364,24 +366,24 @@ export default function ProvisionalTaxCalculator({
                     value={form.employeesTax}
                     onChange={(e) => updateField("employeesTax", e.target.value)}
                   />
-                    </div>
+                </div>
               </div>
-      <div className="p-2" id='provForeignTaxCreditsBlock2'>
-        {/* ERROR */}
-        {errors.employeesTax && <p className="field-error">{errors.employeesTax}</p>}
-      </div>
-    </Stack>
-    {/* INPUTSTACK 6: EMPLOYEES' TAX (PAYE) */}
-    <Stack gap={3} id='provTaxInputStack6'>
-      <div className="p-2" id='provForeignTaxCreditsBlock1'>
-           <span className='calculatorLabelSpan'>
-                      <label className="calculatorLabel" htmlFor="provForeignTaxCredits">
+              <div className="p-2" id='provForeignTaxCreditsBlock2'>
+                {/* ERROR */}
+                {errors.employeesTax && <p className="field-error">{errors.employeesTax}</p>}
+              </div>
+            </Stack>
+            {/* INPUTSTACK 6: EMPLOYEES' TAX (PAYE) */}
+            <Stack gap={3} id='provTaxInputStack6'>
+              <div className="p-2" id='provForeignTaxCreditsBlock1'>
+                <span className='calculatorLabelSpan'>
+                  <label className="calculatorLabel" htmlFor="provForeignTaxCredits">
                     Foreign tax credits :
                   </label>
-                    </span>
-                      <div className='calcTextInputDiv'>
-                      <p className='calculatorInpText'>R:</p>
-                     <input
+                </span>
+                <div className='calcTextInputDiv'>
+                  <p className='calculatorInpText'>R:</p>
+                  <input
                     id="provForeignTaxCredits"
                     className="calculatorInput"
                     type='number'
@@ -394,25 +396,25 @@ export default function ProvisionalTaxCalculator({
                     aria-label='Provisional Tax Foreign Credits Input'
                     aria-required='false'
                   />
-                  </div>
-      </div>
-      <div className="p-2" id='provForeignTaxCreditsBlock1'>
-      {/* ERROR */}
-        {errors.foreignTaxCredits && <p className="field-error">{errors.foreignTaxCredits}</p>}
-      </div>
-    </Stack>
-    {/* INPUT STACK 7: MEDICAL SCHEME FEES TAX CREDITS  */}
-    <Stack gap={3} id='provTaxInputStack7'>
-      <div className="p-2" id='provMedFeesTaxCredits1'>
-            <span className='calcLabelSpan'>
-              <label className="calculatorLabel" htmlFor="provMedicalCredits">
+                </div>
+              </div>
+              <div className="p-2" id='provForeignTaxCreditsBlock1'>
+                {/* ERROR */}
+                {errors.foreignTaxCredits && <p className="field-error">{errors.foreignTaxCredits}</p>}
+              </div>
+            </Stack>
+            {/* INPUT STACK 7: MEDICAL SCHEME FEES TAX CREDITS  */}
+            <Stack gap={3} id='provTaxInputStack7'>
+              <div className="p-2" id='provMedFeesTaxCredits1'>
+                <span className='calcLabelSpan'>
+                  <label className="calculatorLabel" htmlFor="provMedicalCredits">
                     Medical scheme fees tax credits:
                   </label>
-            </span>
-            <div className='calcTextInputDiv'>
-            <p className='calculatorInpText'>R:</p>
-            <input
-             id="provMedicalCredits"
+                </span>
+                <div className='calcTextInputDiv'>
+                  <p className='calculatorInpText'>R:</p>
+                  <input
+                    id="provMedicalCredits"
                     type="number"
                     min="0"
                     step="0.01"
@@ -423,33 +425,33 @@ export default function ProvisionalTaxCalculator({
                     // ARIA ATTRIBUTES:
                     // aria-label=''
                     aria-required='false'
-            />
-            </div>
-      </div>
-      <div className="p-2" id='provMedFeesTaxCredits2'>
-        {/* The credit is an input, not something the calculator knows */}
+                  />
+                </div>
+              </div>
+              <div className="p-2" id='provMedFeesTaxCredits2'>
+                {/* The credit is an input, not something the calculator knows */}
                 <p className="provCalcText">
                   Enter the credits for the full year as published <br/>by SARS
-                  (a monthly amount per member and per dependant). They are deducted as 
-                  entered, then the portion for this payment isapplied. 
+                  (a monthly amount per member and per dependant). They are deducted as
+                  entered, then the portion for this payment isapplied.
                 </p>
-      </div>
-      <div className="p-2" id='provMedFeesTaxCredits3'>
-      {/* ERROR */}
-         {errors.medicalCredits && <p className="field-error">{errors.medicalCredits}</p>}
-      </div>
-    </Stack>
-    {/* INPUT STACK 8: PROVISIONAL TAX ALREADY PAID +
-    BASIV AMOUNT */}
-    <Stack gap={3} id='provTaxInputStack8'>
-    {/* PROVISIONAL TAX ALREADY PAID - only where there can be any */}
-     {period.acceptsPriorPayments && (
-       <div className="p-2" id='priorPaymentBlock'>
-        <label className="calculatorLabel" htmlFor="provPriorPayments">
-                      Provisional tax already paid for this year (R):
-                    </label>
-       <div className='calcTextInputDiv'>
-            <p className='calculatorInpText'>R:</p>
+              </div>
+              <div className="p-2" id='provMedFeesTaxCredits3'>
+                {/* ERROR */}
+                {errors.medicalCredits && <p className="field-error">{errors.medicalCredits}</p>}
+              </div>
+            </Stack>
+            {/* INPUT STACK 8: PROVISIONAL TAX ALREADY PAID +
+            BASIV AMOUNT */}
+            <Stack gap={3} id='provTaxInputStack8'>
+              {/* PROVISIONAL TAX ALREADY PAID - only where there can be any */}
+              {period.acceptsPriorPayments && (
+                <div className="p-2" id='priorPaymentBlock'>
+                  <label className="calculatorLabel" htmlFor="provPriorPayments">
+                    Provisional tax already paid for this year (R):
+                  </label>
+                  <div className='calcTextInputDiv'>
+                    <p className='calculatorInpText'>R:</p>
                     <input
                       id="provPriorPayments"
                       type="number"
@@ -462,16 +464,16 @@ export default function ProvisionalTaxCalculator({
                     />
                     {errors.priorPayments && <p className="field-error">{errors.priorPayments}</p>}
                   </div>
-                  </div>
-    )}
-      {/* BASIC AMOUNT - only the estimated periods are judged against it */}
+                </div>
+              )}
+              {/* BASIC AMOUNT - only the estimated periods are judged against it */}
               {form.period !== 'third' && (
                 <div className="p-2" id='basicAmountBlock'>
-                <span className='calcLabelSpan'>
-                  <label className="calculatorLabel" htmlFor="provBasicAmount">
+                  <span className='calcLabelSpan'>
+                    <label className="calculatorLabel" htmlFor="provBasicAmount">
                       Basic amount (last assessed taxable income) (R):
                     </label>
-                </span>
+                  </span>
                   <div className='calcTextInputDiv'>
                     <p className='calculatorInpText'>R:</p>
                     <input
@@ -497,7 +499,7 @@ export default function ProvisionalTaxCalculator({
                   </p>
                 </div>
               )}
-    </Stack>
+            </Stack>
           </div>
         </div>
         <div className="form-actions">
