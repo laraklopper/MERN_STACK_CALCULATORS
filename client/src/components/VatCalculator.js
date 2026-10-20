@@ -8,7 +8,9 @@ import '../css/componentCss/VatCalculator.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 // IMPORT ICONS FROM LUCIDE-REACT
-import { AlertCircle, Asterisk, Calculator, RotateCcw, Save } from 'lucide-react';
+import { AlertCircle, Asterisk, Calculator, RotateCcw } from 'lucide-react';
+// IMPORT CUSTOM COMPONENTS
+import VatResults from './VatResults';
 // IMPORT UTILITY FUNCTIONS
 import { formatCurrency } from '../util/currencyFunc';
 import { ZERO_RATED_CATEGORIES, SARS_VAT_RATE } from '../util/calculatorFunc';
@@ -53,11 +55,6 @@ export default function VatCalculator(//Export default VatCalculator.js componen
   const [status, setStatus] = useState(null) // null | 'calculating'
   const [saveStatus, setSaveStatus] = useState(null) // null | 'saving' | 'saved' | 'error'
   const [saveMessage, setSaveMessage] = useState('')
-
-  /* Bootstrap variant for the save button, so its colour reports the outcome
-  of the save rather than staying neutral once the button is disabled. */
-  const saveButtonVariant =
-    saveStatus === 'saved' ? 'success' : saveStatus === 'error' ? 'danger' : 'light';
 
   /* Any change to the inputs makes the result on screen out of date, so it is
   cleared rather than left showing figures for a different question. */
@@ -316,55 +313,16 @@ export default function VatCalculator(//Export default VatCalculator.js componen
         {/* ----END OF INPUT------- */}
         {/* RESULTS */}
         <div id='vatResultsBlock'>
+        {/* --- Results: rendered by VatResults.js --- */}
         {result && (
-          <div id='vatCalculatorResults' aria-live='polite'>
-            <div className="vatCalculatorResultRow">
-              <span>Amount excl. VAT</span>
-              <span>{formatCurrency(result.netAmount)}</span>
-            </div>
-            <div className="vatCalculatorResultRow">
-              <span>VAT ({result.ratePercent}%)</span>
-              <span>{formatCurrency(result.vatAmount)}</span>
-            </div>
-            <div className="vatCalculatorResultRow vatCalculatorResultRow--total">
-              <span>Amount incl. VAT</span>
-              <span>{formatCurrency(result.grossAmount)}</span>
-            </div>
-          </div>
+          <VatResults
+            result={result}
+            currentUser={currentUser}
+            saveStatus={saveStatus}
+            saveMessage={saveMessage}
+            onSave={handleSave}
+          />
         )}
-        {result && (currentUser ? (
-          <div id='vatSaveRow'>
-            <Button
-              /* Turns green once the calculation is safely in the user's
-              history, red when the save was rejected. */
-              variant={saveButtonVariant}
-              type='button'
-              id='saveVatCalculationBtn'
-              onClick={handleSave}
-              disabled={saveStatus === 'saving' || saveStatus === 'saved'}
-              // ARIA ATTRIBUTES:
-              aria-label='Save VAT calculation to your history'
-              aria-disabled={saveStatus === 'saving' || saveStatus === 'saved'}
-            >
-              <Save aria-hidden='true' focusable='false' />
-              {saveStatus === 'saving'
-                ? 'SAVING...'
-                : saveStatus === 'saved'
-                ? 'SAVED TO HISTORY'
-                : 'SAVE CALCULATION'}
-            </Button>
-            {saveStatus === 'error' && (
-              <span className='vatCalculatorError' role='alert'>{saveMessage}</span>
-            )}
-            {saveStatus === 'saved' && saveMessage && (
-              <span className='vatSaveSuccess' role='status'>{saveMessage}</span>
-            )}
-          </div>
-        ) : (
-          <p className="vatCalculatorAuthHint">
-            Log in to save this calculation to your history.
-          </p>
-        ))}
       </div>
     </form>
   )
