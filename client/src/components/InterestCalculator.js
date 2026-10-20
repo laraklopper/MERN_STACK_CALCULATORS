@@ -377,105 +377,108 @@ export default function InterestCalculator({currentUser, calculateInterest, save
           </div>
         </div>
       </form>
-      {/* --- Results --- */}
-      {result && (
-        <div className="results">
-          <div className="result-header">
-            <TrendingUp size={32} className="results__icon" aria-hidden='true' focusable='false' />
-            <h4 className="results__title">Result</h4>
-          </div>
-          <div className="results-summary">
-            <Stack gap={1} id='result-summary-stack'>
-              <div className="p-2" id='intResultsBlock1'>
-                <p className="resultsLabel">Total interest earned:</p>
-                <p className="resultsValue">{formatCurrency(result.totalInterest)}</p>
-              </div>
-              {/* Only worth showing when the user actually added contributions */}
-              {result.totalContributions > 0 && (
-                <div className="p-2" id='resultsBlock3'>
-                  <p className="resultsLabel">Total contributions:</p>
+      <div id='interestResults'>
+        {/* --- Results --- */}
+        {result && (
+          <div className="results">
+            <div className="result-header">
+              <TrendingUp size={32} className="results__icon" aria-hidden='true' focusable='false' />
+              <h4 className="results__title">Result</h4>
+            </div>
+            <div className="results-summary">
+              <Stack gap={1} id='result-summary-stack'>
+                <div className="p-2" id='intResultsBlock1'>
+                  <p className="resultsLabel">Total interest earned:</p>
+                  <p className="resultsValue">{formatCurrency(result.totalInterest)}</p>
+                </div>
+                {/* Only worth showing when the user actually added contributions */}
+                {result.totalContributions > 0 && (
+                  <div className="p-2" id='resultsBlock3'>
+                    <p className="resultsLabel">Total contributions:</p>
+                    <p className="resultsValue">
+                      {formatCurrency(result.totalContributions)}
+                    </p>
+                  </div>
+                )}
+                <div className="p-2" id='resultsBlock2'>
+                  <p className="resultsLabel">Final amount:</p>
                   <p className="resultsValue">
-                    {formatCurrency(result.totalContributions)}
+                    {formatCurrency(result.finalAmount)}
                   </p>
                 </div>
-              )}
-              <div className="p-2" id='resultsBlock2'>
-                <p className="resultsLabel">Final amount:</p>
-                <p className="resultsValue">
-                  {formatCurrency(result.finalAmount)}
-                </p>
-              </div>
-            </Stack>
-          </div>
-          {result.breakdown?.length > 0 && (
-            <div className="table-wrapper">
-              <table className="breakdown-table">
-                <thead>
-                  <tr>
-                    <th>{breakdownHeading}</th>
-                    <th>Contributions</th>
-                    <th>Interest earned</th>
-                    <th>Balance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {result.breakdown.map((row) => (
-                    <tr key={row.period}>
-                      <td>{row.period}</td>
-                      <td>{formatCurrency(row.contributions)}</td>
-                      <td>{formatCurrency(row.interest)}</td>
-                      <td className="breakdown-table__balance">
-                        {formatCurrency(row.balance)}
-                      </td>
+              </Stack>
+            </div>
+            {result.breakdown?.length > 0 && (
+              <div className="table-wrapper">
+                <table className="breakdown-table">
+                  <thead>
+                    <tr>
+                      <th>{breakdownHeading}</th>
+                      <th>Contributions</th>
+                      <th>Interest earned</th>
+                      <th>Balance</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {currentUser && (
-            <div className="save-row">
-              <Button
-                type="button"
-                /* Turns green once the calculation is safely in the user's
-                history, red when the save was rejected. */
-                variant={saveButtonVariant}
-                onClick={handleSave}
-                /* Also disabled without a username: the record is filed
-                under it, so there is nothing to save it against. */
-                disabled={!username || saveStatus === "saving" || saveStatus === "saved"}
-                className="save-link"
-                id='save-int-calcBtn'
-                // ARIA ATTRIBUTES:
-                aria-disabled={!username || saveStatus === "saving" || saveStatus === "saved"}
-              >
-                {saveStatus === "saving"
-                  ? "Saving..."
-                  : saveStatus === "saved"
-                  ? "Saved to history"
-                  : "Save to history"}
-              </Button>
-              {saveStatus === "error" && (
-                <span className="save-error" role='alert'>
-                  {saveMessage || "Could not save. Try again."}
-                </span>
-              )}
-              {saveStatus === "saved" && saveMessage && (
-                <span className="save-success" role='status'>
-                  {saveMessage}
-                </span>
-              )}
-              {/* Explains an unusable save button before it is pressed */}
-              {!username && (
-                <span className="save-error">
-                  Your username name could not be read from your profile, so this
-                  calculation cannot be saved.
-                </span>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+                  </thead>
+                  <tbody>
+                    {result.breakdown.map((row) => (
+                      <tr key={row.period}>
+                        <td>{row.period}</td>
+                        <td>{formatCurrency(row.contributions)}</td>
+                        <td>{formatCurrency(row.interest)}</td>
+                        <td className="breakdown-table__balance">
+                          {formatCurrency(row.balance)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {currentUser && (
+              <div className="save-row">
+                <Button
+                  type="button"
+                  /* Turns green once the calculation is safely in the user's
+                  history, red when the save was rejected. */
+                  variant={saveButtonVariant}
+                  onClick={handleSave}
+                  /* Also disabled without a username: the record is filed
+                  under it, so there is nothing to save it against. */
+                  disabled={!username || saveStatus === "saving" || saveStatus === "saved"}
+                  className="save-link"
+                  id='save-int-calcBtn'
+                  // ARIA ATTRIBUTES:
+                  aria-disabled={!username || saveStatus === "saving" || saveStatus === "saved"}
+                >
+                  {saveStatus === "saving"
+                    ? "Saving..."
+                    : saveStatus === "saved"
+                    ? "Saved to history"
+                    : "Save to history"}
+                </Button>
+                {saveStatus === "error" && (
+                  <span className="save-error" role='alert'>
+                    {saveMessage || "Could not save. Try again."}
+                  </span>
+                )}
+                {saveStatus === "saved" && saveMessage && (
+                  <span className="save-success" role='status'>
+                    {saveMessage}
+                  </span>
+                )}
+                {/* Explains an unusable save button before it is pressed */}
+                {!username && (
+                  <span className="save-error">
+                    Your username name could not be read from your profile, so this
+                    calculation cannot be saved.
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      
     </div>
   )
 }
