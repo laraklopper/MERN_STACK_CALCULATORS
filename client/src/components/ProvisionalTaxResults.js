@@ -1,6 +1,7 @@
 //ProvisionalTaxResults.js
 // IMPORT REQUIRED MODULES AND PACKAGES
 import React from 'react'
+import '../css/componentCss/CalculatorResults.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Button from 'react-bootstrap/Button';
 // IMPORT ICONS FROM LUCIDE-REACT
