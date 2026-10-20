@@ -26,4 +26,19 @@ PROVISIONAL TAX CALCULATOR
 VAT CALCULATOR 
 ===========================*/
 /* VARIABLES */
+export const ZERO_RATED_CATEGORIES = [
+  'Brown bread',
+  'Maize meal',
+  'Rice',
+  'Vegetables',
+  'Fruit',
+  'Milk',
+  'Eggs',
+  'Vegetable oil',
+  'Dried beans',
+  'Lentils',
+  'Paraffin',
+  'Brown wheaten meal',
+  'Pilchards/sardinella in tins',
+];
 /*FUNCTIONS */
