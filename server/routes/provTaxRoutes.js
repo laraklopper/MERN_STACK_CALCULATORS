@@ -145,3 +145,5 @@ const validateProvisionalInput = (input) => {
 router.post('/calculate', async (req,res) => {
     
 })
+
+module.exports = router
