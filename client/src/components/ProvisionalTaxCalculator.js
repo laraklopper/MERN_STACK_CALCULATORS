@@ -480,8 +480,9 @@ export default function ProvisionalTaxCalculator({
           </Stack>
         </div>
       </form>
-      
+      {/* Display results in the ProvisionalTaxResults.js component */}
       {/* --- Results --- */}
+      
       {result && (
         <div className="results" id="prov-tax-results">
           <div className="results__header">
