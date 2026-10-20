@@ -35,6 +35,10 @@
 .calculatorTextSpan{
     display: flex;
     justify-content: center;
+        width: 100%;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
     
 }
 
@@ -51,9 +55,11 @@
 /* INPUT */
 .calcLabelSpan{
     display: flex;
+    justify-content: center;
     align-items: center;
     margin: 0px;
     padding: 0px;
+    width: 100%;
 }
 .calcTextInputDiv{
     display: flex;
