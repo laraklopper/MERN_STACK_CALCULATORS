@@ -1,3 +1,13 @@
+#provisionalTaxCalculater{
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  background-color: #A8AEB3;
+  margin: 0px;
+  padding: 10px;
+  align-items: center;
+  width: 100%;
+}
 #provTaxCalculatorDiv{
        display: flex;
     flex-direction: column;
@@ -7,6 +17,62 @@ margin: 0px;
 padding: 0px;
 width: 100%;
 }
+.provCalcText{
+    font-family: "Open Sans", sans-serif;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-align: center;
+}
+
+/* ========================
+LAYOUT
+==================*/
+#provTaxCalcInput{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 10px 5px;
+    gap: 10px;
+    width: 90%;
+    background-color: #BFBFBF;
+}
+/* GROUP 1 */
+#provTaxGroup1{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    border: solid #323A42 2px;
+    background-color: #D6D6D6;
+    border-radius: 8px;
+}
+/* BOOTSTRAP */
+/* STACK */
+#provTaxPeriodBlock2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+/* GROUP 2 */
+#provTaxGroup2{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: solid #323A42 2px;
+    background-color: #D6D6D6;
+    border-radius: 8px;
+}
+/* BOOTSTRAP */
+/* STACK */
 #taxEstimateBlock1{
     display: flex;
     flex-direction: column;
@@ -14,4 +80,38 @@ width: 100%;
     margin: 0px;
     padding: 0px;
     width: 100%;
+}
+#taxEstimateBlock2{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+#provTaxAgeBlock1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#provTaxYearBlock1{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+    align-items: center;
+}
+/* GROUP 3 */
+#provTaxGroup3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: solid #323A42 2px;
+    background-color: #D6D6D6;
+    border-radius: 8px;
 }

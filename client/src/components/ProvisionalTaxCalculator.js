@@ -129,6 +129,7 @@ export default function ProvisionalTaxCalculator({
         <div id='provTaxCalcInput'>
         {/* GROUP 1 */}
           <div id='provTaxGroup1'>
+          {/* INPUT STACK 1: */}
           <Stack gap={3} id='provTaxInputStack1'>
             <div className="p-2" id='provTaxPeriodBlock1'>
               <span className='calculatorTextSpan'>
@@ -156,8 +157,8 @@ export default function ProvisionalTaxCalculator({
               </div>
             </div>
             {/* What the selected payment covers and when it falls due */}
-              <div className="p-2" id="provTaxPeriodBlock2">
-                <p className="calculatorText" aria-live="polite">
+              <div  id="provTaxPeriodBlock2">
+                <p className="provCalcText" aria-live="polite">
                   <strong>{period.heading}:</strong> {period.portionLabel}. {period.dueLabel}.
                 </p>
               </div>
@@ -165,19 +166,17 @@ export default function ProvisionalTaxCalculator({
               {errors.period && <p className="field-error">{errors.period}</p>}
             </div>
           </Stack>
-
           </div>
-          {/* GROUP 2: THE ESTIMATE + AGE */}
-
+          {/* GROUP 2: THE ESTIMATE + AGE + TAX YEAR*/}
           <div id='provTaxGroup2'> 
-          {/* ESTIMATED TAXABLE INCOME FOR THE FULL YEAR */}
+          {/* INPUT STACK 2: ESTIMATED TAXABLE 
+          INCOME FOR THE FULL YEAR */}
               <Stack gap={3} id='provTaxInputStack2'>
-              
       <div className="p-2" id='taxEstimateBlock1'>
         <span className='calcLabelSpan'>
           <label className="calculatorLabel" htmlFor="provEstimatedIncome">
-                    Estimated taxable income for the year:
-                  </label>
+            Estimated taxable income for the year:
+          </label>
         </span>
         <div className='calcTextInputDiv'>
         <p className='calculatorInpText'>R:</p>
@@ -196,11 +195,10 @@ export default function ProvisionalTaxCalculator({
                     aria-required='true'
               />
                <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
-
         </div>
       </div>
-      <div className="p-2">
-        <p className="form-text">
+      <div className="p-2" id='taxEstimateBlock2'>
+        <p className='provCalcText'>
                   Always the estimate for the FULL year of assessment. The
                   brackets are annual and progressive, so the portion for this
                   payment is taken off the tax, not off the income.
@@ -211,35 +209,72 @@ export default function ProvisionalTaxCalculator({
         {errors.estimatedIncome && <p className="field-error">{errors.estimatedIncome}</p>}
       </div>
     </Stack>
-    {/* AGE */}
+    {/* INPUT STACK 3: AGE */}
     <Stack gap={3} id='provTaxInputStack3'>
-      <div className="p-2">
+      <div className="p-2" id='provTaxAgeBlock1'>
         <span className='calcLabelSapn'>
           <label className='calculatorLabel' htmlFor="provTaxAgeInput">AGE:</label>
         </span>
         <div className='calculatorInputDiv'>
           <input
-                    id="provTaxAgeInput"
-                    type="number"
-                    required
-                    min="16"
-                    max="120"
-                    step="1"
-                    placeholder="35"
-                    className="input"
-                    value={form.age}
-                    onChange={(e) => updateField("age", e.target.value)}
-                    aria-required='true'
-                  />
-                  <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+              id="provTaxAgeInput"
+              type="number"
+              required
+              min="16"
+              max="120"
+              step="1"
+              placeholder="35"
+              className="input"
+              value={form.age}
+              onChange={(e) => updateField("age", e.target.value)}
+              aria-required='true'
+            />
+            <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
         </div>
       </div>
-      <div className="p-2">Second item</div>
-      <div className="p-2">Third item</div>
+      <div className="p-2" id='provTaxAgeBlock2'>
+        {/* ERROR */}
+        {errors.age && <p className="field-error">{errors.age}</p>}
+      </div>
     </Stack>
+    {/*INPUT STACK 4: TAX YEAR */}
+    <Stack gap={3} id='provTaxInputStack4'>
+      <div className="p-2" id='provTaxYearBlock1'>
+        {/* LABEL & INPUT */}
+        <span className='calcLabelSpan'>
+          <label className='calculatorLabel' htmlFor='provTaxYear'>TAX YEAR:</label>
+        </span>
+        <div className='calculatorInputDiv'>
+              <select
+                    id="provTaxYear"
+                    className="input"
+                    required
+                    name='taxYear'
+                    value={form.taxYear}
+                    onChange={(e) => updateField("taxYear", e.target.value)}
+                    // ARIA ATTRIBUTES:
+                    aria-label='Provisional-Tax Year input'
+                  >
+                  {/* MAP ALL TAX YEARS WITH SELCT YEAR AS THE PLACEHOLDER*/}
+                  <option value={''}>SELECT YEAR</option>
+                    {taxYears.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+              <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /></small>
+        </div>
+      </div>
+      <div className="p-2" id='provTaxYearBlock2'>
+         {errors.taxYear && <p className="field-error">{errors.taxYear}</p>}
+      </div>
+    </Stack>
+          </div>
+          {/* GROUP 3: WHAT COMES OFF THE PAYMENT  */}
+          <div id='provTaxGroup2'>
 
           </div>
-
         </div>
 
       </form>
