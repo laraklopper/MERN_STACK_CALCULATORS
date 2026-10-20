@@ -20,7 +20,7 @@ import { taxSeedData } from '../util/taxSeedData';
 IncomeTax & vat
 */
 // =========MAIN TAX COMPONENT=============
-export default function Tax({currentUser, logout}) {
+export default function Tax({currentUser, logout, setError}) {
   const [showTaxCalc , setShowTaxCalc] = useState(false)
   const [showProvTaxCalc, setShowProvTaxCalc] = useState(false)
   const [showVatCalculator, setShowVatCalc] = useState(false)
@@ -130,7 +130,10 @@ const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
               <Col id='provTaxCalcCol1'/>
               <Col id='provTaxCalcCol' xs={12} md={8}>
                 <div id='provTaxCalcBlock'>
-                  <ProvisionalTaxCalculator/>
+                  <ProvisionalTaxCalculator
+                  taxYears={taxYears}
+                    setError={setError}
+                  />
                 </div>
               </Col>
               <Col id='provTaxCalcCol2'/>
