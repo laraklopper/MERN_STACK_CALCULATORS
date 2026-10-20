@@ -185,7 +185,7 @@ export default function ProvisionalTaxCalculator({
               <h3 id='calculatorHeading'>PROVISIONAL TAX CALCULATOR</h3>
             </div>
             <div className="p-2" id='calcHeadBlock2'>
-              <p className="calculatorText" id='provTaxCalcDescrip'>
+              <p className="provCalcText" id='provTaxCalcDescrip'>
                 Work out what is payable on an IRP6 from your estimated taxable
                 income for the whole year of assessment. Provisional tax is not a
                 separate tax: it is the same SARS income tax, paid in advance.
@@ -423,7 +423,7 @@ export default function ProvisionalTaxCalculator({
                     value={form.medicalCredits}
                     onChange={(e) => updateField("medicalCredits", e.target.value)}
                     // ARIA ATTRIBUTES:
-                    // aria-label=''
+                    aria-label='Medical scheme fees tax credits'
                     aria-required='false'
                   />
                 </div>
@@ -524,7 +524,7 @@ export default function ProvisionalTaxCalculator({
               id="clearCalculatorBtn"
               // ARIA ATTRIBUTES:
               aria-label='Clear Provisional Tax Calculator'
-              ria-disabled={status === "calculating"}
+              aria-disabled={status === "calculating"}
             >
               <RotateCcw size={16} aria-hidden='true' focusable='false'/> Reset
             </Button>

@@ -15,6 +15,7 @@
     flex-direction: column;
 }
 /* BOOTSTRAP LAYOUT */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid */
 #toggleTaxCalcRow{
     width: 100%;
     margin: 0px;
@@ -36,34 +37,58 @@
     margin: 0px;
     padding: 0px;
 }
+/* ===============
+CALCULATORS:
+============*/
+#taxCalcPanal
+#vatCalculatorPanal,
+#provTaxCalcPanal{
+       margin: 0px;
+    padding: 10px 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#incomeTaxCalcBlock,
+#provTaxCalcBlock,
+#vatCalculatorBlock{
+    width: 100%;
+    margin: 0px;
+    padding: 10px;
+    display: flex;
+    background-color: #9E9E9E;
+    align-items: center;
+}
+/* BOOTSTRAP LAYOUT */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid  */
+#provTaxCalcRow,
+#incTaxCalcRow,
+#vatCalculatorRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
 #incTaxCalcCol,
+#provTaxCalcCol,
 #vatCalculatorCol{
     display: flex;
     margin: 0px;
     padding: 0px;
-    
+    justify-content: center;
 }
-#incomeTaxCalcBlock,
-#vatCalculatorBlock{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    align-items: center;
-}
-#incTaxCalcRow{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-}
+
 #incTaxCalcCol1,
 #incTaxCalcCol2,
+#provTaxCalcCol1,
+#provTaxCalcCol2,
 #vatCalcCol1,
 #vatCalcCol2{
     margin: 0px;
     padding: 0px;
 }
-/* BUTTONS */
+/* BUTTONS https://react-bootstrap.netlify.app/docs/components/buttons */
 #toggleTaxCalcBtn,
 #toggleProvCalcBtn,
 #toggleVatCalcBtn{

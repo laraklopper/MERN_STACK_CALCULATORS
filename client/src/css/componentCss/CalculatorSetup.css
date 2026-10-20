@@ -174,7 +174,7 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     width: 100%;
 
 }
-/* RESULTS */
+/* RESULTS
 .results{
     display: flex;
     flex-direction: column;
@@ -272,4 +272,4 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     padding: 5px 0px;
     text-align: center;
     text-decoration: underline;
-}
+} */

@@ -56,13 +56,23 @@ LAYOUT
     display: flex;
     gap: 10px;
     justify-content: center;
+    margin: 0px;
+    padding: 0px;
 }
 /* BOOTSTRAP */
 /* STACK 1: https://react-bootstrap.netlify.app/docs/layout/stack*/
+#provTaxInputStack1{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+#provTaxPeriodBlock1,
 #provTaxPeriodBlock2{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    width: 100%;
     margin: 0px;
     padding: 0px;
 }
