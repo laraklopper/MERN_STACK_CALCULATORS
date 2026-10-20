@@ -1,5 +1,9 @@
 //taxCalculatorFunc.js
-
+/*FILES
+- Tax.js
+- IncomeTaxCalculator.js
+- ProvisionalTaxCalculator.js
+- VatCalculator.js*/
 /*-----------------------------
 UNIVERSAL TAX CALCULATOR FUNCTIONS 
 AND VARIABLES: 
