@@ -163,19 +163,6 @@ export const toTaxPayload = (form) => ({
 /*=====================
 PROVISIONAL TAX CALCULATOR
 ====================*/
-// The provisional tax calculator's inputs before the user has filled anything in
-export const BLANK_PROV_TAX_FORM = {
-    period: 'first', // 'first' | 'second' | 'third'
-    taxYear: '',
-    // The estimate for the WHOLE year of assessment, not for the period
-    estimatedIncome: '',
-    age: '',
-    employeesTax: '',
-    foreignTaxCredits: '',
-    medicalCredits: '',
-    priorPayments: '',
-    basicAmount: '',
-};
 
 
 /*===================================
