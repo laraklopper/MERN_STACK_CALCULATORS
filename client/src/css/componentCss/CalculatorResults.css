@@ -2,7 +2,8 @@
 /* RESULTS: 
 - ProvisionalTaxResults.js
 - VatCalculator.js
-- IncomeTaxCalculator.js*/
+- IncomeTaxCalculator.js
+- InterestCalculator.js*/
 .results{
     display: flex;
     flex-direction: column;
