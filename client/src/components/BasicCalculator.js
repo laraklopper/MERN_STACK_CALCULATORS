@@ -2,7 +2,8 @@
 //IMPORT REQUIRED MODULES AND PACKAGES
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 // IMPORT CSS STYLESHEETS
-import '../css/componentCss/BasicCalculator.css'
+import '../css/componentCss/BasicCalculator.css';
+import '../css/componentCss/CalculatorResults.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 // import Button from 'react-bootstrap/Button';
