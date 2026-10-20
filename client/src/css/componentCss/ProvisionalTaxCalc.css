@@ -1,0 +1,9 @@
+#provTaxCalculatorDiv{
+       display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #A8AEB3;
+margin: 0px;
+padding: 0px;
+width: 100%;
+}

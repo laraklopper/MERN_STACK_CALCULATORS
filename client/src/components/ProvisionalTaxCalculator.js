@@ -28,6 +28,10 @@ export default function ProvisionalTaxCalculator() {
   return (
     <div id='provTaxCalculatorDiv'>
       <form id='provisionalTaxCalculater'>
+        <div id='calculatorHeadingBlock'>
+          <h3 id='calculatorHeading'>PROVISIONAL TAX CALCULATOR</h3>
+
+        </div>
 
       </form>
     </div>

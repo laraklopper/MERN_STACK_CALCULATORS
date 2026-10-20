@@ -127,14 +127,15 @@ const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
         {showProvTaxCalc &&(
           <div id='provTaxCalcPanal'>
             <Row id='provTaxCalcRow'>
-              <Col id='provTaxCalcCol'>
+              <Col id='provTaxCalcCol1'/>
+              <Col id='provTaxCalcCol' xs={12} md={8}>
                 <div id='provTaxCalcBlock'>
                   <ProvisionalTaxCalculator/>
                 </div>
               </Col>
+              <Col id='provTaxCalcCol2'/>
             </Row>
           </div>
-
         )}
         {/* TOGGLE VAT CALCULATOR */}
         {showVatCalculator && (
