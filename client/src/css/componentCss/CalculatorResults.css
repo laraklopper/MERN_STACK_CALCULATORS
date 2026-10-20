@@ -1,4 +1,20 @@
 /* CalculatorResults.css */
+/* BasicCalculator.js */
+#calcResult{
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#calculatorOutput{
+display: flex;
+    align-items: center;
+}
+#outputText{
+    margin: 0px;
+    padding: 0px;
+    font-family: "fira Mono", monospace;
+}
 /* RESULTS: 
 - ProvisionalTaxResults.js
 - VatCalculator.js

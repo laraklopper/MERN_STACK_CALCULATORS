@@ -112,9 +112,9 @@ export default function BasicCalculator() {//Export default BasicCalculator.js c
                             aria-readonly='true'
                         />
                         {/* ==========CALCULATOR 1: RESULT DISPLAY======== */}
-                        <div id='result' tabIndex={-1} aria-live='polite' aria-atomic='true'>
+                        <div id='calcResult' tabIndex={-1} aria-live='polite' aria-atomic='true'>
                             {/* Result display with '=' prefix */}
-                            <span id='calculator-output'>
+                            <span id='calculatorOutput'>
                                 <Equal fontWeight={800} size={24} style={{margin: '0px', padding: '0px'}} aria-hidden='true' focusable='false'/>
                                 <h4 id='outputText'>{result}</h4>
                             </span>
