@@ -368,6 +368,7 @@ export default function ProvisionalTaxCalculator({
               </div>
       <div className="p-2" id='provForeignTaxCreditsBlock2'>
         {/* ERROR */}
+        {errors.employeesTax && <p className="field-error">{errors.employeesTax}</p>}
       </div>
     </Stack>
     {/* INPUTSTACK 6: EMPLOYEES' TAX (PAYE) */}
@@ -455,7 +456,7 @@ export default function ProvisionalTaxCalculator({
                       min="0"
                       step="0.01"
                       placeholder="0"
-                      className="input"
+                      className="calculatorInput"
                       value={form.priorPayments}
                       onChange={(e) => updateField("priorPayments", e.target.value)}
                     />
@@ -479,7 +480,7 @@ export default function ProvisionalTaxCalculator({
                       min="0"
                       step="0.01"
                       placeholder="Optional"
-                      className="input"
+                      className="calculatorInput"
                       value={form.basicAmount}
                       onChange={(e) => updateField("basicAmount", e.target.value)}
                     />
@@ -503,7 +504,7 @@ export default function ProvisionalTaxCalculator({
           <Stack gap={2} className="col-md-5 mx-auto" id="prov-tax-btn-stack">
             <Button
               type="submit"
-              id="calculateProvTaxBtn"
+              id="submitCalculatorBtn"
               disabled={status === "calculating"}
               variant="light"
               // ARIA ATTRIBUTES:
@@ -518,7 +519,10 @@ export default function ProvisionalTaxCalculator({
               variant="danger"
               type="button"
               onClick={resetForm}
-              id="clearFormBtn"
+              id="clearCalculatorBtn"
+              // ARIA ATTRIBUTES:
+              aria-label='Clear Provisional Tax Calculator'
+              ria-disabled={status === "calculating"}
             >
               <RotateCcw size={16} aria-hidden='true' focusable='false'/> Reset
             </Button>
