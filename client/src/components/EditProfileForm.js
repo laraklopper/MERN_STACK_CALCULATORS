@@ -1,7 +1,12 @@
 import React from 'react'
-
+import '../css/componentCss/EditUser.css'
+import '../css/componentCss/FormSetup.css'
 export default function EditProfileForm() {
   return (
-    <div>EditProfileForm</div>
+    <form id='editProfileForm'>
+      <div id='formHeadingBlock'>
+        <h3 id='formHeading'>EDIT PROFILE</h3>
+      </div>
+    </form>
   )
 }

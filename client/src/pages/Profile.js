@@ -118,13 +118,13 @@ export default function Profile({currentUser, logout}) {
             </Col>
           </Row>
         </div>
-        <div>
+        <div id='editUserFormPanal'>
           {showEditProfile && (
             <div id='editProfilePanal'>
               <Row id='editProfileRow'>
                 <Col id='editProfileCol1'/>
                 <Col id='editProfileCol' xs={6}>
-                  <div id='editProfileBlco'>
+                  <div id='editProfileBlock'>
                     <EditProfileForm/>
                   </div>
                 </Col>
@@ -134,14 +134,16 @@ export default function Profile({currentUser, logout}) {
           )}
           {showEditPassword && (
             <div id='editPasswordPanal'>
-             <Row>
-                <Col>1 of 3</Col>
-                <Col xs={6}>
-                  <div>
-                    <EditPasswordForm/>
+             <Row id='editPasswordRow'>
+                <Col id='editPswdCol1'/>
+                <Col xs={6} id='editPswdCol'>
+                  <div id='editPswdBlock'>
+                    <EditPasswordForm
+                      currentUser={currentUser}
+                    />
                   </div>
                 </Col>
-                <Col>3 of 3</Col>
+                <Col id='editPswdCol2'/>
               </Row>
             </div>
           )}
