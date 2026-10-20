@@ -24,6 +24,22 @@ export const currentDate = () => {
     return new Intl.DateTimeFormat('en-GB', options).format(new Date());// Format the current date
 };
 
+//===========================================================================
+// DISPLAYING A USER RECORD (Profile.js, UsersList.js)
+//===========================================================================
+/* Shown in place of any detail the user has not supplied (address line2 and
+province are the only optional fields on the user schema) */
+const NOT_PROVIDED = 'NOT PROVIDED'
+
+// Fall back to a placeholder when a detail is missing or blank
+export const orPlaceholder = (value) =>
+  (typeof value === 'string' && value.trim()) || NOT_PROVIDED
+
+/* Format a user's date as e.g. 01 March 2025. The shared formatter does the
+parsing; the user records only differ in saying NOT PROVIDED for a date that is
+missing, because a user without one has not given it rather than having a record
+that cannot carry it. */
+export const toUserDate = (value) => toLongDate(value, NOT_PROVIDED)
 /* Function to format a date in words, e.g. '31 August 2025'. No time zone is
 forced, so a date pinned to local midnight is shown as the day it names. */
 export const toLongDate = (dateString) => {

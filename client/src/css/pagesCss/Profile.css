@@ -1,0 +1,102 @@
+#profileSec1{
+    display: flex;
+    width: 100%;
+    background-color: olivedrab;
+    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+#userProfile{
+    width: 100%;
+    border-radius: 8px;
+    margin: 0px;
+    padding: 10px 5px;
+    border: solid 3px #323A42;;
+    background-color: #d1d5db;
+}
+#profileRow1,
+#profileRow2,
+#profileRow3{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#editProfileRow,
+#editPasswordRow{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+#editProfileCol,
+#editPasswordCol{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+
+}
+#editProfileCol1,
+#editProfileCol2,
+#editPassowordCol1,
+#editPasswordCol2{
+    margin: 0px;
+    padding: 0px;
+}
+#profileHeaderStack{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    align-items: baseline;
+    border-bottom: solid 3px #323A42;
+}
+#profileFootStack{
+    display: flex;
+    width: 100%;
+    border-top: #323A42 solid 3px;
+}
+#profileHeading{
+    font-family: "Roboto Mono", monospace;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 0px;
+    padding: 0px;
+}
+.userDataSpan{
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin: 0px;
+    padding: 0px;
+}
+.userDetailLabel{
+        font-family: "Roboto Mono", monospace;
+        font-weight: 600;
+        text-decoration: underline;
+        text-align: left;
+        margin: 0px;
+        padding: 0px;
+}
+.userDetailValue{
+    font-family: "Roboto Mono", monospace;
+        font-weight: 600;
+        text-align: left;
+        text-transform: uppercase;
+        margin: 0px;
+        padding: 0px;
+}
+#userEmail{
+    text-transform: lowercase;
+}
+#userProfileBlock1,
+#userProfileBlock2,
+#userProfileBlock3,
+#userProfileBlock4{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
