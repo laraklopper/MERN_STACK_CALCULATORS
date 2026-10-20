@@ -1,8 +1,20 @@
+// calculatorFunc.js
+/* Functions and variables that only apply to 
+BasicCalculator.js and InterestCalculator.js*/
 import { evaluate } from 'mathjs'
 // Shown in place of any detail a record does not carry
 export const NOT_AVAILABLE = 'NOT AVAILABLE'
+
+/*-----------------------------
+UNIVERSAL TO BASIC and INTEREST CALCULATOR(s) FUNCTIONS 
+AND VARIABLES: 
+functions and variables that apply to all tax Calculators
+--------------------------*/
+/* VARIABLES */
+
+/*FUNCTIONS */
 //===========================================================================
-// BASIC CALCULATOR (NumberCalculator.js)
+// BASIC CALCULATOR (BasicCalculator.js)
 //===========================================================================
 /* True for the keys the basic calculator accepts from the keyboard: the digits,
 the decimal point and the four operators. */
