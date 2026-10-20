@@ -478,7 +478,6 @@ export default function InterestCalculator({currentUser, calculateInterest, save
           </div>
         )}
       </div>
-      
     </div>
   )
 }
