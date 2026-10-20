@@ -1,4 +1,7 @@
-const { COMPOUND_FREQUENCIES, SECONDARY_REBATE_AGE, TERTIARY_REBATE_AGE } = require("./calculationUtil");
+const {
+    COMPOUND_FREQUENCIES, SECONDARY_REBATE_AGE, TERTIARY_REBATE_AGE,
+    PROVISIONAL_PORTIONS, PROVISIONAL_PERIOD_LABELS, PROVISIONAL_ESTIMATE_THRESHOLD,
+} = require("./calculationUtil");
 const { SARS_VAT_RATE } = require("./schemaUtil");
 
 // Round a money figure to 2 decimal places (cents)
@@ -225,4 +228,152 @@ const calculateIncomeTax = ({ income, incomeType = 'annual', age, dependants = 0
     };
 };
 
-module.exports = { calculateInterest, calculateVat, calculateIncomeTax, round2 };
+/*=============================
+PROVISIONAL TAX CALCULATION
+==============================*/
+/* Formats a UTC date as YYYY-MM-DD, the shape the client expects for dueDate */
+const toIsoDate = (date) => date.toISOString().slice(0, 10);
+
+/* Works out when an IRP6 falls due from the tax year's start and end dates.
+Returns a YYYY-MM-DD string, or null when the tax year has no usable dates.
+
+  first  - last day of the sixth month of the year of assessment
+  second - last day of the year of assessment
+  third  - last day of the seventh month after a February year end
+
+The config dates arrive either as Date objects (from the database) or as
+YYYY-MM-DD strings (from the seed data); both are read as UTC so the day
+cannot shift with the server's time zone. Date.UTC(y, m, 0) is the last day of
+month m - 1, which is what makes the month arithmetic below work. */
+const provisionalDueDate = (period, config) => {
+    const start = new Date(config.startDate);
+    const end = new Date(config.endDate);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) return null;
+
+    if (period === 'first') {
+        return toIsoDate(new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 6, 0)));
+    }
+    if (period === 'second') {
+        return toIsoDate(new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth() + 1, 0)));
+    }
+    return toIsoDate(new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth() + 8, 0)));
+};
+
+/* Works out what is payable on one IRP6, laid out the way the return is:
+
+  1. Normal tax on the estimated taxable income for the WHOLE year, using the
+     same brackets, rebates and thresholds as calculateIncomeTax.
+  2. Less the medical scheme fees tax credits for the year. The credit is
+     non-refundable, so it can bring the tax down to nil but not below it.
+  3. The portion this payment covers: half the year for the first payment,
+     the whole year for the second and the top-up. The portion is taken off
+     the TAX, not the income, because the brackets are annual and progressive.
+  4. Less employees' tax, foreign tax credits and provisional tax already paid.
+
+An IRP6 cannot ask for a negative payment, so the amount payable is floored at
+nil and any surplus is reported separately as `overpaid`. */
+const calculateProvisionalTax = ({
+    period,
+    estimatedTaxableIncome,
+    age,
+    employeesTax = 0,
+    foreignTaxCredits = 0,
+    medicalCredits = 0,
+    priorPayments = 0,
+    basicAmount = null,
+}, config) => {
+    const incomeTax = calculateIncomeTax({ income: estimatedTaxableIncome, incomeType: 'annual', age }, config);
+    const portion = PROVISIONAL_PORTIONS[period];
+    const periodLabel = PROVISIONAL_PERIOD_LABELS[period];
+
+    // Nothing can have been paid towards the year before its first payment
+    const priorPaid = period === 'first' ? 0 : priorPayments;
+
+    const medicalCreditsApplied = Math.min(medicalCredits, incomeTax.netTax);
+    const annualTaxLiability = incomeTax.netTax - medicalCreditsApplied;
+    const taxForPeriod = round2(annualTaxLiability * portion);
+    const totalCredits = round2(employeesTax + foreignTaxCredits + priorPaid);
+    const amountPayable = round2(Math.max(0, taxForPeriod - totalCredits));
+    const overpaid = round2(Math.max(0, totalCredits - taxForPeriod));
+
+    //========THE WORKING, AS AN IRP6 LAYS IT OUT========
+    // type: 'line' a figure, 'deduct' comes off it, 'subtotal' / 'total' a result
+    const breakdown = [
+        { label: 'Tax on estimated taxable income', amount: incomeTax.grossTax, type: 'line' },
+        /* Gross less net rather than the rebate itself, so the rows still add up
+        when the estimate is under the threshold and the tax is nil outright */
+        { label: 'Less: rebates', amount: round2(incomeTax.grossTax - incomeTax.netTax), type: 'deduct' },
+    ];
+    if (medicalCreditsApplied > 0) {
+        breakdown.push({ label: 'Less: medical scheme fees tax credits', amount: round2(medicalCreditsApplied), type: 'deduct' });
+    }
+    breakdown.push({ label: 'Tax liability for the year', amount: round2(annualTaxLiability), type: 'subtotal' });
+    breakdown.push({ label: `Tax for this period (${portion * 100}% of the year)`, amount: taxForPeriod, type: 'subtotal' });
+    if (employeesTax > 0) {
+        breakdown.push({ label: "Less: employees' tax (PAYE)", amount: round2(employeesTax), type: 'deduct' });
+    }
+    if (foreignTaxCredits > 0) {
+        breakdown.push({ label: 'Less: foreign tax credits', amount: round2(foreignTaxCredits), type: 'deduct' });
+    }
+    if (priorPaid > 0) {
+        breakdown.push({ label: 'Less: provisional tax already paid', amount: round2(priorPaid), type: 'deduct' });
+    }
+    breakdown.push({ label: 'Amount payable', amount: amountPayable, type: 'total' });
+
+    //========WHAT THE FIGURES CANNOT SHOW========
+    const warnings = [];
+    if (incomeTax.belowThreshold) {
+        warnings.push(`The estimate is at or below the tax threshold of R${incomeTax.threshold.toLocaleString('en-ZA')} for your age, so no tax is due on it.`);
+    }
+    if (medicalCredits > medicalCreditsApplied) {
+        warnings.push('The medical scheme fees tax credits exceed the tax for the year. The credit is not refundable, so only the part that brings the tax to nil has been used.');
+    }
+    /* Paragraph 19(3): SARS may increase an estimate it considers too low. Only
+    the first two payments are estimates; the top-up is made after year end. */
+    if (period !== 'third' && basicAmount !== null && estimatedTaxableIncome < basicAmount) {
+        warnings.push('The estimate is below the basic amount (your last assessed taxable income). SARS may require you to justify it, and may increase it.');
+    }
+    // Paragraph 20: the underestimation penalty is judged on the second estimate
+    if (period === 'second') {
+        warnings.push(estimatedTaxableIncome > PROVISIONAL_ESTIMATE_THRESHOLD
+            ? 'Where taxable income is over R1 000 000, an estimate below 80% of the actual taxable income attracts an underestimation penalty of 20% of the shortfall in tax.'
+            : 'Where taxable income is R1 000 000 or less, an estimate below both 90% of the actual taxable income and the basic amount attracts an underestimation penalty of 20% of the shortfall in tax.');
+    }
+    if (period === 'third') {
+        warnings.push('A top-up made by the due date avoids interest on any tax still owing when the year is assessed.');
+    } else {
+        warnings.push('A late payment attracts a 10% penalty on the amount payable, plus interest from the due date.');
+    }
+
+    return {
+        taxYear: config.taxYear,
+        period,
+        periodLabel,
+        portion,
+        dueDate: provisionalDueDate(period, config),
+        // The inputs, echoed back so the client can save exactly what was shown
+        estimatedTaxableIncome: round2(estimatedTaxableIncome),
+        age,
+        basicAmount: basicAmount === null ? null : round2(basicAmount),
+        employeesTax: round2(employeesTax),
+        foreignTaxCredits: round2(foreignTaxCredits),
+        medicalCredits: round2(medicalCredits),
+        priorPayments: round2(priorPaid),
+        // The result
+        grossTax: incomeTax.grossTax,
+        rebate: incomeTax.rebate,
+        medicalCreditsApplied: round2(medicalCreditsApplied),
+        annualTaxLiability: round2(annualTaxLiability),
+        taxForPeriod,
+        totalCredits,
+        amountPayable,
+        overpaid,
+        // Both rates are percentages, e.g. 18 for 18%
+        effectiveRate: round2((annualTaxLiability / estimatedTaxableIncome) * 100),
+        marginalRate: incomeTax.marginalRate,
+        breakdown,
+        warnings,
+    };
+};
+
+module.exports = { calculateInterest, calculateVat, calculateIncomeTax, calculateProvisionalTax, round2 };

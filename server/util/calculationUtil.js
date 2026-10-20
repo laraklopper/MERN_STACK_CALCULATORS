@@ -40,9 +40,32 @@ const MAX_DEPENDANTS = 50;
 const SECONDARY_REBATE_AGE = 65;
 const TERTIARY_REBATE_AGE = 75;
 
+/*=====================================
+PROVISIONAL TAX ROUTES: provTaxRoutes.js
+===========*/
+// The three IRP6 payments a provisional taxpayer makes in a year of assessment
+const PROVISIONAL_PERIODS = ['first', 'second', 'third'];
+/* Share of the year's liability each payment covers. The first covers half the
+year; the second and the top-up square up the whole year, less what was paid. */
+const PROVISIONAL_PORTIONS = {
+    first: 0.5,
+    second: 1,
+    third: 1,
+};
+// How each payment is described on the result
+const PROVISIONAL_PERIOD_LABELS = {
+    first: 'First payment',
+    second: 'Second payment',
+    third: 'Third (top-up) payment',
+};
+/* Paragraph 20 of the Fourth Schedule: the taxable income above which the
+second estimate must be within 80% (rather than 90%) of the actual figure. */
+const PROVISIONAL_ESTIMATE_THRESHOLD = 1_000_000;
+
 /* The server is a CommonJS project ("type": "commonjs" in package.json), so
 the values are exported with module.exports for require() to pick up. */
 module.exports = {
     HISTORY_LIMIT, PERIOD_UNITS, INTEREST_TYPES, COMPOUND_FREQUENCIES, MAX_DURATION,
     INCOME_TYPES, MIN_TAX_AGE, MAX_TAX_AGE, MAX_DEPENDANTS, SECONDARY_REBATE_AGE, TERTIARY_REBATE_AGE,
+    PROVISIONAL_PERIODS, PROVISIONAL_PORTIONS, PROVISIONAL_PERIOD_LABELS, PROVISIONAL_ESTIMATE_THRESHOLD,
 };

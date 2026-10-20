@@ -24,8 +24,16 @@ file using the dotenv package*/
 require('dotenv').config()
 //IMPORT REQUIRED MODULES AND PACKAGES
 const express = require('express');
+// IMPORT SCHEMAS
 const User = require('../models/userSchema')
 const ProvTaxCalc = require('../models/provTaxCalcSchema')
+const TaxYearConfig = require('../models/taxYearSchema');
+// IMPORT CUSTOM MIDDLEWARE
+const { checkJwtToken } = require('../middleware/middleware');
+// IMPORT UTILITY FUNCTIONS
+const { PROVISIONAL_PERIODS } = require('../util/calculationUtil');
+const { calculateProvisionalTax } = require('../util/utilFunc');
+const { taxSeedData } = require('../dataArrays/taxSeedData');
 
 const router = express.Router()
 
@@ -70,7 +78,9 @@ asked for. */
 const parseProvisionalInput = (body = {}) => {
     const input = {
         period: typeof body.period === 'string' ? body.period.trim().toLowerCase() : body.period,
-        taxYear: typeof body.taxYear === 'string' ? body.taxYear.trim() : body.taxYear,
+        /* Anything but a string becomes '' so validation rejects it, rather than
+        an object reaching the database query as an operator */
+        taxYear: typeof body.taxYear === 'string' ? body.taxYear.trim() : '',
         estimatedTaxableIncome: parseFloat(body.estimatedTaxableIncome),
         age: Number(body.age),
         /* The basic amount stays NULL when it was not supplied: a taxpayer
@@ -108,6 +118,10 @@ const validateProvisionalInput = (input) => {
     if (!Number.isInteger(input.age) || input.age < MIN_AGE || input.age > MAX_AGE) {
         return `age must be a whole number between ${MIN_AGE} and ${MAX_AGE}`;
     }
+    // Conditional rendering to check a tax year was named
+    if (!input.taxYear) {
+        return 'taxYear is required';
+    }
 
     // Conditional rendering to validate each of the optional rand figures
     for (const field of OPTIONAL_AMOUNTS) {
@@ -137,26 +151,103 @@ const validateProvisionalInput = (input) => {
     return null;
 };
 
+/* Function to look up the configuration for a tax year. The database copy wins;
+the seed data is the fallback so the calculator still works before any tax year
+has been saved to the database. Returns null for an unknown tax year. */
+const findTaxYearConfig = async (taxYear) => {
+    const config = await TaxYearConfig.findOne({ taxYear }).lean().exec();
+    if (config) return config;
+    return taxYear === taxSeedData.taxYear ? taxSeedData : null;
+};
+
 /*──────────────────────────── POST ROUTES ──────────────────────────────
     POST: Used to create a new resource/submit data to the database
  ─────────────────────────────────────────────────────────────────────────*/
 // Route to calculateProvisionalTax
 // Send A POST request to /provisional/calculate endpoint
 // FRONT END : src/components/ProvisionalTaxCalculator.js
-router.post('/calculate', async (req,res) => {
+router.post('/calculate', checkJwtToken, async (req,res) => {
     const input = parseProvisionalInput(req.body);
 
     const validationMessage = validateProvisionalInput(input)
 
+    // Conditional rendering to check the submitted figures are usable
     if (validationMessage) {
         console.warn('[WARN: provisionalTaxRoutes.js, /calculate] Rejected:', validationMessage);
-        return res.status(400).json({ success: false, message: validationMessage });
+        return res.status(400).json({ success: false, message: validationMessage });// Send a 400 (Bad Request) status code with a message
     }
 
     try {
-        
+        const config = await findTaxYearConfig(input.taxYear)
+
+        // Conditional rendering to check the tax year is one the calculator knows
+        if (!config) {
+            console.warn('[WARN: provisionalTaxRoutes.js, /calculate] Unknown tax year', input.taxYear);
+            return res.status(404).json({ success: false, message: `No tax data found for the ${input.taxYear} tax year` });// Send a 404 (Not Found) status code with a message
+        }
+
+        const result = calculateProvisionalTax(input, config)
+        console.log('[SUCCESS: provisionalTaxRoutes.js, /calculate] Calculated', input.period, 'provisional payment for', input.taxYear);
+        return res.status(200).json({ success: true, result });
     } catch (error) {
-        
+        console.error('[ERROR: provisionalTaxRoutes.js, /calculate]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
+})
+
+// Route to save a provisional tax calculation
+// Send a POST request to /provisional/save endpoint
+// FRONT END : src/components/ProvisionalTaxCalculator.js
+router.post('/save', checkJwtToken, async (req, res) => {
+    const input = parseProvisionalInput(req.body);
+
+    const validationMessage = validateProvisionalInput(input)
+
+    // Conditional rendering to check the submitted figures are usable
+    if (validationMessage) {
+        console.warn('[WARN: provisionalTaxRoutes.js, /save] Rejected:', validationMessage);
+        return res.status(400).json({ success: false, message: validationMessage });// Send a 400 (Bad Request) status code with a message
+    }
+
+    try {
+        // The username is read from the database rather than trusted from the body
+        const user = await User.findById(req.user.userId)
+            .select('username')
+            .exec();
+
+        // Conditional rendering to check the user on the token still exists
+        if (!user) {
+            console.warn('[WARN: provisionalTaxRoutes.js, /save] No user found for id', req.user.userId);
+            return res.status(401).json({ success: false, message: 'Invalid token. Please login again.' });
+        }
+
+        const config = await findTaxYearConfig(input.taxYear)
+
+        // Conditional rendering to check the tax year is one the calculator knows
+        if (!config) {
+            console.warn('[WARN: provisionalTaxRoutes.js, /save] Unknown tax year', input.taxYear);
+            return res.status(404).json({ success: false, message: `No tax data found for the ${input.taxYear} tax year` });// Send a 404 (Not Found) status code with a message
+        }
+
+        /* Recalculated from the inputs rather than stored as sent, so the saved
+        record always reconciles (see the note at the top of this file). */
+        const result = calculateProvisionalTax(input, config)
+        const saved = await ProvTaxCalc.create({
+            user: user._id,
+            username: user.username,
+            ...result,
+        });
+
+        console.log('[SUCCESS: provisionalTaxRoutes.js, /save] Saved provisional tax calculation', saved._id, 'for user', user._id);
+        return res.status(201).json({ success: true, message: 'Calculation saved to your history', saved, result });// Return a 201 (Created) status code with the saved record
+    } catch (error) {
+        // A schema validation failure is the user's input, not a server fault
+        if (error.name === 'ValidationError') {
+            console.error('[ERROR: provisionalTaxRoutes.js, /save] Validation failed:', error.message);
+            return res.status(400).json({ success: false, message: error.message });
+        }
+        console.error('[ERROR: provisionalTaxRoutes.js, /save]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
     }
 })
 

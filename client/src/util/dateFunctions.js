@@ -24,6 +24,14 @@ export const currentDate = () => {
     return new Intl.DateTimeFormat('en-GB', options).format(new Date());// Format the current date
 };
 
+/* Function to format a date in words, e.g. '31 August 2025'. No time zone is
+forced, so a date pinned to local midnight is shown as the day it names. */
+export const toLongDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid date';
+    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+};
+
 //-----------TIME FUNCTIONS-----------
 // Format time as hh:mm:ss
 export const timeDisplay = (dateObj) => {

@@ -6,10 +6,33 @@ import '../css/componentCss/CalculatorSetup.css'
 // IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-import { AlertCircle, Asterisk, Calculator, RotateCcw, TrendingUp, CalendarClock } from 'lucide-react';
-import {formatCurrency} from '../util/currencyFunc'
-import {toLongDate} from '../util/'
-import { BLANK_PROV_TAX_FORM, PROVISIONAL_PERIODS, provisionalPeriodConfig, formatPercent, validateProvTaxForm } from '../util/taxCalculatorFunc';
+import { AlertCircle, Asterisk, Calculator, RotateCcw } from 'lucide-react';
+// IMPORT CUSTOM COMPONENTS
+import ProvisionalTaxResults from './ProvisionalTaxResults';
+import { BLANK_PROV_TAX_FORM, PROVISIONAL_PERIODS, provisionalPeriodConfig, toProvTaxPayload, validateProvTaxForm } from '../util/taxCalculatorFunc';
+
+/* Function to send a POST request to /provisional/<path> with the logged in
+user's token. Shared by calculateProvTax and saveCalculation, which post the
+same body. Returns the parsed response, or throws with the server's message. */
+const postProvTax = async (path, payload) => {
+  const token = localStorage.getItem('token')
+  // Send a POST request to the /provisional/<path> endpoint
+  const response = await fetch(`http://localhost:3001/provisional/${path}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
+    },
+    body: JSON.stringify(payload)
+  })
+  const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
+
+  if (!response.ok) {
+    throw new Error(data.message || `Request failed with status ${response.status}`);
+  }
+  return data
+}
 //ProvisionalTaxCalculator function component
 /* ---------------------------------------------------------------------------
 SARS provisional tax (IRP6) calculator. Posts to /provisional/calculate and
@@ -21,8 +44,7 @@ Provisional tax is worked out from the SAME brackets and rebates as income
 tax, so the tax years come from GET /tax/config and are passed in as
 `taxYears`, exactly as they are for TaxCalculatorForm.*/
 export default function ProvisionalTaxCalculator({
-  taxYears,
-  setError,
+  taxYears = [],
   currentUser,
 }) {
   //========STATE VARIABLES==============
@@ -46,40 +68,28 @@ export default function ProvisionalTaxCalculator({
     );
   }, [taxYears]);
 
-  // Request function to calculate provisional tax
-   const calculateProvTax = useCallback(async () => {
+  /* Request function to calculate provisional tax: sends a POST request to
+  /provisional/calculate. Returns the calculated result, or throws with the
+  server's message. */
+  const calculateProvTax = useCallback(async (payload) => {
     try {
-     const token = localStorage.getItem('token')
-    // Add the entire endpoint
-     const response = await fetch(`http://localhost:3001/provisional/calculate`,{
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body:JSON.stringify({// Send the new payload in the request body as JSON
-        form//payload
-      })
-     })
-     const data = await response.json.catch(() => ({}));
-
-     if (!response.ok) {
-      console.error(`Could not calculate provisional tax. Please try again.`, data.message );//Log an error message in the console for debugging purposes
-      throw new Error('Could not calculate provisional tax. Please try again.', data.message );
-     }
+      const data = await postProvTax('calculate', payload)
+      return data.result
     } catch (error) {
-      setError('An error occurred . Please try again.');
-      console.error('[ERROR: Login.js]: Login error:', error);
+      console.error('[ERROR: ProvisionalTaxCalculator.js, calculateProvTax]: Error calculating provisional tax:', error.message);//Log an error message in the console for debugging purposes
+      throw error
     }
-  },[setError, form])
+  },[])
 
-  // Request function to save provisional tax calculation
-  const saveCalculation = useCallback (async => {
+  /* Request function to save provisional tax calculation: sends a POST request
+  to /provisional/save. Returns the server's response, or throws with the
+  server's message. */
+  const saveCalculation = useCallback(async (payload) => {
     try {
-      
+      return await postProvTax('save', payload)
     } catch (error) {
-      
+      console.error('[ERROR: ProvisionalTaxCalculator.js, saveCalculation]: Error saving provisional tax calculation:', error.message);//Log an error message in the console for debugging purposes
+      throw error
     }
   },[])
 /* Any edit clears the result and the save status, so the figures on screen
@@ -106,20 +116,55 @@ export default function ProvisionalTaxCalculator({
     return Object.keys(errs).length === 0;
   }
 
-  const saveButtonVariant =
-    saveStatus === "saved" ? "success" : saveStatus === "error" ? "danger" : "light";
-  
-  // Function to submit provisional tax calculator form
-  // Call the Calculate request
-  const handleSubmit = (e) => {
+  /* Function to submit provisional tax calculator form: validates the form,
+  then calls calculateProvTax which posts to /provisional/calculate. */
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    calculateProvTax()
+
+    // Conditional rendering to stop the request when a field is unusable
+    if (!validate()) {
+      setResult(null)
+      return
+    }
+
+    setStatus("calculating")
+    setStatusMessage("")
+    setResult(null)
+    setSaveStatus(null)
+    try {
+      const calculated = await calculateProvTax(toProvTaxPayload(form))
+      setResult(calculated)
+      setStatus(null)
+    } catch (error) {
+      setStatus("error")
+      setStatusMessage(error.message || "Could not calculate provisional tax. Try again.")
+    }
   }
-  // Function to save the calculation
-  // call the save calculation request
-  const handleSave =(e) => {
-    e.preventDefault()
-    saveCalculation()
+
+  /* Function to save the calculation: posts the inputs of the result on screen
+  to /provisional/save. The server recalculates from them, so the saved record
+  cannot differ from what was shown. */
+  const handleSave = async () => {
+    // Conditional rendering to make sure there is a calculation to save
+    if (!result) return
+
+    setSaveStatus("saving")
+    try {
+      await saveCalculation({
+        period: result.period,
+        taxYear: result.taxYear,
+        estimatedTaxableIncome: result.estimatedTaxableIncome,
+        age: result.age,
+        employeesTax: result.employeesTax,
+        foreignTaxCredits: result.foreignTaxCredits,
+        medicalCredits: result.medicalCredits,
+        priorPayments: result.priorPayments,
+        basicAmount: result.basicAmount,
+      })
+      setSaveStatus("saved")
+    } catch (error) {
+      setSaveStatus("error")
+    }
   }
   //=============JSX RENDERING=============
   return (
@@ -480,137 +525,15 @@ export default function ProvisionalTaxCalculator({
           </Stack>
         </div>
       </form>
-      {/* Display results in the ProvisionalTaxResults.js component */}
-      {/* --- Results --- */}
-      
+      {/* --- Results: rendered by ProvisionalTaxResults.js --- */}
       {result && (
-        <div className="results" id="prov-tax-results">
-          <div className="results__header">
-            <TrendingUp size={18} className="results__icon" />
-            <h2 className="results__title">{result.periodLabel || period.heading}</h2>
-          </div>
-
-          {/* The date the IRP6 falls due, or nothing where the tax year has no
-          dates. The API sends a plain YYYY-MM-DD, which parses as UTC midnight;
-          the time is pinned on so it is read as LOCAL midnight instead and the
-          date on screen cannot slip a day behind the one that was worked out. */}
-          {result.dueDate && (
-            <p className="prov-tax-due-date">
-              <CalendarClock size={16} aria-hidden='true' focusable='false' />
-              {' '}Due by {toLongDate(`${result.dueDate}T00:00:00`)}
-            </p>
-          )}
-          <div className="results-summary">
-            <div className="results-card">
-              <p className="results-card__label">Tax liability for the year</p>
-              <p className="results-card__value">{formatCurrency(result.annualTaxLiability)}</p>
-            </div>
-            <div className="results-card">
-              <p className="results-card__label">Tax for this period</p>
-              <p className="results-card__value">{formatCurrency(result.taxForPeriod)}</p>
-            </div>
-            <div className="results-card">
-              <p className="results-card__label">Already withheld or paid</p>
-              <p className="results-card__value">{formatCurrency(result.totalCredits)}</p>
-            </div>
-            <div className="results-card results-card--highlight">
-              <p className="results-card__label">Amount payable</p>
-              <p className="results-card__value">{formatCurrency(result.amountPayable)}</p>
-            </div>
-          </div>
-
-          {/* An IRP6 cannot ask for a negative payment, so a surplus is
-          reported here rather than disappearing into the floored total. */}
-          {result.overpaid > 0 && (
-            <p className="prov-tax-overpaid" role="status">
-              Nothing is payable on this IRP6: what has already been withheld or
-              paid exceeds the tax for this period by{' '}
-              {formatCurrency(result.overpaid)}.
-            </p>
-          )}
-
-          <div className="results-summary results-summary--rates">
-            <div className="rate-pill">
-              <span className="rate-pill__label">Effective rate</span>
-              <span className="rate-pill__value">{formatPercent(result.effectiveRate)}</span>
-            </div>
-            <div className="rate-pill">
-              <span className="rate-pill__label">Marginal rate</span>
-              <span className="rate-pill__value">{formatPercent(result.marginalRate)}</span>
-            </div>
-          </div>
-
-          {/* The working, laid out the way an IRP6 is */}
-          {result.breakdown?.length > 0 && (
-            <div className="table-wrapper">
-              <table className="breakdown-table" id="prov-tax-breakdown-table">
-                <thead>
-                  <tr>
-                    <th>Working</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {result.breakdown.map((row, i) => (
-                    <tr key={i} className={row.type === 'total' ? 'prov-tax-total-row' : undefined}>
-                      <td>{row.label}</td>
-                      <td className="breakdown-table__balance">
-                        {/* A deduction is written as a negative, so the column
-                        reads as the sum it is rather than as a list of figures */}
-                        {row.type === 'deduct' ? '−' : ''}{formatCurrency(row.amount)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {/* What the figures cannot show: what happens if the estimate was too
-          low, or the payment is made late. */}
-          {result.warnings?.length > 0 && (
-            <ul className="prov-tax-warnings">
-              {result.warnings.map((warning, i) => (
-                <li key={i} className="prov-tax-warning">
-                  <AlertCircle size={14} aria-hidden='true' focusable='false' /> {warning}
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <p className="disclaimer">
-            This calculator is for estimation purposes only and does not
-            constitute tax advice. Consult SARS or a registered tax practitioner
-            before submitting an IRP6.
-          </p>
-
-          {currentUser && (
-            <div className="save-row">
-              <Button
-                type="button"
-                /* Turns green once the calculation is safely in the user's
-                history, red when the save was rejected. */
-                variant={saveButtonVariant}
-                id="saveProvTaxCalculationBtn"
-                onClick={handleSave}
-                disabled={saveStatus === "saving" || saveStatus === "saved"}
-                className="save-link"
-                // ARIA ATTRIBUTES
-                aria-disabled={saveStatus === "saving" || saveStatus === "saved"}
-                aria-label='save calculation'
-              >
-                {saveStatus === "saving"
-                  ? "Saving..."
-                  : saveStatus === "saved"
-                  ? "Saved to history"
-                  : "Save to history"}
-              </Button>
-              {saveStatus === "error" && (
-                <span className="save-error">Could not save. Try again.</span>
-              )}
-            </div>
-          )}
-        </div>
+        <ProvisionalTaxResults
+          result={result}
+          heading={period.heading}
+          currentUser={currentUser}
+          saveStatus={saveStatus}
+          onSave={handleSave}
+        />
       )}
     </div>
   )

@@ -173,6 +173,28 @@ export const validateProvTaxForm = (form) => {
 
     return errs;
 }
+
+/* Map the form's fields onto the body /provisional/calculate and
+/provisional/save expect. Blank optional amounts are sent as 0, and the fields
+the selected period does not show are dropped, matching validateProvTaxForm. */
+export const toProvTaxPayload = (form) => {
+    const period = provisionalPeriodConfig(form.period);
+    const payload = {
+        period: form.period,
+        taxYear: form.taxYear,
+        estimatedTaxableIncome: form.estimatedIncome,
+        age: form.age,
+    };
+    PROV_TAX_OPTIONAL_AMOUNTS.forEach((field) => {
+        payload[field] = form[field] === '' ? 0 : form[field];
+    });
+    if (!period.acceptsPriorPayments) payload.priorPayments = 0;
+    // The basic amount stays out when blank: missing is not the same as nil
+    if (period.value !== 'third' && form.basicAmount !== '') {
+        payload.basicAmount = form.basicAmount;
+    }
+    return payload;
+};
 /*===================================
 VAT CALCULATOR 
 ===========================*/

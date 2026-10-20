@@ -15,6 +15,7 @@ const authRoutes = require('./routes/authRoutes')
 const interestRoutes = require('./routes/interestRoutes')
 const vatRoutes = require('./routes/vatRoutes')
 const taxRoutes = require('./routes/taxRoutes')
+const provTaxRoutes = require('./routes/provTaxRoutes')
 const connectDB = require('./config/connect'); // Import the database connection function
 
 
@@ -33,6 +34,7 @@ app.use('/auth', authRoutes)//auth Routes: /login, /register
 app.use('/interest', interestRoutes)// interest Routes:
 app.use('/vat', vatRoutes)//vat routes:
 app.use('/tax', taxRoutes)//income tax routes: /calculate, /save
+app.use('/provisional', provTaxRoutes)//provisional tax routes: /calculate, /save
 // ================== MONGOOSE CONFIG ==================
 // Disable strict populate to prevent errors
 // when populating paths that are conditionally defined

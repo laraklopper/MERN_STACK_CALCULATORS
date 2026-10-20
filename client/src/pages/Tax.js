@@ -131,8 +131,8 @@ const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
               <Col id='provTaxCalcCol' xs={12} md={8}>
                 <div id='provTaxCalcBlock'>
                   <ProvisionalTaxCalculator
-                  taxYears={taxYears}
-                    setError={setError}
+                    currentUser={currentUser}
+                    taxYears={taxYears}
                   />
                 </div>
               </Col>
