@@ -142,8 +142,22 @@ const validateProvisionalInput = (input) => {
  ─────────────────────────────────────────────────────────────────────────*/
 // Route to calculateProvisionalTax
 // Send A POST request to /provisional/calculate endpoint
+// FRONT END : src/components/ProvisionalTaxCalculator.js
 router.post('/calculate', async (req,res) => {
-    
+    const input = parseProvisionalInput(req.body);
+
+    const validationMessage = validateProvisionalInput(input)
+
+    if (validationMessage) {
+        console.warn('[WARN: provisionalTaxRoutes.js, /calculate] Rejected:', validationMessage);
+        return res.status(400).json({ success: false, message: validationMessage });
+    }
+
+    try {
+        
+    } catch (error) {
+        
+    }
 })
 
 module.exports = router
