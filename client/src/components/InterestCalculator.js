@@ -370,6 +370,7 @@ export default function InterestCalculator({currentUser, calculateInterest, save
           </div>
         </div>
       </form>
+      {/* ====RESULTS======== */}
       <div id='interestResults'>
         {/* --- Results: rendered by InterestResults.js --- */}
         {result && (
