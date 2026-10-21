@@ -42,6 +42,23 @@ FORM LAYOUT
     gap: 10px;
     border-radius: 5px;
 }
+#fullNameDiv,
+#contactInputDiv{
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+    gap: 5px;
+    justify-content: flex-start;
+}
+.fullNameInputDiv,
+.contactDetailsinputDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0px;
+    padding: 0px;
+}
 /*BOOTSTRAP: LAYOUT*/
 /* STACK 1.2,3: https://react-bootstrap.netlify.app/docs/layout/stack */
 #regisStack1,
@@ -76,6 +93,18 @@ FORM LAYOUT
     border-radius: 5px;
     border: solid #323A42 2px;
 }
+/* GROUP 3 : PASSWORD*/
+#regisGroup3{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: solid #323A42 2px;
+    background: #D6D6D6;
+    gap: 10px;
+    border-radius: 5px;
+}
 /* BOOTSTRAP: LAYOUT*/
 /* STACK 4,5 :https://react-bootstrap.netlify.app/docs/layout/stack */
 #regisStack4,
@@ -107,8 +136,8 @@ INPUT + LABELS
     letter-spacing: 2px;
     font-size: 16px;
 }
-/* GROUP3 :  Required information message + submit button + clear form button*/
-#regisGroup3{
+/* GROUP 4 :  Required information message + submit button + clear form button*/
+#regisGroup4{
     width: 100%;
     margin: 0px;
     padding: 0px;
