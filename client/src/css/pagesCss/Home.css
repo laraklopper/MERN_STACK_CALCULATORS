@@ -15,8 +15,20 @@ Home.js
     background-color: #7EA828;
     margin: 5px 0px 10px 0px;
 }
-#adminRegisRow{
+#adminFormRow{
     padding: 0px;
     margin: 0px;
     width: 100%;
+}
+#adminFormCol{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+#adminFormCol1,
+#adminFormCol2{
+    margin: 0px;
+    padding: 0px;
 }

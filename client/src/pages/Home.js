@@ -1,16 +1,17 @@
+//Home.js
 import React from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/pagesCss/pageSetup.css'
 import '../css/pagesCss/Home.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Stack from 'react-bootstrap/Stack';
-import Button from 'react-bootstrap/Button';
+// IMPORT CUSTOM COMPONENTS
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { ShieldUser } from 'lucide-react';
 import AdminRegisForm from '../components/AdminRegisForm';
 
-const ADMIN_OPTIONS = ['YES', 'NO']
+
 export default function Home({logout, currentUser}) {
   return (
     <div id='pageContainer'>
@@ -19,14 +20,14 @@ export default function Home({logout, currentUser}) {
 
       </section>
       <section id='homeSec2'>
-      <Row>
-        <Col/>
-        <Col xs={12} md={8}>
+      <Row id='adminFormRow'>
+        <Col id='adminFormCol1'/>
+        <Col xs={12} md={10} id='adminFormCol'>
           <div id='adminFormPanal'>
             <AdminRegisForm/>
           </div>
         </Col>
-        <Col/>
+        <Col id='adminFormCol2'/>
       </Row>
         
       </section>

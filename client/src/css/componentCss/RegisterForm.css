@@ -170,10 +170,11 @@ STACK : https://react-bootstrap.netlify.app/docs/layout/stack
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 10px 0px;
+    padding: 10px ;
     background-color: #A8AEB3;
     border: #323A42 solid 2px;
     border-radius: 8px;
+    gap: 10px;
 }
 #adminRegisBlock{
     display: flex;
@@ -182,14 +183,12 @@ STACK : https://react-bootstrap.netlify.app/docs/layout/stack
     align-items: baseline;
 }
 #adminInput{
+    border: #323A42 solid 2px;
     width: 100%;
     margin: 0px;
-    padding: 0px;
-}
-#adminRegisStack{
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
+    padding: 5px;
+    background: #D6D6D6;
+    border-radius: 8px;
 }
 #adminLabel{
     font-weight:700;
@@ -220,27 +219,31 @@ STACK : https://react-bootstrap.netlify.app/docs/layout/stack
     letter-spacing: 2px;
     font-weight: 800;
 }
+#adminMsgStack{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    width: 70%;
+}
+#adminMsg{
+    font-weight: 800;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-decoration: underline;
+}
 /* ===============
 BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
 ====================== */
-#regisBtn{
-    font-family: "Fira Mono", monospace;
-    font-weight: 700;
-    width: 180px;
-    height: 40px;
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: solid 2px #323A42;
-    color: #000;
-}
-
-#regisAsAdminBtn{
+#regisBtn,
+#regisAsAdminBtn,
+#exitAdminFormBtn{
  font-family: "Fira Mono", monospace;
     font-weight: 700;
-    width: 180px;
+    width: 200px;
     height: 40px;
     margin: 0px;
     padding: 0px;
@@ -249,23 +252,17 @@ BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
     align-items: center;
     border: solid 2px #323A42;
     color: #000;
+    letter-spacing: 2px;
+}
+#regisAsAdminBtn{
+    width: 240px;
 }
 #exitAdminFormBtn{
-     font-family: "Fira Mono", monospace;
-    font-weight: 700;
-    width: 80px;
-    height: 40px;
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: solid 1px #323A42;
-    color: #000;
+    width: 100px;
 }
-#regisAsAdminBtn,
+#regisAsAdminBtn:hover,
 #regisBtn:hover,
-#exitAdminFormBtn{
+#exitAdminFormBtn:hover{
     color: #E8F0F6;
     background-color: #323A42;   
 }

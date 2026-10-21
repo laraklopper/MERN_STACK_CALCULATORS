@@ -1,11 +1,16 @@
 // AdminRegisForm.js
-// IMPORT NECESSARY MODULES AND COMPONENTS
+// IMPORT NECESSARY MODULES AND PACKAGES
 import React from 'react'
+// IMPORT CSS STYLESHEETS
 import '../css/componentCss/RegisterForm.css'
 import '../css/componentCss/FormSetup.css'
+// IMPORT BOOTSTRAP COMPONENTS
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-import { ShieldUser } from 'lucide-react';
+// IMPORT ICONS FROM LUCIDE REACT
+import { ShieldUser, X } from 'lucide-react';
+// IMPORT UTILITY FUNCTIONS
+import { ADMIN_STATUS } from '../util/utilFunctions';
 
 // AdminRegisForm Function component
 export default function AdminRegisForm() {
@@ -18,8 +23,8 @@ export default function AdminRegisForm() {
     }
   return (
       <form id='registerAdminForm' method='PATCH' onSubmit={handleAdminSubmit}>
-          <div id='adminInput'>
-            <Stack direction="horizontal" gap={3} id='adminRegisStack'>
+         
+            <Stack direction="horizontal" gap={3} id='adminInput'>
       <div className="p-2" id='adminRegisBlock'>
         <label id='adminLabel' htmlFor='regisAdmin'>
           REGISTER AS ADMIN:
@@ -30,22 +35,41 @@ export default function AdminRegisForm() {
         // value={}
         // onChange={}//set inline changes
         // ARIA ATTRIBUTES
-        // aria-label=''
+        aria-label='Select Admin Status'
         aria-required='false'
         >
           <option value={''}>SELECT</option>
-          <option>YES</option>
-          <option>NO</option>
+          {ADMIN_STATUS.map((status) => (
+            <option key={status} value={status}>
+                {status}
+            </option>
+          ))}
         </select>
       </div>
       <div className="p-2 ms-auto">
-        <Button>
+        <Button
+        variant='light'
+        id='regisAsAdminBtn'
+        type='submit'
+        >
             REGISTER AS ADMIN<ShieldUser/>
         </Button>
       </div>
       <div className="vr" />
-      <div className="p-2">Third item</div>
+      <div className="p-2">
+        <Button
+        variant='danger'
+        id='exitAdminFormBtn'
+        >
+            EXIT<X/>
+        </Button>
+      </div>
     </Stack>
+         
+          <div id='adminMessageDiv'>
+            <Stack gap={2} className="col-md-5 mx-auto" id='adminMsgStack'>
+                <p className='infoText' id='adminMsg'>THIS OPTION IS ONLY AVAILABLE ONCE</p>
+            </Stack>
           </div>
         </form>
   )
