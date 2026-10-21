@@ -13,17 +13,30 @@ import { ShieldUser, X } from 'lucide-react';
 import { ADMIN_STATUS } from '../util/utilFunctions';
 
 // AdminRegisForm Function component
-export default function AdminRegisForm() {
+export default function AdminRegisForm(
+    {
+        setAdmin
+    }
+) {
 
     // Function to submit registerAdminForm
     /* call the setAdmin request */
     const handleAdminSubmit = (e) => {
         e.preventDefault()
-
+        setAdmin()
     }
+    // Function to exit register as admin
+    const exitForm = () => {
+        const confirmExit = window.confirm(
+            'Are you sure you want to exit admin status'
+        )
+        if (!confirmExit) return;
+    }
+    
+    //===========JSX RENDERING=================
   return (
       <form id='registerAdminForm' method='PATCH' onSubmit={handleAdminSubmit}>
-         
+         <p>FORM TO REGISTER AS ADMIN</p>
             <Stack direction="horizontal" gap={3} id='adminInput'>
       <div className="p-2" id='adminRegisBlock'>
         <label id='adminLabel' htmlFor='regisAdmin'>
@@ -56,10 +69,12 @@ export default function AdminRegisForm() {
         </Button>
       </div>
       <div className="vr" />
+{/* EXIT FORM BUTTON: if user clicks exit do not display form again */}
       <div className="p-2">
         <Button
         variant='danger'
         id='exitAdminFormBtn'
+        type='button'
         >
             EXIT<X/>
         </Button>

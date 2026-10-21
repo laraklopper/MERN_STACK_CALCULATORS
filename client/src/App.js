@@ -162,7 +162,12 @@ export default function App() {
             {/* Route to / (home) page */}
             <Route path="/" element={
               <ProtectedUserRoute currentUser={currentUser}>
-                <Home currentUser={currentUser} users={users} logout={logout}/>
+                <Home 
+                  currentUser={currentUser} 
+                  users={users} 
+                  logout={logout} 
+                  setError={setError}
+                  />
               </ProtectedUserRoute>
             }/>
             {/* Route to /calculators page */}
