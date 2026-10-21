@@ -20,7 +20,14 @@ import History from './pages/History';
 export default function App() {
   const [userData, setUserData] = useState({
     username: '',
-    email: '',
+    fullName: {
+      firstName: '',
+      lastName: '',
+    },
+    contactDetails: {
+      email: '',
+      contactNumber: '',
+    },
     dateOfBirth: '',
     password: '',
     isAdmin: false,
