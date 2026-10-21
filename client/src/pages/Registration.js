@@ -32,7 +32,6 @@ export default function Registration(
     dateOfBirth: '',
     password: '',
     isAdmin: false,
-    // rememberMe: false,
   })
 
   //======================NAVIGATION HOOK========================
@@ -49,10 +48,18 @@ export default function Registration(
         },
         body: JSON.stringify({
           username: newUserData.username,
-          email: newUserData.email,
+          fullName: {
+            firstName: newUserData.fullName?.firstName,
+            lastName: newUserData.fullName?.lastName,
+
+          },
+          contactDetails: {
+            email: newUserData.contactDetails?.email,
+            contactNumber: newUserData.contactDetails?.contactNumber,
+          },
           dateOfBirth: newUserData.dateOfBirth,
           password: newUserData.password,
-          admin: newUserData.admin
+          // admin: newUserData.admin
         })
       })
 
@@ -63,7 +70,7 @@ export default function Registration(
       if (response.ok) {
         setError?.(null);//Clear previous errors
         // Reset the form so the details are not kept in state after registering
-        setNewUserData({ username: '', email: '', dateOfBirth: '', password: '', admin: false })
+        setNewUserData({ username: '', email: '', dateOfBirth: '', password: ''})
         alert('New User successfully added')//Notify the user of successful registration
         navigate('/');//Navigate back to Login Page after successful registration
         return true;// Tell the form the registration succeeded

@@ -35,8 +35,8 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
         username: false,
         email: false,
         dateOfBirth: false,
-        password: false,
-        admin: false,
+        password: false, 
+
     })
 
     // Mark a field as touched when it loses focus so its errors can be shown
@@ -213,11 +213,11 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                 <p className='visually-hidden' id='mainInputDescrip'>
                     MAIN USER REGISTRATION DETAILS INPUT
                 </p>
-                {/*  GROUP 1: username, fullName*/}
+                {/*  GROUP 1: USERNAME + FULLNAME*/}
                 <div id='regisGroup1' aria-describedby='regisGroup1Descrip'>
                     {/* --------Screen Reader Heading----------- */}
                     <p className='visually-hidden' id='regisGroup1Descrip'>GENERAL USER DETAILS INPUT</p>
-                    {/* STACK 1: USERNAME + FULLNAME */}
+                    {/* INPUT STACK 1: USERNAME + FULLNAME */}
                     <Stack  gap={3} id='regisStack1'>
                         <div className="p-2" id='regisUsernameBlock'>
                             {/*  username*/}
@@ -255,65 +255,72 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                         {/* FULL NAME */}
                         <div className="p-2" id='fullNameInputBlock'>
                         {/* FULLNAME: FIRSTNAME + LAST NAME */}
-      <div id='fullNameDiv'>
-      <label className='regisLabel'>FULL NAME:</label>
-      {/* FIRST NAME */}
-        <div className='fullNameInputDiv'>
-        <div className='inputDiv'>
-         <label className='regisLabel' htmlFor='firstNameRegis' hidden>FIRST NAME:</label>
-            <input
-                className='input'
-                id='firstNameRegis'
-                placeholder='FIRST NAME'
-            />
-             <small><Asterisk color='#C22419' fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
-        </div>
-        <div>
-          <span className='formErrorSpan'>
-            <Bug color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false'/><p className='errorText'>First Name is required</p>
-        </span>
-        </div>
-        </div>
-        {/* LAST NAME */}
-        <div className='fullNameInputDiv'>
-            <div className='inputDiv'>
-            <label className='regisLabel' htmlFor='lastNameRegis'>LAST NAME:</label>
-            <input
-                className='input'
-                id='lastNameRegis'
-                placeholder='LAST NAME'
-                required
-                // name=''
-                // value={}
-                // onChange={}
-            />
-            <small><Asterisk color='#C22419' fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
-            </div>
-            <div>
-                <span className='formErrorSpan'>
-  <Bug color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false'/><p className='errorText'>Last Name is required</p>
-        </span>
-            </div>
-           
-        </div>
-      </div>
-        
-      </div>
+                            <div id='fullNameDiv'>
+                            <label className='regisLabel'>FULL NAME:</label>
+                            {/* FIRST NAME */}
+                                <div className='fullNameInputDiv'>
+                                <div className='inputDiv'>
+                                <label className='regisLabel' htmlFor='firstNameRegis' hidden>FIRST NAME:</label>
+                                    <input
+                                        className='input'
+                                        id='firstNameRegis'
+                                        placeholder='FIRST NAME'
+                                        required
+                                        autoComplete='given-name'
+                                        name='fullName.firstName'
+                                        value={newUserData.fullName.firstName}
+                                        onChange={handleChange}
+                                    />
+                                    <small><Asterisk color='#C22419' fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                                </div>
+                                <div>
+                                {/* REQUIRED / FORMAT MESSAGE */}
+                                <span className='formErrorSpan'>
+                                    <Bug color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false'/><p className='errorText'>First Name is required</p>
+                                </span>
+                                </div>
+                                </div>
+                                {/* LAST NAME */}
+                                <div className='fullNameInputDiv'>
+                                    <div className='inputDiv'>
+                                    <label className='regisLabel' htmlFor='lastNameRegis'>LAST NAME:</label>
+                                    <input
+                                        className='input'
+                                        id='lastNameRegis'
+                                        placeholder='LAST NAME'
+                                        required
+                                        name='fullName.lastName'
+                                        value={newUserData.fullName.lastName}
+                                        onChange={handleChange}
+                                        // ARIA ATTRIBUTES
+                                        // aria-label=''
+                                    />
+                                    <small><Asterisk color='#C22419' fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                                    </div>
+                                    {/* REQUIRED / FORMAT MESSAGE */}
+                                    <div>
+                                        <span className='formErrorSpan'>
+                        <Bug color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false'/><p className='errorText'>Last Name is required</p>
+                                </span>
+                                    </div>
+                                
+                                </div>
+                            </div>      
+                        </div>
                         <div className="p-2"></div>
                     </Stack>
-    </div>
+                </div>
                     {/* GROUP 2 : CONTACT DETAILS  + DATE OF BIRTH*/}
-                    <div id='regisGroup2'>
-                     {/* STACK 2: CONTACT DETAILS: EMAIL */}
-
+                <div id='regisGroup2'>
+                    {/*INPUT STACK 2: CONTACT DETAILS*/}
                     <Stack direction="horizontal" gap={3} id='regisStack2'>
-                        <div className="p-2" >
-                       
+                        <div className="p-2" id='contactRegisBlock'>
+                        {/* CONTACT DETAILS */}
                         <div id='contactInputDiv'>
                         <label className='regisLabel'>CONTACT DETAILS:</label>
                         <div className='contactDetailsinputDiv'>
-                      <label className='regisLabel' htmlFor='regisEmailInput' hidden>EMAIL:</label>
-                      <div className='inputDiv'>
+                    <label className='regisLabel' htmlFor='regisEmailInput' hidden>EMAIL:</label>
+                    <div className='inputDiv'>
                         <input
                                     className='input'
                                     id='regisEmailInput'
@@ -321,8 +328,8 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                                     required
                                     placeholder='EMAIL'
                                     autoComplete='email'
-                                    name='email'
-                                    value={newUserData.email}
+                                    name='contactDetails.email'
+                                    value={newUserData.contactDetails.email}
                                     inputMode='email'
                                     onChange={handleChange}
                                     onFocus={()=>  setEmailMsg (true) }
@@ -337,9 +344,9 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                                     aria-describedby={(showEmailError || showEmailFormatError) ? emailErrorId : undefined}
                                 />
                                 <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
-</div>
-<div>
-                                 {/* REQUIRED / FORMAT MESSAGE */}
+    </div>
+    <div>
+                                {/* REQUIRED / FORMAT MESSAGE */}
                             {(showEmailError || showEmailFormatError) && (
                                 <div id={emailErrorId} role='alert'>
                                     <span className='formErrorSpan' aria-live='assertive'>
@@ -348,25 +355,29 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                                     </span>
                                 </div>
                             )}
-</div>
+    </div>
                             </div>    
                             <div className='contactDetailsinputDiv'>
                                 <div className='inputDiv'>
                                 <label className='regisLabel' htmlFor='regisContactNumber' hidden>CONTACT NUMBER:</label>
                                 <input
+                                    type='text'
                                     className='input'
                                     id='regisContactNumber'
                                     placeholder='CONTACT NUMBER'
                                     required
-                                    // name=''
-                                    // value={}
+                                    autoComplete='tel'
+                                    name='contactDetails.contactNumber'
+                                    value={newUserData.contactDetails.contactNumber}
                                     onFocus={() => setEmailMsg(true)}
                                     onBlur={() => setEmailMsg(false)}
                                     onChange={handleChange}
                                     // ARIA ATTRIBUTES:
+                                    aria-label=''
                                 />
-                                  <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
+                                <small><Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' /></small>
                                 </div>
+                                {/* REQUIRED / FORMAT MESSAGE */}
                                 <div>
                                     <span className='formErrorSpan'>
             <Bug color="#C22419" fontWeight={700} size={16} aria-hidden='true' focusable='false'/><p className='errorText'>First Name is required</p>
@@ -384,7 +395,7 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                             </div>
                         )}
                     </Stack>
-                    {/* STACK 3: DATE OF BIRTH */}
+                    {/* INPUT STACK 3: DATE OF BIRTH */}
                     <Stack direction="horizontal" gap={3} id='regisStack3'>
                         {/* Date of Birth */}
                         <div className="p-2" id='regisBirthDateBlock'>
@@ -414,6 +425,7 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                                 <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
                             </div>
                             <div id='dateOfBirthErrorBlock'>
+                            {/* REQUIRED / FORMAT MESSAGE */}
                                 {showDateOfBirthError && (
                                     <div id={dateOfBirthErrorId} role='alert'>
                                         <span className='formErrorSpan'>
@@ -421,6 +433,7 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                                         </span>
                                     </div>
                                 )}
+                                {/* ERROR MESSAGE */}
                                 {showDateOfBirthAgeError && (
                                     <div id={dateOfBirthAgeErrorId}  role="alert">
                                         <span className='formErrorSpan'>
@@ -438,12 +451,11 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                             <p className='reqText'>All users must be 16 years or older</p>
                         </div>
                     </Stack>
-
-                    </div>
-                     {/* GROUP 3: PASSWORD */}
+                </div>
+                     {/* INPUT GROUP 3: PASSWORD */}
                 <div id='regisGroup3' aria-describedby='group3Descrip'>
                     <p className='visually-hidden' id='group3Descrip'>PASSWORD INPUT</p>
-                    {/* STACK 4: PASSWORD */}
+                    {/* INPUT STACK 4: PASSWORD */}
                     <Stack direction="horizontal" gap={3} id='regisStack4'>
                         <div className="p-2" id='regisPswdBlock'>
                             <div className='inputDiv'>
@@ -508,7 +520,6 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                             </div>
                         )}
                     </Stack>
-                    
                 </div>
                 </div>
             {/* ====END OF INPUT============= */}
@@ -540,7 +551,8 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
                             id='regisBtn'
                             disabled={submitting}// Prevent double submissions while the request is in progress
                             // ARIA ATTRIBUTES:
-                            aria-label='register button'
+                            role='button'
+                            aria-label={submitting ? 'REGISTERING...' : 'REGISTER'}
                             aria-busy={submitting}
                         >
                             {submitting ? 'REGISTERING...' : 'REGISTER'}
