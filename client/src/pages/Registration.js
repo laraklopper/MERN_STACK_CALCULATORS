@@ -37,6 +37,9 @@ export default function Registration(
   //======================NAVIGATION HOOK========================
   const navigate = useNavigate()// Hook to navigate between different Pages
 
+  // Function to Register a newUser
+  /*Default admin status as false on initial registration
+   */
   const addUser = useCallback (async () => {
     try {
       setError?.(null)
