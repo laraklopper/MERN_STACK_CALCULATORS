@@ -19,7 +19,7 @@
 | `username` | String | Yes | — | unique, trim, 2–50 chars | Login identifier |
 | `contactDetails.email` | String | Yes | — | unique, trim, lowercase, regex `^[^\s@]+@[^\s@]+\.[^\s@]+$` | Any country allowed |
 | `contactDetails.contactNumber` | String | Yes | — | unique, trim, regex `^(\+27\|0)\d{2}[ ]?\d{3}[ ]?\d{4}$` | South African format, e.g. `082 123 4567` or `+27 82 123 4567` |
-| `dateOfBirth` | Date | Yes | — | Must be a valid date in the past | All users must be 16 years or older and Admin Users must be 18 or older |
+| `dateOfBirth` | Date | Yes | — | Must be a valid date in the past | All users must be 16 years or older and Admin Users must be 21 or older |
 | `password` | String | Yes | — | 8–1024 chars, `select: false` | Hashed in registration middleware (not used during dev) |
 | `admin` | Boolean | No | `false` | — | `true` = admin privileges; admins must be 21 or older |
 

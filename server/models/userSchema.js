@@ -64,8 +64,8 @@ const userSchema = new mongoose.Schema({
             },
     },
 },    
-     /*All users must be 16 years or onler and 
-    Admin Users must be 18 or older*/
+     /*All users must be 16 years or older and
+    Admin Users must be 21 or older*/
     dateOfBirth: {
         type: Date,//Indicate data type as Date
         required: [true, 'Date of Birth is required'],//Mark the dateOfBirth as required

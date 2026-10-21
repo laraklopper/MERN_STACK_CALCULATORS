@@ -128,8 +128,8 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
     }
 
     // Minimum age: depends on whether the user registers as admin.
-    //  18 for admin, 16 for regular user
-    const minAge = newUserData.admin === true ? 18 : 16;
+    //  21 for admin, 16 for regular user
+    const minAge = newUserData.admin === true ? 21 : 16;
     // Latest acceptable date of birth for the minimum age requirement
     const today = new Date(); // Get today's date
     // Calculate the latest acceptable date of birth.

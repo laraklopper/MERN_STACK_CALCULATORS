@@ -170,8 +170,9 @@ export default function App() {
             <Route path="/" element={
               <ProtectedUserRoute currentUser={currentUser}>
                 <Home 
-                  currentUser={currentUser} 
-                  users={users} 
+                  currentUser={currentUser}
+                  setCurrentUser={setCurrentUser}
+                  users={users}
                   logout={logout} 
                   setError={setError}
                   />

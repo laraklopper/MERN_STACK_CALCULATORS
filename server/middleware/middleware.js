@@ -103,7 +103,7 @@ const checkPassword = (req, res, next) => {
 AGE VALIDATION MIDDLEWARE
 ========================*/
 /*Middleware function to check that user age
-All users must be 18 or older; admin users must be 21 or older*/
+All users must be 16 or older; admin users must be 21 or older*/
 const checkAge = (req, res, next) => {
     console.log('[DEBUG: middleware.js checkAge] Middleware triggered');// Log message in the console for debugging purposes
     try {
@@ -144,7 +144,7 @@ const checkAge = (req, res, next) => {
             );
 
         // Determine the minimum required age
-        const MIN_AGE = admin === true ? 18 : 16; // Admins must be 18+, regular users must be 16+
+        const MIN_AGE = admin === true ? 21 : 16; // Admins must be 21+, regular users must be 16+
         // Block registration if user is below the minimum age
         if (years < MIN_AGE) {
             console.error(// Log a error message in the console for debugging purposes
