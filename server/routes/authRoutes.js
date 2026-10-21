@@ -3,8 +3,9 @@
 POST: /login - submit user login
 POST: /register - submit registration to add a new user
 /setAdmin - upgrade user to admin
+/auth/clearAdmin
 All passwords are saved in Plaintext for development,
-auth routes do not require a <Bearer> header for user authorization/
+auth/login auth/register routes do not require a <Bearer> header for user authorization/
 */
 /* Load environment variables from a .env
 file using the dotenv package*/
