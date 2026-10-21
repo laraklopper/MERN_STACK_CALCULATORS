@@ -1,5 +1,6 @@
 /* RegistrationForm.css
 RegistrationForm.js: POST request to /auth/register
+AdminRegisForm.js: PATCH request to /auth/adminReg
 */
 /* REGISTRATION FORM */
 #registrationForm{
@@ -163,11 +164,16 @@ STACK : https://react-bootstrap.netlify.app/docs/layout/stack
     justify-content: center;
     width: 100%;
     margin: 0px;
+    padding: 10px 0px;
 }
 #registerAdminForm{
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
+    padding: 10px 0px;
+    background-color: #A8AEB3;
+    border: #323A42 solid 2px;
+    border-radius: 8px;
 }
 #adminRegisBlock{
     display: flex;

@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { ShieldUser } from 'lucide-react';
+import AdminRegisForm from '../components/AdminRegisForm';
 
 const ADMIN_OPTIONS = ['YES', 'NO']
 export default function Home({logout, currentUser}) {
@@ -22,35 +23,7 @@ export default function Home({logout, currentUser}) {
         <Col/>
         <Col xs={12} md={8}>
           <div id='adminFormPanal'>
-          <form id='registerAdminForm'>
-          <div id='adminInput'>
-            <Stack direction="horizontal" gap={3} id='adminRegisStack'>
-      <div className="p-2" id='adminRegisBlock'>
-        <label id='adminLabel' htmlFor='regisAdmin'>
-          REGISTER AS ADMIN:
-        </label>
-        <select
-        id='regisAdmin'
-        // name=''
-        // value={}
-        // onChange={}
-        // ARIA ATTRIBUTES
-
-        >
-          <option value={''}>SELECT</option>
-          <option>YES</option>
-          <option>NO</option>
-        </select>
-      </div>
-      <div className="p-2 ms-auto">
-        
-      </div>
-      <div className="vr" />
-      <div className="p-2">Third item</div>
-    </Stack>
-          </div>
-        </form>
-
+            <AdminRegisForm/>
           </div>
         </Col>
         <Col/>
