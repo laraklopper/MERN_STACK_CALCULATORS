@@ -1,3 +1,90 @@
 /* Home.css
 Home.js
 */
+#homeSec1{
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0px 5px 0px;
+    padding: 0px;
+    width: 100%;
+}
+#homeSec2{
+    display: flex;
+    flex-direction: column ;
+    width: 100%;
+    background-color: #7EA828;
+    margin: 5px 0px 10px 0px;
+}
+#adminRegisRow{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+}
+/* ADMIN REGISTRATION FORM */
+#adminFormPanal{
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+}
+#registerAdminForm{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+#adminRegisBlock{
+    display: flex;
+    gap: 5px;
+    margin: 0px;
+    align-items: baseline;
+}
+#adminInput{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#adminRegisStack{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#adminLabel{
+    font-weight:700;
+    margin:0px;
+    padding:0px;
+    font-family: "Fira Mono", monospace;
+    color: #000000;
+    font-size: 18px;
+    text-decoration: underline;
+}
+#regisAdmin{
+    display: flex;
+    justify-content: center;
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 0px;
+    letter-spacing: 2px;
+    padding: 4px;
+    text-align: center;
+    font-family: "Fira Mono", monospace;
+    border: solid #323A42 2px;
+    box-shadow: #33383e;
+    font-weight: 800;
+}
+#regisAdmin option {
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+#regisAsAdminBtn{
+
+    width: 150px;
+    height: 40px;
+}
+#exitAdminFormBtn{
+    display: flex;
+    width: 80px;
+    height: 40px;
+}
