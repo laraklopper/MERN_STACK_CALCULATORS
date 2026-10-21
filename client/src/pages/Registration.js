@@ -20,11 +20,19 @@ export default function Registration(
 ) {
  // ===============STATE VARIABLES===============================
   const [newUserData, setNewUserData] = useState({
-    username: '',
-    email: '',
+     username: '',
+    fullName: {
+      firstName: '',
+      lastName: '',
+    },
+    contactDetails: {
+      email: '',
+      contactNumber: '',
+    },
     dateOfBirth: '',
     password: '',
-    admin: false
+    isAdmin: false,
+    // rememberMe: false,
   })
 
   //======================NAVIGATION HOOK========================
