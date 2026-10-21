@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Email is required'],//Mark the email as required
         unique: true,// Enforce uniqueness at the DB level — prevents two accounts sharing the same email
         trim: true,// Removes spaces before and after the email
-        set: (v) => v.toLowerCase(),
+        lowercase: true,// Store emails in lowercase so lookups are case-insensitive
             validate: {
                 validator: (v) => emailRegex.test(v),
                 message: (props) => `${props.value} is not a valid email address`
@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema({
     // Field for user contact Number
     contactNumber: {
         type:String,
-        required: ['true', 'Contact Number is required'],
+        required: [true, 'Contact Number is required'],
         unique: true,
         trim: true,
          validate: {

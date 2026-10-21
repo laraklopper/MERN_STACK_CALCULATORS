@@ -43,7 +43,7 @@ else if (!rawAlgorithm) {
 // Sign a JWT for the given user document
 const signToken = (user) => {
     return jwt.sign(
-        { userId: user._id, email: user.email, admin: user.admin },
+        { userId: user._id, email: user.contactDetails?.email, admin: user.admin },
         secretKey,
         { expiresIn: expirationTime, algorithm: jwtAlgorithm }
     );
@@ -79,7 +79,7 @@ router.post('/login', async (req, res) => {
         const userObj = user.toObject();
         delete userObj.password;// Never send the password back to the client
 
-        console.log('[SUCCESS: authRoutes.js, /login] User logged in:', user.email);
+        console.log('[SUCCESS: authRoutes.js, /login] User logged in:', user.username);
         return res.status(200).json({ message: 'Login successful', token, user: userObj });
 
   } catch (error) {
@@ -91,64 +91,79 @@ router.post('/login', async (req, res) => {
 //Send a POST request to the auth/register endpoint
 router.post('/register', checkPassword, checkAge, async (req, res) => {
     try {
-        const { username, email, password, dateOfBirth, admin } = req.body || {};
+        const { username, fullName, contactDetails, password, dateOfBirth } = req.body || {};
+        const { firstName, lastName } = fullName || {};// Nested full name
+        const { email, contactNumber } = contactDetails || {};// Nested contact details
 
-        console.log('[REQUEST BODY: authRoutes.js, /register]:', { username, email, dateOfBirth, admin });// Never log the password
+        console.log('[REQUEST BODY: authRoutes.js, /register]:', { username, fullName, contactDetails, dateOfBirth });// Never log the password
 
-         if (!username ||  !email || !password || !dateOfBirth) {
+        if (!username || !firstName || !lastName || !email || !contactNumber || !password || !dateOfBirth) {
             console.error('[ERROR: authRoutes.js, /register] Missing required registration fields');
-            return res.status(400).json({ message: 'username, email, password and dateOfBirth are required' });
+            return res.status(400).json({
+                message: 'username, first name, last name, email, contact number, password and dateOfBirth are required'
+            });
         }
         // Conditional rendering to check that the text fields are strings (blocks query injection objects)
-        if (typeof username !== 'string' || typeof email !== 'string') {
-            console.error('[ERROR: authRoutes.js, /register] username and email must be strings');
-            return res.status(400).json({ message: 'username and email must be strings' });
+        if ([username, firstName, lastName, email, contactNumber].some((v) => typeof v !== 'string')) {
+            console.error('[ERROR: authRoutes.js, /register] Text fields must be strings');
+            return res.status(400).json({ message: 'username, full name and contact details must be strings' });
         }
 
-        // Check if the email is already registered
-        const existingEmail = await User.findOne({ email: email.toLowerCase().trim() });
-        if (existingEmail) {
-            console.error('[ERROR: authRoutes.js, /register] Email already registered:', email);
-            return res.status(409).json({ message: 'Email is already registered' });
-        }
         // Check if the username is already taken
         const existingUsername = await User.findOne({ username: username.trim() });
         if (existingUsername) {
             console.error('[ERROR: authRoutes.js, /register] Username already taken:', username);
             return res.status(409).json({ message: 'Username is already taken' });
         }
+        // Check if the email is already registered
+        const existingEmail = await User.findOne({ 'contactDetails.email': email.toLowerCase().trim() });
+        if (existingEmail) {
+            console.error('[ERROR: authRoutes.js, /register] Email already registered:', email);
+            return res.status(409).json({ message: 'Email is already registered' });
+        }
+        // Check if the contact number is already registered
+        const existingNumber = await User.findOne({ 'contactDetails.contactNumber': contactNumber.trim() });
+        if (existingNumber) {
+            console.error('[ERROR: authRoutes.js, /register] Contact number already registered:', contactNumber);
+            return res.status(409).json({ message: 'Contact number is already registered' });
+        }
 
         // Use Plaintext passwords for development - stored as-is, no hashing
+        // New users are always regular users; admin status is requested later (AdminRegisForm.js)
         const newUser = await User.create({
             username,
-            email,
+            fullName: { firstName, lastName },
+            contactDetails: { email, contactNumber },
             dateOfBirth,
             password,
-            admin: admin === true,
+            admin: false,
         });
 
         const token = signToken(newUser);
         const userObj = newUser.toObject();
         delete userObj.password;// Never send the password back to the client
 
-        console.log('[SUCCESS: authRoutes.js, /register] User registered:', newUser.email);
+        console.log('[SUCCESS: authRoutes.js, /register] User registered:', newUser.username);
         return res.status(201).json({ message: 'Registration successful', token, user: userObj });
-
-
 
     } catch (error) {
         // Mongoose validation errors (required fields, min/max length, etc.)
         if (error.name === 'ValidationError') {
+            // Send back only the first readable validation message
+            const message = Object.values(error.errors || {})[0]?.message || error.message;
             console.error('[ERROR: authRoutes.js, /register] Validation error:', error.message);
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message });
         }
-        // Duplicate key error (unique email/username constraint)
+        // Duplicate key error (unique username/email/contact number constraint)
         if (error.code === 11000) {
-            const field = Object.keys(error.keyPattern || {})[0] || 'email';// Which unique field clashed
-            console.error(`[ERROR: authRoutes.js, /register] Duplicate ${field}:`, req.body?.[field]);
-            return res.status(409).json({
-                message: field === 'username' ? 'Username is already taken' : 'Email is already registered'
-            });
+            const field = Object.keys(error.keyPattern || {})[0] || '';// Which unique field clashed
+            console.error(`[ERROR: authRoutes.js, /register] Duplicate ${field}`);
+            const messages = {
+                'username': 'Username is already taken',
+                'contactDetails.email': 'Email is already registered',
+                'contactDetails.contactNumber': 'Contact number is already registered',
+            };
+            return res.status(409).json({ message: messages[field] || 'User already exists' });
         }
         console.error('[ERROR: authRoutes.js, /register]', error.message);
         return res.status(500).json({ message: 'Internal Server Error' });

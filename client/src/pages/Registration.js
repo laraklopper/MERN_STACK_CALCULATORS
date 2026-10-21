@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // IMPORT CUSTOM COMPONENTS
 import MainHeader from '../components/MainHeader'
-import RegistrationForm from '../components/RegistrationForm'
+import RegistrationForm, { emptyUser } from '../components/RegistrationForm'
 import { useNavigate } from 'react-router-dom';
 
 // ======MAIN REGISTRATION COMPONENT========
@@ -19,20 +19,7 @@ export default function Registration(
   }
 ) {
  // ===============STATE VARIABLES===============================
-  const [newUserData, setNewUserData] = useState({
-     username: '',
-    fullName: {
-      firstName: '',
-      lastName: '',
-    },
-    contactDetails: {
-      email: '',
-      contactNumber: '',
-    },
-    dateOfBirth: '',
-    password: '',
-    isAdmin: false,
-  })
+  const [newUserData, setNewUserData] = useState(emptyUser)
 
   //======================NAVIGATION HOOK========================
   const navigate = useNavigate()// Hook to navigate between different Pages
@@ -50,19 +37,17 @@ export default function Registration(
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: newUserData.username,
+          username: newUserData.username.trim(),
           fullName: {
-            firstName: newUserData.fullName?.firstName,
-            lastName: newUserData.fullName?.lastName,
-
+            firstName: newUserData.fullName.firstName.trim(),
+            lastName: newUserData.fullName.lastName.trim(),
           },
           contactDetails: {
-            email: newUserData.contactDetails?.email,
-            contactNumber: newUserData.contactDetails?.contactNumber,
+            email: newUserData.contactDetails.email.trim(),
+            contactNumber: newUserData.contactDetails.contactNumber.trim(),
           },
           dateOfBirth: newUserData.dateOfBirth,
           password: newUserData.password,
-          // admin: newUserData.admin
         })
       })
 
@@ -73,7 +58,7 @@ export default function Registration(
       if (response.ok) {
         setError?.(null);//Clear previous errors
         // Reset the form so the details are not kept in state after registering
-        setNewUserData({ username: '', email: '', dateOfBirth: '', password: ''})
+        setNewUserData(emptyUser)
         alert('New User successfully added')//Notify the user of successful registration
         navigate('/');//Navigate back to Login Page after successful registration
         return true;// Tell the form the registration succeeded

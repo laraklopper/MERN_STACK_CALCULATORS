@@ -127,7 +127,14 @@ export default function App() {
     setUsers([])
     setUserData({
       username: '',
-      email: '',
+      fullName: {
+        firstName: '',
+        lastName: '',
+      },
+      contactDetails: {
+        email: '',
+        contactNumber: '',
+      },
       dateOfBirth: '',
       password: '',
       isAdmin: false,
