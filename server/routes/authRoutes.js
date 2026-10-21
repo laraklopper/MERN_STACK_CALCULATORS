@@ -2,7 +2,7 @@
 /*auth endpoints : mounted at /users by app.js
 POST: /login - submit user login
 POST: /register - submit registration to add a new user
-
+/setAdmin - upgrade user to admin
 All passwords are saved in Plaintext for development,
 auth routes do not require a <Bearer> header for user authorization/
 */
