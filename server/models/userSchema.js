@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 /*It checks that the email contains text before "@", text 
 after "@", and a domain extension such as ".com" or ".co.za".*/ 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+const contactNumberRegex = /^(\+27|0)\d{2}[ ]?\d{3}[ ]?\d{4}$/;// South African contact number format: +27 82 123 4567 or 082 123 4567
 // ================= USER SCHEMA =================
 const userSchema = new mongoose.Schema({
      // Field for username(required for login)
@@ -39,15 +39,31 @@ const userSchema = new mongoose.Schema({
             maxlength: [50, 'Last name cannot exceed 50 characters'],
         },
     },
-    // Field for user email (allow email address for any country)
+    contactDetails: {
+        // Field for user email (allow email address for South Africa)
     email: {
         type: String,//Indicate the data type as a String
         required: [true, 'Email is required'],//Mark the email as required
         unique: true,// Enforce uniqueness at the DB level — prevents two accounts sharing the same email
         trim: true,// Removes spaces before and after the email
-        lowercase: true,// Normalizes email to lowercase before saving
-        match: [emailRegex, 'Please enter a valid email address'],// Validate against emailRegex
+        set: (v) => v.toLowerCase(),
+            validate: {
+                validator: (v) => emailRegex.test(v),
+                message: (props) => `${props.value} is not a valid email address`
+            },
     },
+    // Field for user contact Number
+    contactNumber: {
+        type:String,
+        required: ['true', 'Contact Number is required'],
+        unique: true,
+        trim: true,
+         validate: {
+                validator: (v) => contactNumberRegex.test(v),
+                message: 'Invalid South African contact number (e.g., +27 82 123 4567 or 082 123 4567)'
+            },
+    },
+},    
      /*All users must be 16 years or onler and 
     Admin Users must be 18 or older*/
     dateOfBirth: {
@@ -73,6 +89,7 @@ const userSchema = new mongoose.Schema({
      ROLE BASED ACCESS CONTROL:
     - true = admin privileges, 
     - false/undefined = regular user
+    - users can only register as admin after a specific time as a user{age restriction still applies}
      */
     admin :{
       type: Boolean,//Indicate data type as a boolean
