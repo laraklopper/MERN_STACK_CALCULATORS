@@ -1,12 +1,23 @@
+// AdminRegisForm.js
+// IMPORT NECESSARY MODULES AND COMPONENTS
 import React from 'react'
 import '../css/componentCss/RegisterForm.css'
 import '../css/componentCss/FormSetup.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import { ShieldUser } from 'lucide-react';
+
+// AdminRegisForm Function component
 export default function AdminRegisForm() {
+
+    // Function to submit registerAdminForm
+    /* call the setAdmin request */
+    const handleAdminSubmit = (e) => {
+        e.preventDefault()
+
+    }
   return (
-      <form id='registerAdminForm'>
+      <form id='registerAdminForm' method='PATCH' onSubmit={handleAdminSubmit}>
           <div id='adminInput'>
             <Stack direction="horizontal" gap={3} id='adminRegisStack'>
       <div className="p-2" id='adminRegisBlock'>
@@ -17,7 +28,7 @@ export default function AdminRegisForm() {
         id='regisAdmin'
         // name=''
         // value={}
-        // onChange={}
+        // onChange={}//set inline changes
         // ARIA ATTRIBUTES
         // aria-label=''
         aria-required='false'
