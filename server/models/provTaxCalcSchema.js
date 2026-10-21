@@ -43,8 +43,12 @@ const provTaxCalcSchema = new mongoose.Schema({
         type: String,
         required: [true, 'tax year is required'],
         trim: true,
+        match: [/^\d{4}-\d{4}$/, 'Tax year must be in the format YYYY-YYYY'],
     },
-    // Which of the three IRP6 payments was worked out
+    // Field for period
+    /*Which of the three IRP6 payments was worked out
+    The first two are compulsory; the third is a voluntary 
+    top-up made after the year has ended.*/
     period: {
         type: String,
         enum: {
@@ -53,7 +57,7 @@ const provTaxCalcSchema = new mongoose.Schema({
         },
         required: [true, 'period is required'],
     },
-    // The estimate for the WHOLE year of assessment
+    // Field for The estimate for the WHOLE year of assessment
     estimatedTaxableIncome: {
         type: Number,
         required: [true, 'estimated taxable income is required'],

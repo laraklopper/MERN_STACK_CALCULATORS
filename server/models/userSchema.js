@@ -19,6 +19,26 @@ const userSchema = new mongoose.Schema({
         minlength: [2, 'Username must be at least 2 characters long'], // Minimum username length.
         maxlength: [50, 'Username cannot exceed 50 characters'],// Maximum username length.
     },
+    // ============NESTED FULL NAME====================
+    // Stores the user's first and last name inside one object.
+    fullName: {
+        //Field for user first Name
+        firstName: {
+            type: String,
+            required: [true, 'User first name is required'],
+            trim: true,
+            minlength: [2, 'First name must be at least 2 characters long'],
+            maxlength: [50, 'First name cannot exceed 50 characters'],
+        },
+        // Field for user last name
+        lastName: {
+            type: String,
+            required: [true, 'user last name is required'],
+            trim: true,
+            minlength: [2, 'Last name must be at least 2 characters long'],
+            maxlength: [50, 'Last name cannot exceed 50 characters'],
+        },
+    },
     // Field for user email (allow email address for any country)
     email: {
         type: String,//Indicate the data type as a String
