@@ -12,7 +12,12 @@ import { orPlaceholder, toUserDate } from '../util/dateFunctions';
 import EditProfileForm from '../components/EditProfileForm';
 import EditPasswordForm from '../components/EditPasswordForm';
 
-export default function Profile({currentUser, logout}) {
+export default function Profile(
+  {//PROPS PASSED FROM PARENT COMPONENT
+    currentUser, 
+    logout,
+    setError
+  }) {
   const [showEditProfile, setShowEditProfile] = useState(false)
   const [showEditPassword, setShowEditPassword] = useState(false)
 
@@ -81,7 +86,7 @@ export default function Profile({currentUser, logout}) {
         </span>
          <span className='nestedUserDataSpan'>
           <p className='userDetailLabel'>CONTACT NUMBER:</p>
-          <p className='userDetailValue'>{orPlaceholder(currentUser.contactDetails?.email)}</p>
+          <p className='userDetailValue'>{orPlaceholder(currentUser.contactDetails?.contactNumber)}</p>
         </span>
         </div>
       
