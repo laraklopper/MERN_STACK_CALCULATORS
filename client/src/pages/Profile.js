@@ -14,7 +14,8 @@ import EditPasswordForm from '../components/EditPasswordForm';
 
 export default function Profile(
   {//PROPS PASSED FROM PARENT COMPONENT
-    currentUser, 
+    currentUser,
+    setCurrentUser,
     logout,
     setError
   }) {
@@ -30,21 +31,48 @@ export default function Profile(
     setShowEditProfile(false)
   },[])
 
+  // State to disable the delete admin button while the request is in progress
+  const [clearingAdmin, setClearingAdmin] = useState(false)
+
   const changeStatus = useCallback(async () => {
+    setClearingAdmin(true)
     try {
       // Send request to /auth/clearAdmin endpoint
-    } catch (error) {
-      
-    }
-  },[])
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:3001/auth/clearAdmin', {
+        method: 'PATCH',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      })
+      const data = await response.json().catch(() => ({}));
 
-  
+      if (!response.ok) throw new Error(data?.message || 'Failed to remove admin status');
+      // Save the new token (contains the updated admin claim) and update the current user
+      localStorage.setItem('token', data.token)
+      // Do not display AdminRegisForm.js (Home.js) again
+      localStorage.setItem(`adminFormDismissed_${data.user?._id}`, 'true')
+      setCurrentUser?.(data.user)
+      setError?.(null)
+      console.log('[SUCCESS: Profile.js] Admin status removed');
+    } catch (error) {
+      console.error('[ERROR: Profile.js] Error removing admin status:', error.message);
+      setError?.(`Error removing admin status: ${error.message}`)
+    } finally {
+      setClearingAdmin(false)
+    }
+  },[setCurrentUser, setError])
+
+
 // Function to confirm admin status removal
     const confirmAdminExit = () => {
         const confirmExit = window.confirm(
             'Are you sure you want to permanently exit admin status'
         )
         if (!confirmExit) return;
+        changeStatus()
     }
   //=================
   return (
@@ -98,14 +126,20 @@ export default function Profile(
             <p className='userDetailLabel'>IS ADMIN:</p>
             <p className='userDetailValue'>{currentUser.admin ? 'YES' : 'NO'}</p>
           </span>
+        {/* Only admin users can remove their admin status */}
+        {currentUser.admin && (
         <Button
         id='deleteAdminBtn'
         type='button'
         variant='danger'
-        // onClick={}
+        onClick={confirmAdminExit}
+        disabled={clearingAdmin}
+        // ARIA ATTRIBUTES
+        aria-busy={clearingAdmin}
         >
-          DELETE ADMIN STATUS
+          {clearingAdmin ? 'REMOVING...' : 'DELETE ADMIN STATUS'}
         </Button>
+        )}
       </div>
     </Stack>
             </Col>

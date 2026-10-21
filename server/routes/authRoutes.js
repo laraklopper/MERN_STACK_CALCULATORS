@@ -3,7 +3,7 @@
 POST: /login - submit user login
 POST: /register - submit registration to add a new user
 PATCH: /setAdmin - upgrade user to admin (21+ and user for 1 day during development)
-/auth/clearAdmin
+PATCH: /clearAdmin - remove admin status from the user
 All passwords are saved in Plaintext for development,
 auth/login auth/register routes do not require a <Bearer> header for user authorization/
 */
@@ -222,6 +222,36 @@ router.patch('/setAdmin', checkJwtToken, async (req, res) => {
 
     } catch (error) {
         console.error('[ERROR: authRoutes.js, /setAdmin]', error.message);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+})
+//Route to remove admin status from the logged in user
+//Send a PATCH request to the /auth/clearAdmin endpoint
+router.patch('/clearAdmin', checkJwtToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user?.userId).exec();
+        if (!user) {
+            console.error('[ERROR: authRoutes.js, /clearAdmin] User not found');
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (user.admin !== true) {
+            console.error('[ERROR: authRoutes.js, /clearAdmin] User is not an admin:', user.username);
+            return res.status(409).json({ message: 'User is not an admin' });
+        }
+
+        user.admin = false;
+        await user.save();
+
+        // Sign a new token so the admin claim is up to date
+        const token = signToken(user);
+        const userObj = user.toObject();
+        delete userObj.password;// Never send the password back to the client
+
+        console.log('[SUCCESS: authRoutes.js, /clearAdmin] Admin status removed:', user.username);
+        return res.status(200).json({ message: 'Admin status removed', token, user: userObj });
+
+    } catch (error) {
+        console.error('[ERROR: authRoutes.js, /clearAdmin]', error.message);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 })

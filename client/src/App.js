@@ -205,7 +205,12 @@ export default function App() {
             {/* Route to /profile page */}
             <Route path='/profile' element={
               <ProtectedUserRoute currentUser={currentUser}>
-                <Profile currentUser={currentUser} logout={logout}/>
+                <Profile
+                  currentUser={currentUser}
+                  setCurrentUser={setCurrentUser}
+                  logout={logout}
+                  setError={setError}
+                  />
               </ProtectedUserRoute>
             }/>
             {/* ---------PROTECTED ADMIN ROUTE--------- */}
