@@ -72,6 +72,16 @@
     margin: 0px;
     padding: 0px;
 }
+.nestedUserDataSpan{
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    justify-content: space-between;
+}
+.userNestedLabel,
 .userDetailLabel{
         font-family: "Roboto Mono", monospace;
         font-weight: 600;
@@ -79,6 +89,20 @@
         text-align: left;
         margin: 0px;
         padding: 0px;
+}
+.nestedUserData{
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+}
+.userDataGroup{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0px;
+    padding: 0px;
 }
 .userDetailValue{
     font-family: "Roboto Mono", monospace;
@@ -93,13 +117,25 @@
 }
 #userProfileBlock1,
 #userProfileBlock2,
+#userProfileBlock4,
 #userProfileBlock3,
-#userProfileBlock4{
+#userProfileBlock5,
+#userProfileBlock6{
     display: flex;
+    align-items: baseline;
     margin: 0px;
     padding: 0px;
     width: 100%;
 }
+#userProfileBlock3{
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+    gap: 10px;
+    width: 100%;
+}
+
 #editUserFormPanal{
     width: 100%;
     margin: 0px;
@@ -130,4 +166,36 @@
     justify-content: center;
     width: 100%;
     background-color: #9E9E9E;
+}
+#toggleEditUserBtn,
+#toggleEditPswdBtn,
+#deleteAdminBtn{
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+    color: black;
+    width: 180px;
+    letter-spacing: 2px;
+    height: 40px;
+}
+#deleteAdminBtn{
+    width: 250px;
+    letter-spacing: 0.7px;
+}
+
+#toggleEditUserBtn:active,
+#toggleEditPswdBtn:active{
+    background-color: #323A42;
+    color: #E8F0F6;
+    text-decoration: underline;
+}
+#toggleEditUserBtn:hover,
+#toggleEditPswdBtn:hover,
+#deleteAdminBtn:hover{
+    background-color: #323A42;
+    color: #E8F0F6;
 }

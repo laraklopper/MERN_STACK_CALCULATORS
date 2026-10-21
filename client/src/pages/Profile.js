@@ -24,6 +24,23 @@ export default function Profile({currentUser, logout}) {
     setShowEditPassword(prev => (!prev))
     setShowEditProfile(false)
   },[])
+
+  const changeStatus = useCallback(async () => {
+    try {
+      // Send request to /auth/clearAdmin endpoint
+    } catch (error) {
+      
+    }
+  },[])
+
+  
+// Function to confirm admin status removal
+    const confirmAdminExit = () => {
+        const confirmExit = window.confirm(
+            'Are you sure you want to permanently exit admin status'
+        )
+        if (!confirmExit) return;
+    }
   //=================
   return (
     <div id='pageContainer' role='main'>
@@ -45,6 +62,7 @@ export default function Profile({currentUser, logout}) {
           <Row id='profileRow2'>
             <Col xs={6} id='profileDataCol1'>
               <Stack gap={3}id='profileStack1'>
+              {/* USERNMAME */}
       <div className="p-2" id='userProfileBlock1'>
         {/* USERNAME */}
         <span className='userDataSpan'>
@@ -52,28 +70,65 @@ export default function Profile({currentUser, logout}) {
           <p className='userDetailValue'>{orPlaceholder(currentUser.username)}</p>
         </span>
       </div>
+      {/* CONTACT DETAILS */}
       <div className="p-2" id='userProfileBlock2'>
-        {/* DATE OF BIRTH */}
-        <span className='userDataSpan'>
-          <p className='userDetailLabel'>DATE OF BIRTH:</p>
-          <p className='userDetailValue'>{toUserDate(currentUser.dateOfBirth)}</p>
+      <div className='nestedUserData'>
+        <p className='userNestedLabel'>CONTACT DETAILS:</p>
+        <div className='userDataGroup'>
+        <span className='nestedUserDataSpan'>
+          <p className='userDetailLabel'>EMAIL</p>
+          <p className='userDetailValue'>{orPlaceholder(currentUser.contactDetails?.email)}</p>
         </span>
+         <span className='nestedUserDataSpan'>
+          <p className='userDetailLabel'>CONTACT NUMBER:</p>
+          <p className='userDetailValue'>{orPlaceholder(currentUser.contactDetails?.email)}</p>
+        </span>
+        </div>
+      
+        </div>
+      </div>
+      {/* ADMIN STATUS */}
+         <div className="p-2" id='userProfileBlock3'>
+          <span className='userDataSpan'>
+            <p className='userDetailLabel'>IS ADMIN:</p>
+            <p className='userDetailValue'>{currentUser.admin ? 'YES' : 'NO'}</p>
+          </span>
+        <Button
+        id='deleteAdminBtn'
+        type='button'
+        variant='danger'
+        // onClick={}
+        >
+          DELETE ADMIN STATUS
+        </Button>
       </div>
     </Stack>
             </Col>
         <Col xs={6} id='profileDataCol2'>
           <Stack gap={3} id='profileStack2'>
-      <div className="p-2" id='userProfileBlock3'>
-        {/* EMAIL */}
+          {/* FULL NAME */}
+          <div className="p-2" id='userProfileBlock4'>
+            <div className='nestedUserData'>
+              <p className='userNestedLabel'>FULL NAME:</p>
+              <div className='userDataGroup'>
+              {/* FIRST NAME */}
+               <span className='nestedUserDataSpan'>
+               <p className='userDetailLabel'>FIRST NAME:</p>
+                <p className='userDetailValue'>{orPlaceholder(currentUser.fullName?.firstName)}</p>
+              </span>
+              {/* LAST NAME */}
+              <span className='nestedUserDataSpan'>
+              <p className='userDetailLabel'>LAST NAME:</p>
+                <p className='userDetailValue'>{orPlaceholder(currentUser.fullName?.lastName)}</p>
+              </span>
+              </div>
+            </div>
+          </div>
+          <div className="p-2" id='userProfileBlock5'>
+        {/* DATE OF BIRTH */}
         <span className='userDataSpan'>
-          <p className='userDetailLabel'>EMAIL</p>
-          <p className='userDetailValue' id='userEmail'>{orPlaceholder(currentUser.email)}</p>
-        </span>
-      </div>
-      <div className="p-2" id='userProfileBlock4'>
-        <span className='userDataSpan'>
-          <p className='userDetailLabel'>IS ADMIN:</p>
-          <p className='userDetailValue'>{currentUser.admin ? 'YES' : 'NO'}</p>
+          <p className='userDetailLabel'>DATE OF BIRTH:</p>
+          <p className='userDetailValue'>{toUserDate(currentUser.dateOfBirth)}</p>
         </span>
       </div>
     </Stack>
