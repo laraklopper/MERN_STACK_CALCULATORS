@@ -68,6 +68,33 @@ const checkJwtToken = (req, res, next) => {
         });
    } 
 }
+/*=============================
+ADMIN VERIFICATION MIDDLEWARE
+ ====================================*/
+/*Middleware function to check that the logged in user is an admin.
+Must run after checkJwtToken. The admin flag is read from the database rather
+than the token, so removing admin status takes effect before the token expires*/
+const checkAdmin = async (req, res, next) => {
+    console.log('[DEBUG: middleware.js] [checkAdmin] Middleware triggered');// Log a message in the console for debugging purposes
+    try {
+        const user = await User.findById(req.user?.userId).select('admin').exec();
+
+        // Conditional rendering to check the user exists and is an admin
+        if (!user || user.admin !== true) {
+            console.warn('[WARN: middleware.js, checkAdmin] Access denied for user', req.user?.userId);// Log a warning message in the console for debugging purposes
+            return res.status(403).json({// Respond with a 403 (Forbidden) status code and an error message
+                success: false,
+                message: 'Access denied. Admin users only.'
+            });
+        }
+
+        console.log('[SUCCESS: middleware.js, checkAdmin]: Admin verified');//Log a message in the console for debugging purposes
+        next()// Call the next middleware or route handler
+    } catch (error) {
+        console.error('[ERROR: middleware.js, checkAdmin]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return 500 (Internal Server Error) response
+    }
+}
 /*===============================
 PASSWORD VALIDATION MIDDLEWARE
 ====================*/
@@ -163,4 +190,4 @@ const checkAge = (req, res, next) => {
     }
 }
 
-module.exports = {checkJwtToken, checkPassword, checkAge}
+module.exports = {checkJwtToken, checkAdmin, checkPassword, checkAge}
