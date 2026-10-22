@@ -94,6 +94,24 @@ const findTaxYearConfig = async (taxYear) => {
 /*──────────────────────────── GET ROUTES ─────────────────────────────────────
    GET: READ — Used to fetch information from the database
 ────────────────────────────────────────────────────────────────────────────────*/
+// Route to fetch the tax years the calculators can work with
+//  Send a GET request to the /tax/config route
+// FRONT END FILE: /client/src/pages/Tax.js
+/* Returns the tax years saved in the database plus the seed year (so the list
+is never empty), newest first. "YYYY-YYYY" strings sort correctly as text. */
+router.get('/config', checkJwtToken, async (req, res) => {
+    try {
+        const savedYears = await TaxYearConfig.distinct('taxYear').exec();
+        const taxYears = [...new Set([...savedYears, taxSeedData.taxYear])]
+            .sort((a, b) => b.localeCompare(a));
+
+        console.log('[SUCCESS: taxRoutes.js, /config] Found', taxYears.length, 'tax year(s)');
+        return res.status(200).json({ success: true, taxYears });
+    } catch (error) {
+        console.error('[ERROR: taxRoutes.js, /config]', error.message);// Log an error message in the console for debugging purposes
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });// Return a 500 (Internal Server Error) status code with a message
+    }
+})
 
 /*──────────────────────────── POST ROUTES ──────────────────────────────
     POST: Used to create a new resource/submit data to the database
