@@ -23,7 +23,6 @@ export const emptyUser = {
     },
     dateOfBirth: '',
     password: '',
-    admin: false,
 }
 
 /*---------------REGULAR EXPRESSIONS-------------------------
@@ -127,9 +126,9 @@ export default function RegistrationForm(//Export the default RegistrationForm.j
         setTouched(untouched)
     }
 
-    // Minimum age: depends on whether the user registers as admin.
-    //  21 for admin, 16 for regular user
-    const minAge = newUserData.admin === true ? 21 : 16;
+    /* Minimum age: 16 for all users (same as middleware.js checkAge).
+    Admin status (21+) is requested later through AdminRegisForm.js */
+    const minAge = 16;
     // Latest acceptable date of birth for the minimum age requirement
     const today = new Date(); // Get today's date
     // Calculate the latest acceptable date of birth.

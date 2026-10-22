@@ -1,6 +1,6 @@
 //Tax.js
 //IMPORT REQUIRED MODULES AND PACKAGES
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 // IMPORT CSS STYLESHEETS
 import '../css/pagesCss/pageSetup.css'
 import '../css/pagesCss/TaxCalculators.css'
@@ -41,8 +41,35 @@ const [taxYears, setTaxYears] = useState([taxSeedData.taxYear])
     setShowProvTaxCalc(false)
   },[])
 
+  /* Fetch the tax years from GET /tax/config for the income tax and provisional
+  tax dropdowns. The seed year stays in the list if the request fails. */
+  useEffect(() => {
+    const fetchTaxYears = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        const response = await fetch('http://localhost:3001/tax/config', {
+          method: 'GET',
+          mode: 'cors',
+          headers: {
+            'Authorization': `Bearer ${token}`// Attach the token in the Authorization header
+          }
+        })
+        const data = await response.json().catch(() => ({}));// Safely parse the JSON response (avoid crash if server returns non-JSON)
 
-  
+        if (!response.ok) {
+          throw new Error(data.message || `Request failed with status ${response.status}`);
+        }
+        // Conditional rendering to only replace the seed year with a usable list
+        if (Array.isArray(data.taxYears) && data.taxYears.length > 0) {
+          setTaxYears(data.taxYears)
+        }
+      } catch (error) {
+        console.error('[ERROR: Tax.js, fetchTaxYears]: Error fetching tax years:', error.message);//Log an error message in the console for debugging purposes
+      }
+    }
+    fetchTaxYears()
+  },[])
+
 
   // ==========JSX RENDERING==========================
   return (
