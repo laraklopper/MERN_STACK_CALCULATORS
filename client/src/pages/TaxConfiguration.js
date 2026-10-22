@@ -21,11 +21,12 @@ export default function TaxConfiguration(
   return (
     <div id='pageContainer'>
         <Header pageHeader={'TAX DATA CONFIGURATION'} currentUser={currentUser}/>
-        <section>
-             <Row>
-        <Col>1 of 3</Col>
-        <Col xs={5}>
-            <Button
+        <section id='taxConfigSection1'>
+             <Row id='toggleTaxYearRow'>
+        <Col id='toggleTaxYearCol1'/>
+        <Col xs={5} id='toggleTaxYearCol'>
+            <div id='toggleTaxYearDiv'>
+              <Button
                 variant='light'
                 id='toggleTaxYearFormBtn'
                 type='button'
@@ -38,8 +39,11 @@ export default function TaxConfiguration(
             >
                 {showTaxYearForm ? 'Hide add tax year' : 'Add tax year'}
             </Button>
+
+            </div>
+          
         </Col>
-        <Col>3 of 3</Col>
+        <Col id='toggleTaxYearCol2'/>
       </Row>
             {showTaxYearForm && (
                 <div id='taxYearFormPanal'>

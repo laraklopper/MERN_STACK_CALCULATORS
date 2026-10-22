@@ -8,7 +8,7 @@ import '../css/componentCss/TaxYearForm.css'
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 // IMPORT ICONS FROM LUCIDE-REACT
-import { AlertCircle, CalendarPlus, Plus, RotateCcw, Trash2 } from 'lucide-react'
+import { AlertCircle, CalendarPlus, Asterisk, Plus, RotateCcw, Trash2 } from 'lucide-react'
 
 /* Form for admin users to add a new SARS tax year. Sends a POST request to
 /tax/config (taxRoutes.js), which checks the user is an admin, validates the
@@ -204,17 +204,17 @@ export default function TaxYearForm({ onTaxYearAdded }) {
             </div>
             <div className="p-2 calculatorTextSpan">
               <p className="calculatorText">
-                Enter the SARS figures for the new tax year. Admin users only.
+                Enter the SARS figures for the new tax year.
               </p>
             </div>
           </Stack>
         </div>
-
         {/* GROUP 1: TAX YEAR */}
         <fieldset className='taxYearGroup'>
           <legend className='calculatorLabel taxYearLegend'>Tax year</legend>
           <div className='taxYearField'>
-            <label className='calculatorLabel' htmlFor='taxYearStartInput'>Start year:</label>
+            <label className='addTaxYearLabel' htmlFor='taxYearStartInput'>Start year:</label>
+            <div className='inputDiv'>        
             <input
               id='taxYearStartInput'
               type='number'
@@ -232,6 +232,8 @@ export default function TaxYearForm({ onTaxYearAdded }) {
               aria-required='true'
               aria-describedby='taxYearPreview'
             />
+            <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
+             </div>
             <p className='calcFormText' id='taxYearPreview' aria-live='polite'>
               {taxYear
                 ? `${taxYear}: 1 March ${form.startYear} to end of February ${Number(form.startYear) + 1}`
@@ -239,11 +241,10 @@ export default function TaxYearForm({ onTaxYearAdded }) {
             </p>
           </div>
         </fieldset>
-
         {/* GROUP 2: TAX BRACKETS */}
         <fieldset className='taxYearGroup'>
           <legend className='calculatorLabel taxYearLegend'>Tax brackets</legend>
-          <p className='calcFormText'>
+          <p className='calcFormText' id='taxBracketText'>
             Enter the brackets from lowest to highest. Each minimum is filled in for you.
             Leave the last bracket's maximum blank (no ceiling).
           </p>
@@ -326,14 +327,14 @@ export default function TaxYearForm({ onTaxYearAdded }) {
             <Plus size={16} aria-hidden='true' focusable='false' /> Add bracket
           </Button>
         </fieldset>
-
         {/* GROUP 3: REBATES AND THRESHOLDS */}
         <div className='taxYearGroupRow'>
           <fieldset className='taxYearGroup'>
             <legend className='calculatorLabel taxYearLegend'>Rebates (R)</legend>
             {REBATE_FIELDS.map(({ key, label }) => (
               <div className='taxYearField' key={key}>
-                <label className='calcFormText' htmlFor={`rebate-${key}`}>{label}:</label>
+                <label className='addTaxYearLabel' htmlFor={`rebate-${key}`}>{label}:</label>
+                <div className='inputDiv'>
                 <input
                   id={`rebate-${key}`}
                   type='number'
@@ -345,14 +346,18 @@ export default function TaxYearForm({ onTaxYearAdded }) {
                   required
                   aria-required='true'
                 />
+                <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
+                </div>
               </div>
             ))}
           </fieldset>
           <fieldset className='taxYearGroup'>
             <legend className='calculatorLabel taxYearLegend'>Tax thresholds (R)</legend>
-            {THRESHOLD_FIELDS.map(({ key, label }) => (
+            <div>
+{THRESHOLD_FIELDS.map(({ key, label }) => (
               <div className='taxYearField' key={key}>
-                <label className='calcFormText' htmlFor={`threshold-${key}`}>{label}:</label>
+                <label className='addTaxYearLabel' htmlFor={`threshold-${key}`}>{label}:</label>
+                <div className='inputDiv'>
                 <input
                   id={`threshold-${key}`}
                   type='number'
@@ -364,11 +369,18 @@ export default function TaxYearForm({ onTaxYearAdded }) {
                   required
                   aria-required='true'
                 />
+                 <Asterisk color="#C22419" fontWeight={700} size={12} aria-hidden='true' focusable='false' />
+              </div>
               </div>
             ))}
+            
+            </div>
+            
+            
           </fieldset>
+          
         </div>
-
+        
         {/* STATUS MESSAGES */}
         {status === 'error' && (
           <div className='taxYearAlert taxYearAlert--error' role='alert'>
@@ -382,8 +394,14 @@ export default function TaxYearForm({ onTaxYearAdded }) {
         )}
 
         {/* GROUP 4: FORM ACTIONS(BUTTONS) */}
-        <Stack direction='horizontal' gap={3} className='taxYearActions'>
-          <Button
+            <Stack direction="horizontal" gap={3} id='taxYearActions'>
+      <div className="p-2" id='requiredInfo'>
+                        <p className='infoText' aria-hidden='true'>
+                            <small><Asterisk color="#C22419" fontWeight={700} size={14} aria-hidden='true' focusable='false' /> Indicates required information</small>
+                        </p>
+                    </div>
+      <div className="p-2 ms-auto">
+        <Button
             type='submit'
             id='submitCalculatorBtn'
             variant='light'
@@ -393,7 +411,9 @@ export default function TaxYearForm({ onTaxYearAdded }) {
             <CalendarPlus size={16} aria-hidden='true' focusable='false' />
             {status === 'saving' ? 'Saving...' : 'Add tax year'}
           </Button>
-          <Button
+      </div>
+      <div className="p-2">
+         <Button
             type='button'
             id='clearCalculatorBtn'
             variant='danger'
@@ -403,7 +423,9 @@ export default function TaxYearForm({ onTaxYearAdded }) {
           >
             <RotateCcw size={16} aria-hidden='true' focusable='false' /> Reset
           </Button>
-        </Stack>
+      </div>
+    </Stack>
+     
       </form>
     </div>
   )

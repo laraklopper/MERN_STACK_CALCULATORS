@@ -16,7 +16,33 @@ Footer.js
     width: 100%;
     margin: 0px;
     padding: 0px;
+        margin: 3px 0px;
 }
+#copyrightDiv{
+        width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#copyRightCol{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+}
+#copyRightCol1,
+#copyRightCol2{
+    margin: 0px;
+    padding: 0px;
+}
+#copyrightText{
+    margin: 0px;
+    padding: 0px;
+    text-transform: uppercase;
+    font-family: "Fira Mono", monospace;
+  font-weight: 700;
+}
+
  /* ===============
 BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
 ====================== */

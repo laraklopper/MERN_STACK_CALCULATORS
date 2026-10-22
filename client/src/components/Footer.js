@@ -37,13 +37,13 @@ export default function Footer({logout}) {
         </Row>
          {/* Row 3: CopyRight Information */}
       <Row id='footerRow3'>
-        <Col xs={0} md id='copyRightCol1'/>
-        <Col xs={12} md={4} id='copyRightCol'>
-          <div id='copyright-div'>
+        <Col id='copyRightCol1'/>
+        <Col xs={12} md={8} id='copyRightCol'>
+          <div id='copyrightDiv'>
             <p id='copyrightText' aria-label='copy right details' aria-live='polite' >© 2026 Calculator App. All rights reserved.</p>
           </div>
         </Col>
-        <Col xs={0} md id='copyRightCol2'/>
+        <Col id='copyRightCol2'/>
       </Row>
     </footer>
   )

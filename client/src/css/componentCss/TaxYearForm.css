@@ -56,9 +56,12 @@ INPUT GROUPS
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 .taxYearGroupRow .taxYearGroup{
     flex: 1 1 250px;
+    width: 100%;
 }
 .taxYearField{
     display: flex;
@@ -96,10 +99,25 @@ BRACKET TABLE
     text-align: center;
     font-family: "Fira Mono", monospace;
 }
+#taxYearPreview,
+#taxBracketText{
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.addTaxYearLabel{
+     font-weight:700;
+    margin:0px;
+    padding:0px;
+    font-family: "Fira Mono", monospace;
+    color: #000000;
+    letter-spacing: 2px;
+    font-size: 16px;
+}
 /* ==========
 BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
 ============*/
-.taxYearRemoveBtn{
+#taxYearRemoveBtn{
     display: flex;
     align-items: center;
     justify-content: center;
