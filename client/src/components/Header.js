@@ -70,14 +70,21 @@ export default function Header({ pageHeader, currentUser }) {
                     </li>
                   )}
                 </div>
+                {/* ADMIN ONLY ROUTES */}
+                <div className="p-2" id='navbarBlock3'>
+                  {currentUser?.admin && (              
+                    <li className='linkItem'>
+                      <NavLink to='/taxConfig' className='navLink'>TAX CONFIGURATION</NavLink>
+                    </li>
+                )}
                 {/* Link to Users page (adminOnly) */}
                 {currentUser?.admin && (
-                  <div className="p-2" id='navbarBlock3'>
                     <li className='linkItem'>
                       <NavLink to='/users' className='navLink'>USERS</NavLink>
                     </li>
-                  </div>
                 )}
+                </div>
+                
               </Stack>
             </ul>
           </nav>
