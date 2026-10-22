@@ -1,0 +1,50 @@
+#taxYearFormBlock{
+    width: 100%;
+    margin: 0px;
+    padding: 10px;
+    display: flex;
+    background-color: #9E9E9E;
+    align-items: center;
+}
+/* BOOTSTRAP LAYOUT */
+/* GRID: https://react-bootstrap.netlify.app/docs/layout/grid  */
+#taxYearFormRow{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#taxYearFormCol{
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+}
+
+
+#taxYearFormCol1,
+#taxYearFormCol2{
+    margin: 0px;
+    padding: 0px;
+}
+#toggleTaxYearFormBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: solid 2px #323A42;
+    color: black;
+    width: 350px;
+    letter-spacing: 0.7px;
+    height: 40px;
+}
+#toggleTaxYearFormBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+#toggleTaxYearFormBtn:active{
+    color: #E8F0F6;
+    background-color: #323A42;
+    text-decoration: underline;
+}
