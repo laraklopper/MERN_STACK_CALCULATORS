@@ -188,7 +188,7 @@ Not everything is taxed at the standard rate. A VAT calculator that only handles
 | Zero-rated | 0% | Certain basic foodstuffs, exports | Yes |
 | Exempt | No VAT charged | Residential rental, certain financial services | No |
 
-Zero-rated and exempt look identical on a receipt (both show R0 VAT), but they behave differently for a VAT-registered vendor: zero-rated supplies still let the vendor claim back input VAT on their own purchases; exempt supplies don't. This distinction matters if the project ever adds vendor-side (not just consumer-side) VAT reporting.
+**Zero-rated** and exempt look identical on a receipt (both show R0 VAT), but they behave differently for a VAT-registered vendor: zero-rated supplies still let the vendor claim back input VAT on their own purchases; exempt supplies don't. This distinction matters if the project ever adds vendor-side (not just consumer-side) VAT reporting.
 
 ---
 
