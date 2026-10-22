@@ -1,0 +1,155 @@
+/* TaxYearForm.js (admin only) */
+#taxYearFormContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: #9E9E9E;
+    padding: 10px;
+}
+#taxYearForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: #A8AEB3;
+    margin: 0px;
+    padding: 10px;
+    width: 100%;
+    border: solid #323A42 2px;
+    border-radius: 5px;
+}
+.taxYearFormHeading{
+    font-weight: 700;
+    margin: 0px;
+    padding: 0px;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: "Roboto Mono", monospace;
+    font-size: 28px;
+    letter-spacing: 2px;
+    text-decoration: underline;
+}
+/* ==========
+INPUT GROUPS
+============*/
+.taxYearGroup{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin: 0px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #D6D6D6;
+    border: solid #323A42 2px;
+}
+.taxYearLegend{
+    float: none;
+    width: auto;
+    padding: 0px 5px;
+    background-color: #D6D6D6;
+}
+.taxYearGroupRow{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+.taxYearGroupRow .taxYearGroup{
+    flex: 1 1 250px;
+}
+.taxYearField{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+/* ==========
+BRACKET TABLE
+============*/
+.taxYearBracketTable{
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    font-family: "Fira Mono", monospace;
+}
+.taxYearBracketTable th{
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 5px;
+    border-bottom: solid #323A42 2px;
+}
+.taxYearBracketTable td{
+    padding: 5px;
+    border-bottom: solid #999d9f 1px;
+}
+.taxYearTableInput{
+    width: 120px;
+    height: 35px;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 4px;
+    text-align: center;
+    font-family: "Fira Mono", monospace;
+}
+/* ==========
+BUTTONS: https://react-bootstrap.netlify.app/docs/components/buttons
+============*/
+.taxYearRemoveBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    padding: 0px;
+    border: solid 2px #323A42;
+}
+#addBracketBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 200px;
+    height: 40px;
+    font-family: "Fira Mono", monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+    border: solid 2px #323A42;
+}
+.taxYearRemoveBtn:hover,
+#addBracketBtn:hover{
+    color: #E8F0F6;
+    background-color: #323A42;
+}
+.taxYearActions{
+    justify-content: center;
+    flex-wrap: wrap;
+}
+/* ==========
+STATUS MESSAGES
+============*/
+.taxYearAlert{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+}
+.taxYearAlert--error{
+    background-color: #F8D7DA;
+    color: #C22419;
+    border: solid #C22419 2px;
+}
+.taxYearAlert--success{
+    background-color: #D1E7DD;
+    color: #0F5132;
+    border: solid #0F5132 2px;
+}
