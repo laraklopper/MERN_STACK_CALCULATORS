@@ -17,6 +17,7 @@ import Tax from './pages/Tax';
 import Converter from './pages/Converter';
 import Users from './pages/Users';
 import History from './pages/History';
+import TaxConfiguration from './pages/TaxConfiguration';
 export default function App() {
   const [userData, setUserData] = useState({
     username: '',
@@ -213,7 +214,14 @@ export default function App() {
                   />
               </ProtectedUserRoute>
             }/>
-            {/* ---------PROTECTED ADMIN ROUTE--------- */}
+            {/* ---------PROTECTED ADMIN ROUTES--------- */}
+            {/* Route to /taxConfig page */}
+            <Route path='/taxConfig' element={
+              <ProtectedAdminRoute currentUser={currentUser}>
+                <TaxConfiguration currentUser={currentUser} logout={logout}/>
+              </ProtectedAdminRoute>
+            }/>
+            {/* Route to /users page */}
             <Route path='/users' element={
               <ProtectedAdminRoute currentUser={currentUser}>
                 <Users currentUser={currentUser} users={users} logout={logout}/>
@@ -234,7 +242,7 @@ export default function App() {
             }/>
             <Route path="/reg" element={<Registration setError={setError}/>}/>
             {/* Protected pages send logged-out users back to the login page */}
-            {['/calculators', '/tax', '/converter', '/history', '/profile', '/users'].map((path) => (
+            {['/calculators', '/tax', '/converter', '/history', '/profile', '/taxConfig', '/users'].map((path) => (
               <Route key={path} path={path} element={<Navigate to='/' replace/>}/>
             ))}
           </>
