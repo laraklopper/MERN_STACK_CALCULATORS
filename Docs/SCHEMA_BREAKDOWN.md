@@ -73,12 +73,25 @@ The `type` is a special property in Mongoose schemas. When Mongoose finds a nest
 | `username` | String | Yes | — | unique, trim, 2–50 chars | Login identifier |
 | `contactDetails.email` | String | Yes | — | unique, trim, lowercase, regex `^[^\s@]+@[^\s@]+\.[^\s@]+$` | Any country allowed |
 | `contactDetails.contactNumber` | String | Yes | — | unique, trim, regex `^(\+27\|0)\d{2}[ ]?\d{3}[ ]?\d{4}$` | South African format, e.g. `082 123 4567` or `+27 82 123 4567` |
-| `dateOfBirth` | Date | Yes | — | Must be a valid date in the past | All users must be 16 years or older and Admin Users must be 21 or older |
+| `dateOfBirth` | Date | Yes | — | Must be a valid date in the past | All users must be 16 or older (checked by `checkAge` on `/auth/register`). Admin users must be 21 or older (checked by `/auth/setAdmin`) |
 | `password` | String | Yes | — | 8–1024 chars, `select: false` | Hashed in registration middleware (not used during dev) |
-| `admin` | Boolean | No | `false` | — | `true` = admin privileges; admins must be 21 or older |
+| `admin` | Boolean | No | `false` | — | `true` = admin privileges. Always `false` on registration; only set through `/auth/setAdmin` (see 2.3) |
 
 
 `timestamps: true` adds `createdAt` and `updatedAt` (Date) automatically.
+
+### 2.3 ADMIN STATUS
+
+Users cannot register as an admin. `/auth/register` ignores any `admin` value in the request body and always saves `admin: false`.
+
+A regular user becomes an admin through `AdminRegisForm.js` (Home page), which sends a `PATCH` request to `/auth/setAdmin`. The route requires:
+
+- a valid JWT (`checkJwtToken`)
+- the user to be 21 or older
+- the account to be at least 1 day old (`createdAt`; 3 months in production)
+- the user not to be an admin already
+
+`/auth/clearAdmin` sets `admin` back to `false`. Both routes return a new JWT so the token's `admin` claim stays up to date.
 
 ## 3. INTEREST SCHEMA
 
